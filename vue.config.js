@@ -1,5 +1,5 @@
 module.exports = {
     devServer: {
-        proxy: 'https://www.freetogame.com/api'
+        proxy: 'https://www.freetogame.com'
     }
 }
