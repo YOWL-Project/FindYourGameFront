@@ -1,4 +1,5 @@
 import allGames from "@/common/api-freetoplay";
+// import axios from "axios";
 
 export default {
     namespaced: true,
@@ -10,7 +11,7 @@ export default {
     },
     actions: {
         async FETCH_POSTS( { commit } ) {
-            const { data } = await allGames.get().catch((error) => console.log(JSON.stringify(error.message)));
+            const { data } = await allGames.get('/games/').catch((error) => console.log(JSON.stringify(error.message)));
             commit("SET_POSTS", data);
         },
     },
