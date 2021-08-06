@@ -2,9 +2,10 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Intégration du component GameSimple-->
-      <div class="col-md">
+      <div class="col-12">
         <GameSimple v-for="game in games" :key="game.id" :game="game" />
       </div>
+      <!-- Fin component GameSimple -->
     </div>
   </div>
 </template>
@@ -37,6 +38,9 @@ export default {
 </script>
 
 <style scoped>
+.row {
+    margin: 0 20%;
+}
 .container-fluid {
   margin-top: 4%;
 }
