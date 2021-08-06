@@ -71,13 +71,13 @@ export default {
     pageChangeHandler(selectedPage) {
       this.currentPage = selectedPage;
     },
-    countGames() {
-        let nbGames = 0;
-        this.games.forEach(game => {
-            nbGames++
-        });
-        return nbGames;
-    }
+    // countGames() {
+    //     let nbGames = 0;
+    //     this.games.forEach(game => {
+    //         nbGames++
+    //     });
+    //     return nbGames;
+    // }
   },
   mounted() {
     this.fetchGames();
