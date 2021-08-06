@@ -15,16 +15,16 @@
           placeholder="Your comment here"
         />
         <div class="form-check">
-        <input type="checkbox" name="tag" class="btn-tag" checked />
+        <input type="checkbox" name="tag" class="btn-tag" id="tag-a" checked />
         <label for="tag-a">NEWBIE</label>
-        <input type="checkbox" name="tag" class="btn-tag" />
+        <input type="checkbox" name="tag" class="btn-tag" id="tag-b" />
         <label for="tag-b">HELP</label>
-        <input type="checkbox" name="tag" class="btn-tag" />
+        <input type="checkbox" name="tag" class="btn-tag" id="tag-c" />
         <label for="tag-c">CHEATS AND TIPS</label>
         </div>
       </div>
               <div class="row">
-          button
+          <button class="postit">POST IT !</button>
         </div>
     </div>
   </div>
@@ -78,6 +78,16 @@ input[type="checkbox"].btn-tag + label {
 input[type="checkbox"].btn-tag:checked + label {
   border: none;
   background: linear-gradient(0.25turn, #00ffff, #ff005c);
+}
+
+.postit {
+  margin: 3%;
+  padding: 8px 18px;
+  border: 1px solid;
+  border-image-slice: 1;
+  border-radius: 24px;
+  border-image-source: linear-gradient(0.25turn, #00ffff, #ff005c);
+
 }
 
 </style>
