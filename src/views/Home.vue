@@ -1,6 +1,9 @@
 <template>
   <div class="home">
+<<<<<<< HEAD
     <Posts v-for="post in posts" :key="post.id" :post="post" />
+=======
+>>>>>>> ffe4c3167c90ba305f2b2b0795c617ed6c68e62c
     <img
       class="m-4"
       alt="Logo FindYourGame"
@@ -12,26 +15,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import Posts from "@/components/Posts.vue";
 
 export default {
   name: "Home",
-  components: {
-    Posts,
-  },
-  computed: {
-    ...mapState("posts", {
-      posts: (state) => state.posts,
-    }),
-  },
-  methods: {
-    ...mapActions({
-      fetchPosts: "posts/FETCH_POSTS",
-    }),
-  },
-  mounted() {
-    this.fetchPosts();
-  },
 };
 </script>
