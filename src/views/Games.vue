@@ -11,12 +11,13 @@
         />
       </div>
       <!-- Fin component GameSimple -->
+      <!--
       <sliding-pagination
         :current="currentPage"
         :total="getNbPages(nbGamePerPage, countGames())"
         @page-change="pageChangeHandler"
       ></sliding-pagination>
-      <!-- <div
+<div
         class="pagination mx-2 mb-5"
         v-for="(page, index) in getNbPages(nbGamePerPage, nbGames)"
         :key="index"
@@ -36,13 +37,13 @@ import { mapState, mapActions } from "vuex";
 // import du component GameSimple
 import GameSimple from "@/components/GameSimple.vue";
 // import pagination
-import SlidingPagination from "vue-sliding-pagination";
+//import SlidingPagination from "vue-sliding-pagination";
 
 export default {
   name: "Games",
   components: {
     GameSimple,
-    SlidingPagination,
+    //SlidingPagination,
   },
   data() {
     return {
