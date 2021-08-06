@@ -1,6 +1,14 @@
 <template>
   <div class="home">
-    <Posts v-for="post in posts" :key="post.id" :post="post" />
+    <!-- <Posts v-for="post in posts" :key="post.id" :post="post" /> -->
+    <img
+      class="m-4"
+      alt="Logo FindYourGame"
+      src="../assets/Logo.svg"
+      width="172"
+      height="157"
+    />
+    <HelloWorld msg="Welcome to FindYourGame App" />
   </div>
 </template>
 
