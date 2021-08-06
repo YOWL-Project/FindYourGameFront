@@ -4,9 +4,11 @@ export default {
     namespaced: true,
     state: {
         games: [],
+        game: {},
     },
     mutations: {
         SET_GAMES: (state, games) => (state.games = games),
+        SET_GAME: (state, game) => (state.game = game),
     },
     actions: {
         async FETCH_GAMES({ commit }) {
@@ -19,7 +21,7 @@ export default {
                     id: id,
                 },
             }).catch((error) => console.log(JSON.stringify(error.message)));
-            commit("SET_GAMES", data);
+            commit("SET_GAME", data);
         },
     },
 }
