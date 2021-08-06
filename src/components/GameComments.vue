@@ -29,17 +29,36 @@
         <button class="postit">POST IT !</button>
       </div>
       <!-- Row #3 : Hot Topics (du jeu) -->
-      <div class="row my-4">
-        <div class="col">
-          <h2>HOT TOPICS</h2>
-          <div class="card" id="hottopics">
-            <div class="card-body">
-              <div class="col d-flex">Title of the Topic</div>
-              <div class="col" align="right">NB</div>
-
+      <div class="row my-5">
+        <h2>HOT TOPICS</h2>
+        <!-- L'extrait des hot topics concernant le jeu en question -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-10" align="left">
+              <p>Title of the Topic and TAG</p>
+              <p>Username, date and last update</p>
+            </div>
+            <div class="col-2 align-self-center">
+              <p class="nb-comments">NB</p>
             </div>
           </div>
         </div>
+        <!-- Fin de l'extrait -->
+
+        <!-- Deuxième extrait juste pour le design -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-10" align="left">
+              <p>Title of the Topic and TAG</p>
+              <p>Username, date and last update</p>
+            </div>
+            <div class="col-2 align-self-center">
+              <p class="nb-comments">NB</p>
+            </div>
+          </div>
+        </div>
+        <!-- Fin de l'extrait -->
+
       </div>
     </div>
   </div>
@@ -119,5 +138,9 @@ input[type="checkbox"].btn-tag:checked + label {
   margin: 2%;
   border-radius: 8px;
   padding: 2%;
+}
+
+.nb-comments {
+  font-size: 1.3em;
 }
 </style>
