@@ -1,5 +1,30 @@
 <template>
   <div class="dashboard">
+    <div id="nav">
+      <router-link to="/bar" style="color: rgba(255, 99, 132, 1)"
+        >Game cat</router-link
+      >
+      |
+      <router-link to="/line" style="color: rgba(54, 162, 235, 1)"
+        >Total visits</router-link
+      >
+      |
+      <router-link to="/pie" style="color: rgba(255, 206, 86, 1)"
+        >Top Five</router-link
+      >
+      |
+      <router-link to="/visit" style="color: rgba(75, 192, 192, 1)"
+        >Visits by day</router-link
+      >
+      |
+      <router-link to="/sign" style="color: rgba(153, 102, 255, 1)"
+        >Sign up</router-link
+      >
+      |
+      <router-link to="/rate" style="color: rgba(255, 159, 64, 1)"
+        >Activity</router-link
+      >
+    </div>
     <div class="up">
       <div class="graph bar">
         <h5>Game categories</h5>
@@ -56,15 +81,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .dashboard {
   width: 1150px;
-  height: 670px;
+  height: 735px;
   margin: auto;
   display: flex;
   flex-direction: column;
   border: 4px rgb(104, 166, 224) solid;
   border-radius: 10px;
-  background: linear-gradient(0.25turn, #aad6e9, #ebf8e1, #f5dabe);
+  background: linear-gradient(0.25turn, #bbd9df, #ebf8e1, #fbe3c8);
+}
+
+#nav {
+  padding: 20px;
+  padding-bottom: 10px;
 }
 .up {
   width: 100%;
