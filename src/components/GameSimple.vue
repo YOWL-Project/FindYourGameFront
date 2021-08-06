@@ -4,7 +4,7 @@
       class="card game mb-5"
       :style="'background: url(' + game.thumbnail + ') no-repeat top/cover'"
     >
-      <div class="card-body text-justify p-3">
+      <div class="card-body text-justify p-3 game-description-under-img">
         <div class="row">
           <div class="col-6">
             <h1>{{ game.title }}</h1>
@@ -76,7 +76,7 @@ export default {
   border: 1px solid white;
 }
 
-.card-body {
+.game-description-under-img {
   position: absolute;
   bottom: 0;
   left: 0;

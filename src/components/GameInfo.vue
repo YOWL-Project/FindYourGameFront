@@ -1,36 +1,27 @@
 <template>
   <div class="container-fluid">
-    <div class="row">
-      <!-- Game Description -->
-      <h1>{{ game.title }}</h1>
+    <div class="row game">
+      <div class="col mb-3" :style="'background: url(' + game.thumbnail + ') no-repeat center/cover'">
+        <div class="card-body game-description-under-img px-3 pt-3">
+          <h1>{{ game.title }}</h1>
+        </div>
+      </div>
     </div>
     <div class="row">
       <h2>DESCRIPTION</h2>
-      <p class="description ">
-        Call of Duty: Warzone is both a standalone free-to-play battle royale
-        and modes accessible via Call of Duty: Modern Warfare. Warzone features
-        two modes — the general 150-player battle royle, and “Plunder”. The
-        latter mode is described as a “race to deposit the most Cash”. In both
-        modes players can both earn and loot cash to be used when purchasing
-        in-match equipment, field upgrades, and more. Both cash and XP are
-        earned in a variety of ways, including completing contracts. An
-        interesting feature of the game is one that allows players who have been
-        killed in a match to rejoin it by winning a 1v1 match against other
-        felled players in the Gulag. Of course, being a battle royale, the game
-        does offer a battle pass. The pass offers players new weapons, playable
-        characters, Call of Duty points, blueprints, and more. Players can also
-        earn plenty of new items by completing objectives offered with the pass.
+      <p class="description">
+        {{ game.description }}
       </p>
       <!-- Game Details -->
       <div class="col" id="details">
-      <p><span class="plus">+</span> Genre : Shooter</p>
-      <p><span class="plus">+</span> Platform : Windows</p>
-      <p><span class="plus">+</span> Released : March 10, 2020</p>
+        <p><span class="plus">+</span> Genre : {{ game.genre }}</p>
+        <p><span class="plus">+</span> Platform : {{ game.platform }}</p>
+        <p><span class="plus">+</span> Released : {{ formatDate(game.release_date) }} </p>
       </div>
       <div class="col" id="details">
-      <p><span class="plus">+</span> (system details) </p>
-      <p><span class="plus">+</span> (system details) </p>
-      <p><span class="plus">+</span> (system details) </p>
+        <p><span class="plus">+</span> Publisher : {{ game.publisher }}</p>
+        <p><span class="plus">+</span> Developer : {{ game.developer }}</p>
+        <p><span class="plus">+</span> Status : {{ game.status }}</p>
       </div>
     </div>
     <!-- Importation du component GameVote pour la partie vote du jeu -->
@@ -39,6 +30,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import GameVote from "@/components/GameVote.vue";
 
 export default {
@@ -50,7 +42,14 @@ export default {
     game: Object,
   },
   mounted() {
-    console.log(this.game)
+    console.log(this.game);
+  },
+  methods: {
+    formatDate: (value) => {
+      if (value) {
+        return moment(String(value)).format("MMMM Do YYYY");
+      }
+    },
   },
 };
 </script>
@@ -76,14 +75,32 @@ h2 {
   -webkit-text-fill-color: transparent;
 }
 
+.game {
+  min-height: 15rem;
+  position: relative;
+  cursor: pointer;
+  transition: 0.25s;
+  border: 1px solid transparent;
+  color:white;
+}
+
+
+.game-description-under-img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgb(0, 0, 0, 0.7);
+}
+
 .description {
-    font-size: 0.9em;
-    padding-left: 2.5%;
-    padding-right: 10%;
+  font-size: 0.9em;
+  padding-left: 2.5%;
+  padding-right: 10%;
 }
 
 #details {
-    padding: 20px;
+  padding: 20px;
 }
 
 .row {

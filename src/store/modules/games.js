@@ -24,14 +24,4 @@ export default {
             commit("SET_GAME", data);
         },
     },
-    getters: {
-        async GET_GAME({ commit }, id) {
-            const { data } = await freetoplay.get('/game/', {
-                params: {
-                    id: id,
-                },
-            }).catch((error) => console.log(JSON.stringify(error.message)));
-            commit("SET_GAME", data);
-        },
-    },
 }
