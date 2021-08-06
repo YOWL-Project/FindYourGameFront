@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/game/' + game.id">
+  <router-link class="col-sm-12 col-md-4 col-ls-3" :to="'/game/' + game.id">
     <div
       class="card game mb-5"
       :style="'background: url(' + game.thumbnail + ') no-repeat top/cover'"
