@@ -4,28 +4,78 @@
       <!-- Intégration du component GameSimple-->
       <div class="col-12">
         <GameSimple
-          v-for="game in games.slice(offset, nbGamePerPage)"
+          v-for="game in games.slice(offset, nbGamePerPage + offset)"
           :key="game.id"
           :game="game"
-          v-bind:nbGames="(nbGames += 1)"
         />
       </div>
       <!-- Fin component GameSimple -->
-      <sliding-pagination
+      <!-- <sliding-pagination
+        class="pagination"
         :current="currentPage"
         :total="getNbPages(nbGamePerPage, countGames())"
         @page-change="pageChangeHandler"
-      ></sliding-pagination>
-      <!-- <div
-        class="pagination mx-2 mb-5"
-        v-for="(page, index) in getNbPages(nbGamePerPage, nbGames)"
+      ></sliding-pagination> -->
+
+        <p class="mx-2 page-item"
+          @click="
+            (currentPage = 1), (offset = 0), fetchGames(), 
+              scrollToTop()
+          ">
+            {{ gobackward }}
+        </p>
+        <p class="mx-2 page-item"
+          @click="
+            (currentPage -= 1), (offset = (currentPage - 1) * nbGamePerPage), fetchGames(), 
+              scrollToTop()
+          "
+          v-if="currentPage > 1">
+            Previous
+        </p>
+      <div
+        class="pagination mb-5"
+        v-for="(page, index) in getNbPages(nbGamePerPage, countGames())"
         :key="index"
         :page="page"
       >
-        <div class="mx-2 p-2 page" :to="'/games/' + page">
+        <div
+          class="mx-2 px-2 page active"
+          @click="
+            (currentPage = page),
+              (offset = page * nbGamePerPage),
+              fetchGames(), 
+              scrollToTop()
+          "
+          v-if="currentPage == page"
+        >
           {{ page }}
         </div>
-      </div> -->
+        <div
+          class="mx-2 px-2 page"
+          @click="
+            (currentPage = page), (offset = page * nbGamePerPage), fetchGames(), 
+              scrollToTop()
+          "
+          v-else-if="page < currentPage + 5 && page > currentPage - 5"
+        >
+          {{ page }}
+        </div>
+      </div>
+        <p class="mx-2 page-item"
+          @click="
+            (currentPage += 1), (offset = (currentPage + 1) * nbGamePerPage), fetchGames(), 
+              scrollToTop()
+          "
+          v-if="currentPage < getNbPages(nbGamePerPage, countGames())">
+            Next  
+        </p>
+        <p class="mx-2 page-item"
+          @click="
+            (currentPage = getNbPages(nbGamePerPage, countGames())), (offset = getNbPages(nbGamePerPage, countGames())), fetchGames(), 
+              scrollToTop()
+          ">
+            >>
+        </p>
     </div>
   </div>
 </template>
@@ -36,26 +86,21 @@ import { mapState, mapActions } from "vuex";
 // import du component GameSimple
 import GameSimple from "@/components/GameSimple.vue";
 // import pagination
-import SlidingPagination from "vue-sliding-pagination";
+// import SlidingPagination from "vue-sliding-pagination";
 
 export default {
   name: "Games",
   components: {
     GameSimple,
-    SlidingPagination,
   },
   data() {
     return {
       nbGamePerPage: 5,
       offset: 0,
       currentPage: 1,
+      gobackward: '<<',
     };
   },
-  //   watch: {
-  //     pages: function (nbGamePerPage, nbGames) {
-  //       this.pages = nbGames / nbGamePerPage;
-  //     }
-  //   },
   computed: {
     ...mapState("games", {
       games: (state) => state.games,
@@ -66,18 +111,24 @@ export default {
       fetchGames: "games/FETCH_GAMES",
     }),
     getNbPages: (nbGamePerPage, nbGames) => {
-      return nbGames / nbGamePerPage;
-    },
-    pageChangeHandler(selectedPage) {
-      this.currentPage = selectedPage;
+      return Math.ceil(nbGames / nbGamePerPage) - 1;
     },
     countGames() {
-        let nbGames = 0;
-        this.games.forEach(game => {
-            nbGames++
-        });
-        return nbGames;
-    }
+      let nbGames = 0;
+      this.games.forEach((game) => {
+        game;
+        nbGames++;
+      });
+      return nbGames;
+    },
+    changePage(page) {
+      this.currentPage = page;
+      this.offset = page * this.nbGamePerPage;
+      this.fetchGames();
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
   mounted() {
     this.fetchGames();
@@ -92,11 +143,27 @@ export default {
 
 .pagination {
   display: inline-block;
+  list-style-type: none;
+  color: black;
 }
 
 .page {
   background-color: white;
   color: black;
   cursor: pointer;
+}
+
+.active {
+  background-color: black;
+  color: white;
+}
+
+.page-item {
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.page-item:hover {
+    text-decoration: underline;
 }
 </style>
