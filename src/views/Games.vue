@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <div class="row">
       <!-- Intégration du component GameSimple-->
       <div class="col-12">
@@ -38,9 +38,7 @@ export default {
 </script>
 
 <style scoped>
-.row {
-    margin: 0 20%;
-}
+
 .container-fluid {
   margin-top: 4%;
 }

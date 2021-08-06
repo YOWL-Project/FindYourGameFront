@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Game Description -->
-      <h1>GAME NAME (ON THUMBNAIL)</h1>
+      <h1> Game name : {{ game.name }} </h1>
     </div>
     <div class="row">
       <h2>DESCRIPTION</h2>
@@ -45,7 +45,13 @@ export default {
   name: "GameInfo",
   components: {
     GameVote,
-  }
+  },
+  props: {
+    game: Object,
+  },
+  mounted() {
+    console.log(this.game)
+  },
 };
 </script>
 

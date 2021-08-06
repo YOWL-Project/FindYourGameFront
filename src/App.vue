@@ -48,6 +48,14 @@ body {
   color: white;
 }
 
+.plus {
+  font-size: 1.3em;
+  font-weight: 700;
+  background: linear-gradient(0.25turn, #00ffff, #ff005c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /*
 #nav {
   padding: 30px;
