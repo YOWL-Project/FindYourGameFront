@@ -1,7 +1,6 @@
 <template>
   <div class="game">
       <h1>{{ game.title }}</h1>
-    
   </div>
 </template>
 
