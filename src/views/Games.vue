@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .row {
-    margin: 0 20%;
+    margin: 0 25%;
 }
 .container-fluid {
   margin-top: 4%;
