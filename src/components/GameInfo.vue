@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Game Description -->
-      <h1> Game name : {{ game.name }} </h1>
+      <h1>{{ game.title }}</h1>
     </div>
     <div class="row">
       <h2>DESCRIPTION</h2>
