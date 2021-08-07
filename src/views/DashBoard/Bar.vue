@@ -9,22 +9,20 @@
 import BarChart from '@/components/DashBoard/BarChart'
 
 export default {
-  
-  
   components: {
-    BarChart
-  }
+    BarChart,
+  },
 }
 </script>
 
 <style scoped lang="scss">
-h3{
-  color:rgba(255, 99, 132, 1);
-  margin:30px;
+h3 {
+  color: rgba(255, 99, 132, 1);
+  margin: 30px;
 }
 
 .graph {
   width: 1200px;
-  margin:auto;
+  margin: auto;
 }
 </style>
