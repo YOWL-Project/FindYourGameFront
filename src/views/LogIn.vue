@@ -19,15 +19,16 @@
             placeholder="Username"
           />
         </div>
-        <div>
+        <div style="position: relative;">
           <input
-            type="password"
+            :type="type"
             class="form-control"
             id="password"
             placeholder="Password"
           />
+          <img class="visibility" src="../assets/visibility_black_24dp.svg" alt="" v-if="displaypassword == false" @click="type = 'text', displaypassword = true">
+          <img class="visibility" src="../assets/visibility_off_black_24dp.svg" alt=""  v-if="displaypassword == true" @click="type = 'password', displaypassword = false">
         </div>
-
         <div class="checkbox mb-3">
           <label>
             <input type="checkbox" value="remember-me" /> Remember me
@@ -45,6 +46,12 @@
 <script>
 export default {
   name: "LogIn",
+  data() {
+    return {
+      displaypassword: false,
+      type: 'password',
+    };
+  },
 };
 </script>
 
@@ -57,5 +64,13 @@ h1 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
+}
+
+.visibility {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 </style>

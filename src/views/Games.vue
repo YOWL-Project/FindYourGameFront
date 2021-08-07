@@ -10,13 +10,8 @@
       />
     </div>
     <!-- Fin component GameSimple -->
-    <!-- <sliding-pagination
-        class="pagination"
-        :current="currentPage"
-        :total="getNbPages(nbGamePerPage, countGames())"
-        @page-change="pageChangeHandler"
-      ></sliding-pagination> -->
 
+  <!-- pagination -->
     <div class="col-12 text-center" style="display: flex; justify-content: center;">
       <p
         class="mx-2 page-item"
@@ -103,6 +98,7 @@
         >>
       </p>
     </div>
+    <!-- fin pagination -->
   </div>
 </template>
 
