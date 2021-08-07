@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="graph">
     <h3>Activity rate</h3>
     <line-chart></line-chart>
   </div>
@@ -14,3 +14,15 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+h3{
+  color:rgba(255, 159, 64, 1);
+  margin:30px;
+}
+
+.graph {
+  width: 1200px;
+  margin:auto;
+}
+</style>

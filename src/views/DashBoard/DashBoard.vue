@@ -69,6 +69,14 @@ import SignChart from '@/components/DashBoard/SignChart'
 import RateChart from '@/components/DashBoard/RateChart'
 
 export default {
+  name: 'DashBoard',
+  beforeCreate() {
+    document.querySelector('body').setAttribute('style', 'background:#0d295f')
+  },
+  beforeDestroy() {
+    document.querySelector('body').setAttribute('style', '')
+  },
+
   components: {
     BarChart,
     LineChart,
@@ -88,9 +96,9 @@ export default {
   margin: auto;
   display: flex;
   flex-direction: column;
-  border: 4px rgb(104, 166, 224) solid;
+  border: 5px rgb(104, 166, 224) solid;
   border-radius: 10px;
-  background: linear-gradient(0.25turn, #bbd9df, #ebf8e1, #fbe3c8);
+  background: linear-gradient(0.25turn, #c9eee8, #ebf8e1, #fbe3c8);
 }
 
 #nav {
@@ -144,5 +152,6 @@ export default {
 h5 {
   background-color: #779ce7;
   color: white;
+  padding: 3px;
 }
 </style>
