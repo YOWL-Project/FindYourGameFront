@@ -24,22 +24,121 @@
           <label for="tag-c">CHEATS AND TIPS</label>
         </div>
       </div>
+
       <!-- Row #2 : Bouton de post -->
       <div class="row">
         <button class="postit">POST IT !</button>
       </div>
-      <!-- Row #3 : Hot Topics (du jeu) -->
-      <div class="row my-4">
-        <div class="col">
-          <h2>HOT TOPICS</h2>
-          <div class="card" id="hottopics">
-            <div class="card-body">
-              <div class="col d-flex">Title of the Topic</div>
-              <div class="col" align="right">NB</div>
 
+      <!-- Row #3 : Hot Topics (du jeu) -->
+      <div class="row my-5">
+        <h2>HOT TOPICS</h2>
+        <!-- L'extrait des hot topics concernant le jeu en question -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-10" align="left">
+              <p class="topic-title">Title of the Topic and TAG</p>
+              <p class="topic-details">Username, date and last update</p>
+            </div>
+            <div class="col-2 align-self-center">
+              <p class="nb-comments">NB</p>
             </div>
           </div>
         </div>
+        <!-- Fin de l'extrait -->
+
+        <!-- Deuxième extrait juste pour tester le design -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-10" align="left">
+              <p class="topic-title">Title of the Topic and TAG</p>
+              <p class="topic-details">Username, date and last update</p>
+            </div>
+            <div class="col-2 align-self-center">
+              <p class="nb-comments">NB</p>
+            </div>
+          </div>
+        </div>
+        <!-- Fin de l'extrait -->
+
+        <p>See all topics on this game</p>
+        <span class="arrow-right"
+          ><a href=""
+            ><img src="../assets/arrow-right.svg" width="25" height="25" /></a
+        ></span>
+      </div>
+
+      <!-- Row #4 : Last Comments (sur les topics du jeu) -->
+      <div class="row">
+        <h2>LAST COMMENTS</h2>
+
+        <!-- Extrait des derniers commentaires sur les topics -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-7" align="left">USERNAME on topic subject</div>
+            <div class="col-5" align="right">Date and hour</div>
+            <div class="col-12"><p>Comment</p></div>
+            <div class="col-4">
+              <img src="../assets/positif.svg" width="25" height="25" /> XX
+              "usefull" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/negatif.svg" width="25" height="25" /> XX
+              "useless" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
+              votes
+            </div>
+          </div>
+        </div>
+
+        <!-- Fin des extraits -->
+
+        <!-- Deuxième extrait pour design (a supprimer une fois le bind fait) -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-7" align="left">USERNAME on topic subject</div>
+            <div class="col-5" align="right">Date and hour</div>
+            <div class="col-12"><p>Comment</p></div>
+            <div class="col-4">
+              <img src="../assets/positif.svg" width="25" height="25" /> XX
+              "usefull" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/negatif.svg" width="25" height="25" /> XX
+              "useless" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
+              votes
+            </div>
+          </div>
+        </div>
+
+        <!-- Fin des extraits -->
+
+        <!-- Troisieme extrait pour design (a supprimer une fois le bind fait) -->
+        <div class="container">
+          <div class="row" id="hottopics">
+            <div class="col-7" align="left">USERNAME on topic subject</div>
+            <div class="col-5" align="right">Date and hour</div>
+            <div class="col-12"><p>Comment</p></div>
+            <div class="col-4">
+              <img src="../assets/positif.svg" width="25" height="25" /> XX
+              "usefull" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/negatif.svg" width="25" height="25" /> XX
+              "useless" votes
+            </div>
+            <div class="col-4">
+              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
+              votes
+            </div>
+          </div>
+        </div>
+        <!-- Fin des extraits -->
       </div>
     </div>
   </div>
@@ -59,6 +158,10 @@ body {
 
 h2 {
   font-size: 1.5em;
+  text-align: left;
+}
+
+p {
   text-align: left;
 }
 
@@ -119,5 +222,25 @@ input[type="checkbox"].btn-tag:checked + label {
   margin: 2%;
   border-radius: 8px;
   padding: 2%;
+}
+
+.nb-comments {
+  font-size: 1.3em;
+  color: #00ffff;
+  font-weight: 700;
+}
+
+.arrow-right {
+  margin-left: 2%;
+}
+
+.topic-details {
+  font-style: italic;
+  color: #cccccc;
+}
+
+.topic-title {
+  font-size: 1.2em;
+  color: #cccccc;
 }
 </style>

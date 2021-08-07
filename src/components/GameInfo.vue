@@ -8,9 +8,13 @@
       </div>
     </div>
     <div class="row">
-      <h2>DESCRIPTION</h2>
+      <h2>DESCRIPTION</h2></div>
+      <div class="row">
       <p class="description">
-        {{ game.description }}
+        <span v-if="!readMore">{{ game.description.slice(0, 300) }} ...</span>
+        <span v-if="readMore">{{ game.description }} ...</span>
+        <button @click="showMore" v-if="!readMore" class="btn btn-primary">Show more</button>
+        <button @click="showLess" v-if="readMore" class="btn btn-primary">Show less</button>
       </p>
       <!-- Game Details -->
       <div class="col" id="details">
@@ -41,6 +45,11 @@ export default {
   props: {
     game: Object,
   },
+
+  data: () => ({
+    readMore: false,
+  }),
+
   mounted() {
     console.log(this.game);
   },
@@ -49,6 +58,13 @@ export default {
       if (value) {
         return moment(String(value)).format("MMMM Do YYYY");
       }
+    },
+
+    showMore() {
+        this.readMore = true;
+    },
+    showLess() {
+        this.readMore = false;
     },
   },
 };
