@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="d-flex flex-column align-self-center">
-      <form>
+      <form  @submit.prevent="submitForm">
         <img
           class="m-4"
           src="../assets/Logo.svg"
@@ -15,7 +15,7 @@
           <input
             type="text"
             class="form-control"
-            id="username"
+            v-model="username"
             placeholder="Username"
           />
         </div>
@@ -23,7 +23,7 @@
           <input
             :type="type"
             class="form-control"
-            id="password"
+            v-model="password"
             placeholder="Password"
           />
           <img class="visibility" src="../assets/visibility_black_24dp.svg" alt="" v-if="displaypassword == false" @click="type = 'text', displaypassword = true">
@@ -44,13 +44,29 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "LogIn",
   data() {
     return {
       displaypassword: false,
       type: 'password',
+      username: '',
+      password: '',
     };
+  },
+  computed: {
+    ...mapState("user", {
+      user: (state) => state.user,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      log_user: "authentification/LOG_USER",
+    }),
+    submitForm() {
+      this.log_user()
+    },
   },
 };
 </script>

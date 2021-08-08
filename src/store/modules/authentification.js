@@ -37,13 +37,12 @@ export default {
               })
               .catch((error) => console.log(JSON.stringify(error.message)));
         },
-        async LOG_USER({ commit }, id) {
-            const { data } = await apiLaravel.post('/login/', {
-                body: body
+        async LOG_USER({ commit }, body) {
+            const { data } = await apiLaravel.post('/login/', body
                 // type :
                 // "name":"test",
                 // "password":"test",
-            }).catch((error) => console.log(JSON.stringify(error.message)));
+            ).catch((error) => console.log(JSON.stringify(error.message)));
             commit("SET_USER", data);
         },
     },
