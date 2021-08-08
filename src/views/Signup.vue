@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="d-flex flex-column align-self-center">
+    <div class="d-flex flex-column align-self-center text-center">
       <img
-        class="m-4"
+        class="m-4 align-self-center"
         src="../assets/Logo.svg"
         alt=""
         width="172"
