@@ -58,7 +58,9 @@
         </div>
         <p>
           See all the new games
-          <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          <router-link to="/games/release-date/none/none">
+            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          </router-link>
         </p>
       </div>
       <div>
@@ -68,7 +70,9 @@
         </div>
         <p>
           See all the best rated games
-          <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          <router-link to="/games/popularity/none/none">
+            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          </router-link>
         </p>
       </div>
     </div>
@@ -80,3 +84,9 @@ export default {
   name: "Home",
 };
 </script>
+
+<style scoped>
+img {
+  cursor: pointer;
+}
+</style>

@@ -11,8 +11,11 @@
     </div>
     <!-- Fin component GameSimple -->
 
-  <!-- pagination -->
-    <div class="col-12 text-center" style="display: flex; justify-content: center;">
+    <!-- pagination -->
+    <div
+      class="col-12 text-center"
+      style="display: flex; justify-content: center"
+    >
       <p
         class="mx-2 page-item"
         @click="(currentPage = 1), (offset = 0), fetchGames(), scrollToTop()"
@@ -118,10 +121,15 @@ export default {
   data() {
     return {
       windowWidth: window.innerWidth,
+      // pagination
       nbGamePerPage: 5,
       offset: 0,
       currentPage: 1,
       gobackward: "<<",
+      // filter games
+      platform: "all",
+      category: "",
+      sortBy: "",
     };
   },
   computed: {
@@ -134,7 +142,8 @@ export default {
       fetchGames: "games/FETCH_GAMES",
     }),
     getNbPages: (nbGamePerPage, nbGames) => {
-      return Math.ceil(nbGames / nbGamePerPage) - 1;
+      return Math.ceil(nbGames / nbGamePerPage);
+      // return Math.ceil(nbGames / nbGamePerPage) - 1;
     },
     countGames() {
       let nbGames = 0;
@@ -147,7 +156,11 @@ export default {
     changePage(page) {
       this.currentPage = page;
       this.offset = page * this.nbGamePerPage;
-      this.fetchGames();
+      this.fetchGames({
+        platform: this.platform,
+        category: this.category,
+        sortBy: this.sortBy,
+      });
     },
     scrollToTop() {
       window.scrollTo(0, 0);
@@ -162,11 +175,24 @@ export default {
   },
   mounted() {
     this.getNbGamesPerPage();
-    this.fetchGames();
     window.onresize = () => {
       this.windowWidth = window.innerWidth;
       this.getNbGamesPerPage();
     };
+    if (this.$route.params.sortBy != "none") {
+      this.sortBy = this.$route.params.sortBy;
+    }
+    if (this.$route.params.category != "none") {
+      this.category = this.$route.params.category;
+    }
+    if (this.$route.params.platform != "none") {
+      this.platform = this.$route.params.platform;
+    }
+    this.fetchGames({
+      platform: this.platform,
+      category: this.category,
+      sortBy: this.sortBy,
+    });
   },
 };
 </script>

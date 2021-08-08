@@ -1,5 +1,5 @@
 <template>
-  <router-link class="col-sm-12 col-md-4 col-ls-3" :to="'/game/' + game.id">
+  <div class="col-sm-12 col-md-4 col-ls-3">
     <div
       class="card game mb-5"
       :style="'background: url(' + game.thumbnail + ') no-repeat top/cover'"
@@ -7,9 +7,24 @@
       <div class="card-body text-justify p-3 game-description-under-img">
         <div class="row">
           <div class="col-6">
-            <h1>{{ game.title }}</h1>
-            <p class="card-text">
-              {{ game.genre }}
+            <router-link
+              class="col-sm-12 col-md-4 col-ls-3"
+              :to="'/game/' + game.id"
+            >
+              <h1>{{ game.title }}</h1>
+            </router-link>
+            <p class="card-text" >
+              <router-link
+                :to="'/games/none/' + game.genre + '/none'"
+                style="color: white"
+                @click="fetchGames({
+      platform: '',
+      category: game.genre,
+      sortBy: '',
+    }),scrollToTop()"
+              >
+                {{ game.genre }}
+              </router-link>
               <span class="plus">+</span>
               <span class="releasedate">
                 Release {{ formatDate(game.release_date) }}
@@ -40,7 +55,7 @@
         </div>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -58,6 +73,9 @@ export default {
         return moment(String(value)).format("MMMM Do YYYY");
       }
     },
+    reloadPage() {
+      window.location.reload();
+    },
   },
 };
 </script>
@@ -66,10 +84,9 @@ export default {
 .game {
   min-height: 30rem;
   position: relative;
-  cursor: pointer;
   transition: 0.25s;
   border: 1px solid transparent;
-  color:white;
+  color: white;
 }
 
 .game:hover {
@@ -82,5 +99,16 @@ export default {
   left: 0;
   width: 100%;
   background-color: rgb(0, 0, 0, 0.7);
+}
+
+h1 {
+  color: white;
+  text-decoration: none;
+}
+
+h1:hover {
+  text-decoration: none;
+  text-decoration: underline;
+  text-decoration: white;
 }
 </style>

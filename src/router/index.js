@@ -30,7 +30,12 @@ const routes = [
     component: Game,
   },
   {
-    path: "/games",
+    path: "/games/:sortBy/:category/:platform",
+    name: "GamesParams",
+    component: Games,
+  },
+  {
+    path: "/games/",
     name: "Games",
     component: Games,
   },
