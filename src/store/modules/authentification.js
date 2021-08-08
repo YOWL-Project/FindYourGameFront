@@ -12,15 +12,30 @@ export default {
     },
     actions: {
         async REGISTER_USER({ commit }, body) {
-            const { data } = await apiLaravel.post('/register/', {
-                body: body
-                // type :
-                // "name":"test",
-                // "email":"test@test.com",
-                // "password":"test",
-                // "password_confirmation":"test"
-            }).catch((error) => console.log(JSON.stringify(error.message)));
-            commit("SET_USERS", data);
+            apiLaravel
+              .post("/register/", body)
+              .then((response) => {
+                if (response.status == 201) {
+                  let d = new Date();
+                  d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
+                  let expires = "expires=" + d.toUTCString();
+                  let profil = JSON.stringify(response.data.data);
+                  let message = JSON.stringify(response.data.message);
+                  console.log(profil);
+                  console.log(message);
+                  document.cookie = `profil=${profil};${expires};path=/;secure`;
+                  commit("SET_USERS", profil);
+                  // this.$store.commit("SET_USERS", data);
+                  // this.$store.commit("AUTH", true);
+                  // this.$store.commit("SUCCES", response.data.message);
+                  // this.$router.push("/");
+                } else {
+                  throw new Error(
+                    "un problème est survenu lors de l'enregistrement de votre compte"
+                  );
+                }
+              })
+              .catch((error) => console.log(JSON.stringify(error.message)));
         },
         async LOG_USER({ commit }, id) {
             const { data } = await apiLaravel.post('/login/', {

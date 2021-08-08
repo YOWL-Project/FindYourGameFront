@@ -100,7 +100,7 @@
 </template>
 
 <script>
-// import { mapState, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import apiLaravel from "@/common/api-back";
 
 export default {
@@ -121,15 +121,15 @@ export default {
       errorBirth: "",
     };
   },
-  // computed: {
-  //   ...mapState("users", {
-  //     users: (state) => state.users,
-  //   }),
-  // },
+  computed: {
+    ...mapState("users", {
+      users: (state) => state.users,
+    }),
+  },
   methods: {
-    // ...mapActions({
-    //   register_user: "authentification/REGISTER_USER",
-    // }),
+    ...mapActions({
+      register_user: "authentification/REGISTER_USER",
+    }),
     submitForm() {
       var submitform = true;
       // ajouter condition sur username unique
@@ -169,9 +169,8 @@ export default {
 
       // ajouter date of birth ?
       if (submitform) {
-        console.log(this.users);
         apiLaravel;
-        this.signUp({
+        this.register_user({
           name: this.username,
           email: this.email,
           password: this.password,
@@ -181,21 +180,26 @@ export default {
       }
     },
     signUp(body) {
-      const { data } = apiLaravel.post("/register/", {body: body})
-      .then((response) => {
-          if (response.status == 200) {
-            console.log(data);
-            // let d = new Date();
-            // d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
-            // let expires = "expires=" + d.toUTCString();
-            // let profil = JSON.stringify(response.data.data);
-            // document.cookie = `profil=${profil};${expires};path=/;secure`;
+      apiLaravel
+        .post("/register/", body)
+        .then((response) => {
+          if (response.status == 201) {
+            let d = new Date();
+            d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
+            let expires = "expires=" + d.toUTCString();
+            let profil = JSON.stringify(response.data.data);
+            let message = JSON.stringify(response.data.message);
+            console.log(profil);
+            console.log(message);
+            document.cookie = `profil=${profil};${expires};path=/;secure`;
             // this.$store.commit("SET_USERS", data);
             // this.$store.commit("AUTH", true);
             // this.$store.commit("SUCCES", response.data.message);
             // this.$router.push("/");
           } else {
-            throw new Error("un problème est survenu lors de l'enregistrement de votre compte");
+            throw new Error(
+              "un problème est survenu lors de l'enregistrement de votre compte"
+            );
           }
         })
         // .catch((error) => {
