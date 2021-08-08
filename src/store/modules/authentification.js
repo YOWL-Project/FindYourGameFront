@@ -1,17 +1,17 @@
-import apiLaravel from "@/common/api-freetoplay";
+import apiLaravel from "@/common/api-back";
 
 export default {
     namespaced: true,
     state: {
-        games: [],
-        game: {},
+        users: [],
+        user: {},
     },
     mutations: {
-        // SET_GAMES: (state, games) => (state.games = games),
-        // SET_GAME: (state, game) => (state.game = game),
+        SET_USERS: (state, users) => (state.users = users),
+        SET_USER: (state, user) => (state.user = user),
     },
     actions: {
-        async REGISTER({ commit }, body) {
+        async REGISTER_USER({ commit }, body) {
             const { data } = await apiLaravel.post('/register/', {
                 body: body
                 // type :
@@ -20,16 +20,16 @@ export default {
                 // "password":"test",
                 // "password_confirmation":"test"
             }).catch((error) => console.log(JSON.stringify(error.message)));
-            commit("SET_GAMES", data);
+            commit("SET_USERS", data);
         },
-        async LOGIN({ commit }, id) {
+        async LOG_USER({ commit }, id) {
             const { data } = await apiLaravel.post('/login/', {
                 body: body
                 // type :
                 // "name":"test",
                 // "password":"test",
             }).catch((error) => console.log(JSON.stringify(error.message)));
-            commit("SET_GAME", data);
+            commit("SET_USER", data);
         },
     },
 }
