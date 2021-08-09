@@ -1,43 +1,26 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#"
-              >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link disabled"
-              href="#"
-              tabindex="-1"
-              aria-disabled="true"
-              >Disabled</a
-            >
-          </li>
-        </ul>
-      </div>
-    </nav>
+  <div id="navigation">
+    <img
+      src="../assets/Logo.svg"
+      alt="Logo FindYourGame"
+      width="75"
+      height="75"
+    />
+    <ul>
+      <li><router-link to="/">HOME</router-link></li>
+      <li><router-link to="/games">GAMES</router-link></li>
+    </ul>
+    <form>
+      <input type="text" placeholder="Search for games" />
+      <i class="fas fa-search"></i>
+    </form>
+    <div class="profile">
+    <ul>
+        <li><router-link to="/login">USER</router-link></li>
+        <li><router-link to="/subscribe">SIGN UP</router-link></li>
+        <li>LOGOUT</li>
+    </ul>
+    </div>
   </div>
 </template>
 
@@ -47,5 +30,66 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+#navigation {
+  display: flex;
+  background-color: #222222;
+  color: white;
+  border-radius: 3px;
+  padding: 1em;
+  width: 100%;
+  margin-bottom: 50px;
+  padding-left: 60px;
+
+  ul {
+    display: flex;
+    list-style: none;
+    padding-left: 60px;
+    margin: 0;
+    flex: 1;
+    li {
+      font-size: 1.2rem;
+      margin-right: 1em;
+      align-self: center;
+      cursor: pointer;
+    }
+  }
+  form {
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    flex: 3;
+    input {
+    min-height: 50px;
+    border-radius: 24px;
+    padding-left: 10px;
+    align-self: center;
+      flex: 1;
+    }
+    i {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 1.6rem;
+      color: #aaa;
+      cursor: pointer;
+    }
+  }
+
+  .profile {
+    justify-content: flex-start;
+    padding-top: 1.4em;
+  }
+
+  a:link {
+  text-decoration: none;
+  }
+  a:hover {
+  text-decoration: underline;
+}
+
+  a {
+      color: white;
+  }
+}
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <Navbar />
     <div class="content container text-left">
       <div>
         <h1><span class="plus">+</span> Welcome <span>USER</span></h1>
@@ -151,13 +150,11 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import GameLittle from "@/components/GameLittle.vue";
-import Navbar from "@/components/Navbar.vue"
 
 export default {
   name: "Home",
   components: {
     GameLittle,
-    Navbar,
   },
   data() {
     return {
