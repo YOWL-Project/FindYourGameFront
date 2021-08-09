@@ -63,7 +63,7 @@
 
         <p>See all topics on this game</p>
         <span class="arrow-right"
-          ><a href=""
+          ><a href="#"
             ><img src="../assets/arrow-right.svg" width="25" height="25" /></a
         ></span>
       </div>

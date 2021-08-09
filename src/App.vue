@@ -1,16 +1,21 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/games">Games</router-link> | 
-      <router-link to="/login">Log in</router-link> | 
-      <router-link to="/subscribe">Sign up</router-link>
+      <Navbar />
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
+import Navbar from "@/components/Navbar.vue"
+
+export default {
+  components: {
+    Navbar,
+  },
+};
+
 // (function() {
 //     var cors_api_host = 'localhost:8081';
 //     var cors_api_url = 'https://' + cors_api_host + '/';
