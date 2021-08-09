@@ -1,18 +1,272 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <img
+      class="m-4 align-self-center"
+      alt="Logo FindYourGame"
+      src="../assets/Logo.svg"
+      width="172"
+      height="157"
+    />
+    <div class="content container text-left">
+      <div>
+        <h1><span class="plus">+</span> Welcome <span>USER</span></h1>
+      </div>
+      <form style="position: relative">
+        <input
+          type="text"
+          class="form-control"
+          name="search"
+          id="search"
+          placeholder="Wich game are yoour looking for ?"
+        />
+        <img
+          style="
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            cursor: pointer;
+          "
+          src="../assets/search_black_24dp.svg"
+          alt=""
+          width="30px"
+        />
+      </form>
+      <div>
+        <h2>TRENDING GAMES ON DISCUSSIONS</h2>
+        <div class="" style="display: flex" id="trendinggames">
+          <img
+            src="../assets/arrow-left.svg"
+            alt=""
+            width="40px"
+            class="mr-2"
+            @click="translategame(1, 'backward')"
+          />
+          <div class="" style="overflow: hidden">
+            <div
+              class="gamelittle"
+              :style="'transform : translateX(' + translateX1 + 'rem)'"
+            >
+              <GameLittle
+                v-for="game in games.slice(0, nbgamesnew)"
+                :key="game.id"
+                :game="game"
+              />
+            </div>
+          </div>
+          <img
+            src="../assets/arrow-right.svg"
+            alt=""
+            width="40px"
+            class="ml-2"
+            @click="translategame(1, 'forward')"
+          />
+        </div>
+      </div>
+      <div>
+        <h2>CHECK THE HOT TOPICS</h2>
+        <div id="hottopics">
+          <p>
+            See all topics
+            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          </p>
+        </div>
+      </div>
+      <div>
+        <h2>FRESH OFF THE BAKERY</h2>
+        <div id="commentsnew"></div>
+      </div>
+      <div>
+        <h2>BEST NEW GAMES</h2>
+        <div style="display: flex" id="newgames">
+          <img
+            src="../assets/arrow-left.svg"
+            alt=""
+            width="40px"
+            class="mr-2"
+            @click="translategame(2, 'backward')"
+          />
+          <div class="" style="overflow: hidden">
+            <div
+              class="gamelittle"
+              :style="'transform : translateX(' + translateX2 + 'rem)'"
+            >
+              <GameLittle
+                v-for="game in games.slice(0, nbgamesnew)"
+                :key="game.id"
+                :game="game"
+              />
+            </div>
+          </div>
+          <img
+            src="../assets/arrow-right.svg"
+            alt=""
+            width="40px"
+            class="ml-2"
+            @click="translategame(2, 'forward')"
+          />
+        </div>
+        <p>
+          See all the new games
+          <router-link to="/games/release-date/none/none">
+            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          </router-link>
+        </p>
+      </div>
+      <div>
+        <h2>GREATEST OF ALL TIMES !</h2>
+        <div style="display: flex" id="bestratedgames">
+          <img
+            src="../assets/arrow-left.svg"
+            alt=""
+            width="40px"
+            class="mr-2"
+            @click="translategame(3, 'backward')"
+          />
+          <div class="" style="overflow: hidden">
+            <div
+              class="gamelittle"
+              :style="'transform : translateX(' + translateX3 + 'rem)'"
+            >
+              <GameLittle
+                v-for="game in gamesFiltered.slice(0, nbgamesnew)"
+                :key="game.id"
+                :game="game"
+              />
+            </div>
+          </div>
+          <img
+            src="../assets/arrow-right.svg"
+            alt=""
+            width="40px"
+            class="ml-2"
+            @click="translategame(3, 'forward')"
+          />
+        </div>
+        <p>
+          See all the best rated games
+          <router-link to="/games/popularity/none/none">
+            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+          </router-link>
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import { mapState, mapActions } from "vuex";
+import GameLittle from "@/components/GameLittle.vue";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    GameLittle,
+  },
+  data() {
+    return {
+      platform: "all",
+      category: "",
+      sortBy: "release-date",
+      sortBy2: "popularity",
+      translateX1: 0,
+      translateX2: 0,
+      translateX3: 0,
+      nbgamesnew: 10,
+      nbgamesdisplayed: 0,
+      windowWidth: window.innerWidth,
+    };
+  },
+  computed: {
+    ...mapState("games", {
+      games: (state) => state.games,
+      gamesFiltered: (state) => state.games_filtered,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      fetchGames: "games/FETCH_GAMES",
+      fetchGamesFiltered: "games/FETCH_GAMES_FILTERED",
+    }),
+    translategame(nbCaroussel, sens) {
+      if (nbCaroussel == 1) {
+        if (sens == "backward") {
+          this.translateX1 += 21;
+          if (this.translateX1 > 0) {
+            this.translateX1 = 0;
+          }
+        } else if (sens == "forward") {
+          this.translateX1 -= 21;
+          if (this.translateX1 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+            this.translateX1 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
+          }
+        }
+      } else if (nbCaroussel == 2) {
+        if (sens == "backward") {
+          this.translateX2 += 21;
+          if (this.translateX2 > 0) {
+            this.translateX2 = 0;
+          }
+        } else if (sens == "forward") {
+          this.translateX2 -= 21;
+          if (this.translateX2 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+            this.translateX2 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
+          }
+        }
+      } else if (nbCaroussel == 3) {
+        if (sens == "backward") {
+          this.translateX3 += 21;
+          if (this.translateX3 > 0) {
+            this.translateX3 = 0;
+          }
+        } else if (sens == "forward") {
+          this.translateX3 -= 21;
+          if (this.translateX3 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+            this.translateX3 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
+          }
+        }
+      }
+    },
+    getnbgamesdisplayed() {
+      if (this.windowWidth < 700) {
+        this.nbgamesdisplayed = 1;
+      } else if (this.windowWidth < 1200) {
+        this.nbgamesdisplayed = 2;
+      } else {
+        this.nbgamesdisplayed = 3;
+      }
+    },
+  },
+  mounted() {
+    this.getnbgamesdisplayed();
+    window.onresize = () => {
+      this.windowWidth = window.innerWidth;
+      this.getnbgamesdisplayed();
+    };
+    this.fetchGames({
+      platform: this.platform,
+      category: this.category,
+      sortBy: this.sortBy,
+    });
+    this.fetchGamesFiltered({
+      platform: this.platform,
+      category: this.category,
+      sortBy: this.sortBy2,
+    });
   },
 };
 </script>
+
+<style scoped>
+img {
+  cursor: pointer;
+}
+
+.gamelittle {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+  transition: 0.25s;
+}
+</style>
