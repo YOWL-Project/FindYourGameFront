@@ -1,30 +1,5 @@
 <template>
   <div class="dashboard">
-    <div id="nav">
-      <router-link to="/bar" style="color: rgba(255, 99, 132, 1)"
-        >Game cat</router-link
-      >
-      |
-      <router-link to="/line" style="color: rgba(54, 162, 235, 1)"
-        >Total visits</router-link
-      >
-      |
-      <router-link to="/pie" style="color: rgba(255, 206, 86, 1)"
-        >Top Five</router-link
-      >
-      |
-      <router-link to="/visit" style="color: rgba(75, 192, 192, 1)"
-        >Visits by day</router-link
-      >
-      |
-      <router-link to="/sign" style="color: rgba(153, 102, 255, 1)"
-        >Sign up</router-link
-      >
-      |
-      <router-link to="/rate" style="color: rgba(255, 159, 64, 1)"
-        >Activity</router-link
-      >
-    </div>
     <div class="up">
       <div @click="bar()" class="graph bar">
         <h5>Game categories</h5>
@@ -110,8 +85,8 @@ export default {
 
 <style scoped lang="scss">
 .dashboard {
-  width: 1150px;
-  height: 735px;
+  width: 1160px;
+  height: 685px;
   margin: auto;
   display: flex;
   flex-direction: column;

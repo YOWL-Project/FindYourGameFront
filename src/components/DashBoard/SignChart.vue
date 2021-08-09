@@ -6,12 +6,7 @@ export default {
   data() {
     return {
       chartData: {
-        labels: [
-          '01',
-          '02',
-          '03',
-          '04',
-        ],
+        labels: ['01', '02', '03', '04'],
         datasets: [
           {
             label: 'Bar Chart',
