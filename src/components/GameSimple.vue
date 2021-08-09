@@ -13,19 +13,9 @@
             >
               <h1>{{ game.title }}</h1>
             </router-link>
-            <p class="card-text" >
-              <router-link
-                :to="'/games/none/' + game.genre + '/none'"
-                style="color: white"
-                @click="fetchGames({
-      platform: '',
-      category: game.genre,
-      sortBy: '',
-    }),scrollToTop()"
-              >
-                {{ game.genre }}
-              </router-link>
-              <span class="plus">+</span>
+            <p class="card-text">
+                <span class="selected" @click="reloadPage('none', game.genre, 'none')">{{ game.genre }}</span>
+              <span class="plus"> +</span>
               <span class="releasedate">
                 Release {{ formatDate(game.release_date) }}
               </span>
@@ -40,17 +30,6 @@
               <span class="mx-2">125 votes</span>
               <img src="../assets/negatif.svg" alt="" height="20px" />
             </div>
-            <!-- <div class="row">
-            <div class="col-12">
-              <img src="../assets/positif.svg" alt="" height="20px" />
-            </div>
-            <div class="col-12">
-            <span>125 votes</span>
-            </div>
-            <div class="col-12">
-            <img src="../assets/negatif.svg" alt="" height="20px" />
-            </div>
-          </div> -->
           </div>
         </div>
       </div>
@@ -66,16 +45,24 @@ export default {
   props: {
     game: Object,
   },
-  computed: {},
+  computed: {
+    // ...mapState("games", {
+    //   games: (state) => state.games,
+    // }),
+  },
   methods: {
     formatDate: (value) => {
       if (value) {
         return moment(String(value)).format("MMMM Do YYYY");
       }
     },
-    reloadPage() {
-      window.location.reload();
+    reloadPage(platform, category, sortBy) {
+      console.log(platform);
+      window.location = `/games/${platform}/${category}/${sortBy}`
     },
+    // ...mapActions({
+    //   fetchGames: "games/FETCH_GAMES",
+    // }),
   },
 };
 </script>
@@ -110,5 +97,14 @@ h1:hover {
   text-decoration: none;
   text-decoration: underline;
   text-decoration: white;
+}
+
+.selected {
+  cursor: pointer;
+  transition: 0.25s; 
+}
+
+.selected:hover {
+  text-decoration: underline;
 }
 </style>
