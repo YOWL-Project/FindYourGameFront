@@ -80,6 +80,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
+  text-align: left;
 }
 
 .plus {

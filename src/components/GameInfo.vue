@@ -12,7 +12,7 @@
       <div class="row">
       <p class="description">
         <span v-if="!readMore">{{ game.description.slice(0, 300) }} ...</span>
-        <span v-if="readMore">{{ game.description }} ...</span>
+        <span v-if="readMore">{{ game.description }}</span>
         <button @click="showMore" v-if="!readMore" class="btn btn-primary">Show more</button>
         <button @click="showLess" v-if="readMore" class="btn btn-primary">Show less</button>
       </p>
