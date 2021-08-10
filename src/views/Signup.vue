@@ -8,8 +8,69 @@
         width="172"
         height="157"
       />
-      <h1>SUBSCRIBE FORM</h1>
-      <form class="text-left" @submit.prevent="submitForm">
+      <h1
+        v-if="!formSubmitted || (formSubmitted && !errors.message)"
+        @submit.prevent="submitForm"
+      >
+        SUBSCRIBE FORM
+      </h1>
+      <!-- if sub confirmed : -->
+      <div v-if="formSubmitted">
+        <div v-if="errors.message">
+          <h1>
+            {{ errors.message }}
+            <br> Welcome {{ user.username }}
+          </h1>
+          <p>You can now access to your home page !</p>
+
+          <div class="text-center">
+            <router-link to="/">
+              <button class="w-25 btn btn-lg btn-primary">
+                GOOD LUCK HAVE FUN
+              </button>
+            </router-link>
+          </div>
+        </div>
+      <!-- end if sub confirmed -->
+      <!-- if sub errors -->
+        <div v-else>
+          <div v-for="(error, index) in errors" :key="index" :error="error">
+            <p
+              style="
+                background-color: rgb(255, 0, 0, 0.1);
+                color: rgb(255, 255, 255, 0.7);
+                border: 1px solid rgb(255, 255, 255, 0.3);
+              "
+              class="p-2"
+              v-for="(message, index) in error"
+              :key="index"
+              :message="message"
+            >
+              {{ message }}
+            </p>
+          </div>
+          <div v-for="error, index in errorsForm" :key="index" :error="error">
+            <p
+              style="
+                background-color: rgb(255, 0, 0, 0.1);
+                color: rgb(255, 255, 255, 0.7);
+                border: 1px solid rgb(255, 255, 255, 0.3);
+              "
+              class="p-2"
+            >
+              {{ error }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- end if sub errors -->
+
+      <!-- form uniquement si il n'a pas été envoyé ou bien qu'il a été envoyé mais qu'il n'y a pas le message "sub confirmed" -->
+      <form
+        class="text-left"
+        v-if="!formSubmitted || (formSubmitted && !errors.message)"
+        @submit.prevent="submitForm"
+      >
         <p><span class="plus">+</span> Profile infos</p>
         <div>
           <input
@@ -73,7 +134,7 @@
           </button>
         </div>
       </form>
-      <!-- <button @click="submitForm()">OK</button> -->
+      <!-- end form -->
       <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     </div>
   </div>
@@ -92,14 +153,16 @@ export default {
       passwordConfirm: "",
       birthdate: "",
       termsAndConditions: false,
-      errorTerm: "",
-      errorPassword: "",
-      errorBirth: "",
+      errorsForm: [],
+      formSubmitted: false,
     };
   },
   computed: {
-    ...mapState("users", {
-      users: (state) => state.users,
+    ...mapState("authentification", {
+      user: (state) => state.user,
+    }),
+    ...mapState("errors", {
+      errors: (state) => state.errors,
     }),
   },
   methods: {
@@ -107,25 +170,18 @@ export default {
       register_user: "authentification/REGISTER_USER",
     }),
     submitForm() {
+      this.formSubmitted = true;
       var submitform = true;
-      // ajouter condition sur username unique
-      // ajouter condition sur email unique
 
       // vérification terms and conditions
       if (this.termsAndConditions == false) {
-        this.errorTerm =
-          "You have to accept the Terms and Conditions of FindYourGame Ltd, and certify that you are at least 13 years old.";
+        this.errorsForm.push("You have to accept the Terms and Conditions of FindYourGame Ltd, and certify that you are at least 13 years old.");
         submitform = false;
-      } else {
-        this.errorterm = "";
       }
       // vérification mdp & confirmation
       if (this.password != this.passwordConfirm) {
-        this.errorPassword =
-          "The password and the password confirmation are differents.";
+         this.errorsForm.push("The password and the password confirmation are differents.");
         submitform = false;
-      } else {
-        this.errorPassword = "";
       }
       // calcul age
       let today = new Date();
@@ -137,13 +193,12 @@ export default {
             (today.getMonth() + 1 - birthdate[1] == 0 &&
               today.getDate() - birthdate[2] >= 0)))
       ) {
-        this.errorBirth = "";
+        console.log('ok');
       } else {
-        this.errorBirth = "You have to be at least 13 years old.";
+        this.errorsForm.push("You have to be at least 13 years old.");
         submitform = false;
       }
 
-      // ajouter date of birth ?
       if (submitform) {
         this.register_user({
           username: this.username,
@@ -153,14 +208,6 @@ export default {
           birthdate: this.birthdate,
         });
       }
-
-      // this.register_user({
-      //   username: "manon123",
-      //   email: "manon123@manon",
-      //   password: "manon95",
-      //   password_confirmation: "manon95",
-      //   birthdate: "1995-07-20",
-      // });
     },
   },
   mounted() {

@@ -2,7 +2,10 @@
   <div class="home">
     <div class="content container text-left">
       <div>
-        <h1><span class="plus">+</span> Welcome <span>USER</span></h1>
+        <h1><span class="plus">+</span> Welcome <span v-if="user">{{user.username}}</span></h1>
+      </div>
+      <div v-if="!user">
+        <h2><router-link to="/subscribe">Join us</router-link> to enjoy all the possibilities of FindYourGame !</h2>
       </div>
       <form style="position: relative">
         <input
@@ -168,6 +171,7 @@ export default {
       nbgamesnew: 10,
       nbgamesdisplayed: 0,
       windowWidth: window.innerWidth,
+      user: this.$store.state.user,
     };
   },
   computed: {
@@ -175,6 +179,9 @@ export default {
       games: (state) => state.games,
       gamesFiltered: (state) => state.games_filtered,
     }),
+    // ...mapGetters({
+    //   user: "authentification/GET_USER",
+    // }),
   },
   methods: {
     ...mapActions({

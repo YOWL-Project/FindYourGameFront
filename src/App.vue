@@ -1,19 +1,26 @@
 <template>
   <div id="app">
     <NavMobile />
-    <div class="content" :class="{'open':showNav}">
-    <div class="top-bar">
-    <div id="navigation-icon" v-if="mobileView">
-      <img src="./assets/toggle.svg" alt="Menu Burger" width="30" height="30" @click="showNav = !showNav" />
-    </div>
-    <Navbar v-if="!mobileView" />
-    </div>
+    <div class="content" :class="{ open: showNav }">
+      <div class="top-bar">
+        <div id="navigation-icon" v-if="mobileView">
+          <img
+            src="./assets/toggle.svg"
+            alt="Menu Burger"
+            width="30"
+            height="30"
+            @click="showNav = !showNav"
+          />
+        </div>
+        <Navbar v-if="!mobileView" />
+      </div>
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
+// import { mapGetters } from "vuex";
 import Navbar from "@/components/Navbar.vue";
 import NavMobile from "@/components/NavMobile.vue";
 
@@ -22,14 +29,20 @@ export default {
     Navbar,
     NavMobile,
   },
-
-  data: () => {
+  data() {
     return {
       mobileView: true,
       showNav: false,
     };
   },
-
+  computed: {
+    // ...mapState("authentification", {
+    //   user: (state) => state.user,
+    // }),
+    // ...mapGetters({
+    //   user: "authentification/GET_USER",
+    // }),
+  },
   methods: {
     handleView() {
       this.mobileView = window.innerWidth <= 1024;
@@ -38,8 +51,18 @@ export default {
 
   created() {
     this.handleView();
-    window.addEventListener('resize', this.handleView);
-  }
+    window.addEventListener("resize", this.handleView);
+    if (document.cookie.split("profil=")[1]) {
+      console.log('ok cookie')
+      this.$store.state.user = JSON.parse(document.cookie.split("profil=")[1]);
+      // console.log(this.user.username);
+    } else {
+      console.log('no cookie')
+    }
+  },
+
+  // mounted() {
+  // },
 };
 
 // (function() {
@@ -96,7 +119,6 @@ body {
   width: 100%;
 }
 
-
 #navigation-icon {
   padding: 10px 25px 20px;
   margin-right: 10px;
@@ -104,7 +126,7 @@ body {
 }
 
 .content {
-  transition: 1s transform cubic-bezier(0,.12,.14,1);
+  transition: 1s transform cubic-bezier(0, 0.12, 0.14, 1);
   z-index: 1;
 }
 

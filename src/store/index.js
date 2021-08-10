@@ -7,14 +7,17 @@ import topics from './modules/topics';
 import votesComments from './modules/votesComments';
 import votesGames from './modules/votesGames';
 import users from './modules/users';
+import errors from './modules/errors';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    // variales globales + erreurs via this.route.state
-  },
-  // mutations: {},
+  // state: {
+  //   errors: {}
+  // },
+  // mutations: {
+  //   SET_ERROR_LOG: (rootState, errors) => rootState.errors = errors
+  // },
   // actions: {},
   modules: {
     games,
@@ -24,5 +27,6 @@ export default new Vuex.Store({
     votesComments,
     votesGames,
     users,
+    errors,
   },
 });
