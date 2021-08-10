@@ -21,7 +21,7 @@ export default {
                   let expires = "expires=" + d.toUTCString();
                   let profil = JSON.stringify(response.data.data);
                   let message = JSON.stringify(response.data.message);
-                  console.log(profil);
+                  // console.log(profil);
                   console.log(message);
                   document.cookie = `profil=${profil};${expires};path=/;secure`;
                   commit("SET_USERS", profil);
