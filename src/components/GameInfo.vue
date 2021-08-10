@@ -1,15 +1,21 @@
 <template>
   <div class="container-fluid">
     <div class="row game">
-      <div class="col mb-3" :style="'background: url(' + game.thumbnail + ') no-repeat center/cover'">
+      <div
+        class="col mb-3"
+        :style="
+          'background: url(' + game.thumbnail + ') no-repeat center/cover'
+        "
+      >
         <div class="card-body game-description-under-img px-3 pt-3">
           <h1>{{ game.title }}</h1>
         </div>
       </div>
     </div>
     <div class="row">
-      <h2>DESCRIPTION</h2></div>
-      <div class="row">
+      <h2>DESCRIPTION</h2>
+    </div>
+    <div class="row">
       <p class="description">
         <span v-if="!readMore">{{ game.description.slice(0, 300) }} ...</span>
         <span v-if="readMore">{{ game.description }}</span>
@@ -20,7 +26,10 @@
       <div class="col" id="details">
         <p><span class="plus">+</span> Genre : {{ game.genre }}</p>
         <p><span class="plus">+</span> Platform : {{ game.platform }}</p>
-        <p><span class="plus">+</span> Released : {{ formatDate(game.release_date) }} </p>
+        <p>
+          <span class="plus">+</span> Released :
+          {{ formatDate(game.release_date) }}
+        </p>
       </div>
       <div class="col" id="details">
         <p><span class="plus">+</span> Publisher : {{ game.publisher }}</p>
@@ -29,7 +38,7 @@
       </div>
     </div>
     <!-- Importation du component GameVote pour la partie vote du jeu -->
-    <GameVote />
+    <GameVote :game="game"/>
   </div>
 </template>
 
@@ -49,10 +58,6 @@ export default {
   data: () => ({
     readMore: false,
   }),
-
-  mounted() {
-    console.log(this.game);
-  },
   methods: {
     formatDate: (value) => {
       if (value) {
@@ -61,11 +66,13 @@ export default {
     },
 
     showMore() {
-        this.readMore = true;
+      this.readMore = true;
     },
     showLess() {
-        this.readMore = false;
+      this.readMore = false;
     },
+  },
+  mounted() {
   },
 };
 </script>
@@ -97,9 +104,8 @@ h2 {
   cursor: pointer;
   transition: 0.25s;
   border: 1px solid transparent;
-  color:white;
+  color: white;
 }
-
 
 .game-description-under-img {
   position: absolute;

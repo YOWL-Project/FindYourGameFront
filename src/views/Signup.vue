@@ -59,27 +59,6 @@
             required
           />
           <span class="validity"></span>
-          <!-- <input
-            type="number"
-            class="form-control col-2"
-            v-model="days"
-            placeholder="JJ"
-            length="2"
-          />
-          <input
-            type="number"
-            class="form-control col-2"
-            v-model="months"
-            placeholder="MM"
-            length="2"
-          />
-          <input
-            type="number"
-            class="form-control col-2"
-            v-model="years"
-            placeholder="AAAA"
-            length="4"
-          /> -->
         </div>
         <div class="checkbox mb-3">
           <label>
@@ -112,9 +91,6 @@ export default {
       password: "",
       passwordConfirm: "",
       birthdate: "",
-      // days: "",
-      // months: "",
-      // years: "",
       termsAndConditions: false,
       errorTerm: "",
       errorPassword: "",
@@ -175,42 +151,17 @@ export default {
           email: this.email,
           password: this.password,
           password_confirmation: this.passwordConfirm,
-          // birthdate: this.birthdate,
+          birthdate: this.birthdate,
         });
       }
     },
     signUp(body) {
-      apiLaravel
-        .post("/register/", body)
-        .then((response) => {
-          if (response.status == 201) {
-            let d = new Date();
-            d.setTime(d.getTime() + 1 * 24 * 60 * 60 * 1000);
-            let expires = "expires=" + d.toUTCString();
-            let profil = JSON.stringify(response.data.data);
-            let message = JSON.stringify(response.data.message);
-            console.log(profil);
-            console.log(message);
-            document.cookie = `profil=${profil};${expires};path=/;secure`;
-            // this.$store.commit("SET_USERS", data);
-            // this.$store.commit("AUTH", true);
-            // this.$store.commit("SUCCES", response.data.message);
-            // this.$router.push("/");
-          } else {
-            throw new Error(
-              "un problème est survenu lors de l'enregistrement de votre compte"
-            );
-          }
-        })
-        // .catch((error) => {
-        //   this.$store.commit("ERROR", error.message);
-        // });
-        .catch((error) => console.log(JSON.stringify(error.message)));
+      console.log(body);
     },
   },
-  // mounted() {
-  //   this.register_user();
-  // }
+  mounted() {
+    this.register_user();
+  }
 };
 </script>
 
