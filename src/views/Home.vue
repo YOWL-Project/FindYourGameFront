@@ -144,7 +144,7 @@
           />
         </div>
         <p>
-          See all the best rated games
+          See all the most popular games
           <router-link to="/games/popularity/none/none">
             <img src="../assets/arrow-right.svg" alt="" width="20px" />
           </router-link>
