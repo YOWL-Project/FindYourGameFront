@@ -73,6 +73,7 @@
           </button>
         </div>
       </form>
+      <!-- <button @click="submitForm()">OK</button> -->
       <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     </div>
   </div>
@@ -80,7 +81,6 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import apiLaravel from "@/common/api-back";
 
 export default {
   name: "SignUp",
@@ -145,23 +145,26 @@ export default {
 
       // ajouter date of birth ?
       if (submitform) {
-        apiLaravel;
         this.register_user({
-          name: this.username,
+          username: this.username,
           email: this.email,
           password: this.password,
           password_confirmation: this.passwordConfirm,
           birthdate: this.birthdate,
         });
       }
-    },
-    signUp(body) {
-      console.log(body);
+
+      // this.register_user({
+      //   username: "manon123",
+      //   email: "manon123@manon",
+      //   password: "manon95",
+      //   password_confirmation: "manon95",
+      //   birthdate: "1995-07-20",
+      // });
     },
   },
   mounted() {
-    this.register_user();
-  }
+  },
 };
 </script>
 
