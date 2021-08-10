@@ -42,7 +42,7 @@
       </div>
     </div>
     <!-- Importation du component GameVote pour la partie vote du jeu -->
-    <GameVote />
+    <GameVote :game="game"/>
   </div>
 </template>
 
@@ -62,10 +62,6 @@ export default {
   data: () => ({
     readMore: false,
   }),
-
-  mounted() {
-    console.log(this.game);
-  },
   methods: {
     formatDate: (value) => {
       if (value) {
@@ -79,6 +75,8 @@ export default {
     showLess() {
       this.readMore = false;
     },
+  },
+  mounted() {
   },
 };
 </script>

@@ -34,107 +34,89 @@
       <div class="row my-5">
         <h2>HOT TOPICS</h2>
         <!-- L'extrait des hot topics concernant le jeu en question -->
-        <div class="container">
-          <div class="row" id="hottopics">
-            <div class="col-10" align="left">
-              <p class="topic-title">Title of the Topic and TAG</p>
-              <p class="topic-details">Username, date and last update</p>
+        <div
+          class="container"
+          style="display: block"
+          v-for="topic in topics"
+          :key="topic.id"
+          :topic="topic"
+        >
+          <div class="row" id="hottopics" v-if="topic.game_id == game.id">
+            <div
+              class="col-10"
+              align="left"
+              v-bind:hastopic="(hastopic = true)"
+            >
+              <p class="topic-title">{{ topic.title }}</p>
+              <p class="topic-details">
+                {{ getUser(topic.user_id) }} -
+                {{ formatDate(topic.created_at) }} Last update
+                {{ getLastUpdate(topic.updated_at) }}
+              </p>
             </div>
-            <div class="col-2 align-self-center">
-              <p class="nb-comments">NB</p>
+            <div
+              class="col-2 align-self-center"
+              v-if="getNbComments(topic.id) == 0"
+            >
+              <p class="nb-comments" style="font-size: 0.8rem" >No comments</p>
+            </div>
+            <div class="col-2 align-self-center" v-else v-bind:hascomments="(hascomments = true)">
+              <p class="nb-comments">{{ getNbComments(topic.id) }}</p>
             </div>
           </div>
         </div>
         <!-- Fin de l'extrait -->
 
-        <!-- Deuxième extrait juste pour tester le design -->
-        <div class="container">
-          <div class="row" id="hottopics">
-            <div class="col-10" align="left">
-              <p class="topic-title">Title of the Topic and TAG</p>
-              <p class="topic-details">Username, date and last update</p>
-            </div>
-            <div class="col-2 align-self-center">
-              <p class="nb-comments">NB</p>
-            </div>
+        <div class="row" id="hottopics" v-if="hastopic == false">
+          <div class="col-12" align="left">
+            <p class="topic-title">No topics</p>
           </div>
         </div>
-        <!-- Fin de l'extrait -->
-
-        <p>See all topics on this game</p>
-        <span class="arrow-right"
-          ><a href=""
-            ><img src="../assets/arrow-right.svg" width="25" height="25" /></a
-        ></span>
+        <div style="display: inline-flex; width: 100%" v-if="hastopic == true">
+          <p>See all topics on this game</p>
+          <span class="arrow-right"
+            ><a href=""
+              ><img src="../assets/arrow-right.svg" width="25" height="25" /></a
+          ></span>
+        </div>
       </div>
 
       <!-- Row #4 : Last Comments (sur les topics du jeu) -->
-      <div class="row">
+      <div class="row" v-if="hascomments == true">
         <h2>LAST COMMENTS</h2>
 
         <!-- Extrait des derniers commentaires sur les topics -->
-        <div class="container">
-          <div class="row" id="hottopics">
-            <div class="col-7" align="left">USERNAME on topic subject</div>
-            <div class="col-5" align="right">Date and hour</div>
-            <div class="col-12"><p>Comment</p></div>
-            <div class="col-4">
-              <img src="../assets/positif.svg" width="25" height="25" /> XX
-              "usefull" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/negatif.svg" width="25" height="25" /> XX
-              "useless" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
-              votes
-            </div>
-          </div>
-        </div>
-
-        <!-- Fin des extraits -->
-
-        <!-- Deuxième extrait pour design (a supprimer une fois le bind fait) -->
-        <div class="container">
-          <div class="row" id="hottopics">
-            <div class="col-7" align="left">USERNAME on topic subject</div>
-            <div class="col-5" align="right">Date and hour</div>
-            <div class="col-12"><p>Comment</p></div>
-            <div class="col-4">
-              <img src="../assets/positif.svg" width="25" height="25" /> XX
-              "usefull" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/negatif.svg" width="25" height="25" /> XX
-              "useless" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
-              votes
-            </div>
-          </div>
-        </div>
-
-        <!-- Fin des extraits -->
-
-        <!-- Troisieme extrait pour design (a supprimer une fois le bind fait) -->
-        <div class="container">
-          <div class="row" id="hottopics">
-            <div class="col-7" align="left">USERNAME on topic subject</div>
-            <div class="col-5" align="right">Date and hour</div>
-            <div class="col-12"><p>Comment</p></div>
-            <div class="col-4">
-              <img src="../assets/positif.svg" width="25" height="25" /> XX
-              "usefull" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/negatif.svg" width="25" height="25" /> XX
-              "useless" votes
-            </div>
-            <div class="col-4">
-              <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol !"
-              votes
+        <div
+          class="container"
+          v-for="topic in topics"
+          :key="topic.id"
+          :topic="topic"
+        >
+          <div v-if="topic.game_id == game.id">
+            <div
+              v-for="comment in comments"
+              :key="comment.id"
+              :comment="comment"
+            >
+              <div class="row" id="hottopics" v-if="comment.topic_id == topic.id">
+                <div class="col-7" align="left">
+                  {{ getUser(comment.user_id) }} on "{{ topic.title }}"
+                </div>
+                <div class="col-5" align="right">{{getLastUpdate(comment.updated_at)}}</div>
+                <div class="col-12"><p>{{ comment.content.slice(0,50) }}...</p></div>
+                <div class="col-4">
+                  <img src="../assets/positif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_plus}}
+                  "usefull" votes
+                </div>
+                <div class="col-4">
+                  <img src="../assets/negatif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_minus}}
+                  "useless" votes
+                </div>
+                <div class="col-4">
+                  <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol
+                  !" votes
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -145,9 +127,89 @@
 </template>
 
 <script>
+import moment from "moment";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "GameComments",
-  //props -> id du jeu + id user
+  props: {
+    game: Object,
+  },
+  data() {
+    return {
+      hastopic: false,
+      hascomments: false,
+    };
+  },
+  computed: {
+    ...mapState("topics", {
+      topics: (state) => state.topics,
+    }),
+    ...mapState("users", {
+      users: (state) => state.users,
+    }),
+    ...mapState("comments", {
+      comments: (state) => state.comments,
+    }),
+    ...mapState("votesComments", {
+      votesComments: (state) => state.votesComments,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      fetchTopics: "topics/FETCH_TOPICS",
+      fetchUsers: "users/FETCH_USERS",
+      fetchComments: "comments/FETCH_COMMENTS",
+      fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
+    }),
+    formatDate: (value) => {
+      if (value) {
+        return moment(String(value)).format("DD/MM/YYYY");
+      }
+    },
+    getLastUpdate(update) {
+      return moment(String(update)).calendar();
+    },
+    getUser(user_id) {
+      let username = "";
+      this.users.forEach((user) => {
+        if (user.id == user_id) {
+          username += user.username;
+        }
+      });
+      return username;
+    },
+    getNbComments(topic_id) {
+      let nbcomments = 0;
+      this.comments.forEach((comment) => {
+        if (comment.topic_id == topic_id) {
+          nbcomments += 1;
+        }
+      });
+      return nbcomments;
+    },
+    getNbVotesComments(comment_id) {
+      let nb_votes_comments_plus = 0;
+      let nb_votes_comments_minus = 0;
+      this.votesComments.forEach((votesComment) => {
+        if (votesComment.comment_id == comment_id) {
+          if (votesComment.vote == 1) {
+            nb_votes_comments_plus += 1;
+          } else if (votesComment.vote == -1) {
+            nb_votes_comments_minus += 1;
+          }
+        }
+      });
+      let nb_votes = {votes_plus: nb_votes_comments_plus, votes_minus: nb_votes_comments_minus}
+      return nb_votes;
+    },
+  },
+  mounted() {
+    this.fetchTopics();
+    this.fetchUsers();
+    this.fetchComments();
+    this.fetchVotesComments();
+  },
 };
 </script>
 
