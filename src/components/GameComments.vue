@@ -92,6 +92,7 @@
           :key="topic.id"
           :topic="topic"
         >
+        <!-- kkk -->
           <div v-if="topic.game_id == game.id">
             <div
               v-for="comment in comments"
