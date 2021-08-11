@@ -1,45 +1,39 @@
 <template>
   <div class="container">
     <div class="d-flex flex-column align-self-center">
-      <form  @submit.prevent="submitForm">
-        <img
-          class="m-4"
-          src="../assets/Logo.svg"
-          alt=""
-          width="172"
-          height="157"
-        />
+      <form @submit.prevent="submitForm">
+        <img class="m-4" src="../assets/Logo.svg" alt="" width="172" height="157" />
         <h1>WELCOME BACK</h1>
 
         <div>
-          <input
-            type="text"
-            class="form-control"
-            v-model="username"
-            placeholder="Username"
-          />
+          <input type="text" class="form-control" v-model="username" placeholder="Username" />
         </div>
-        <div style="position: relative;">
-          <input
-            :type="type"
-            class="form-control"
-            v-model="password"
-            placeholder="Password"
+        <div style="position: relative">
+          <input :type="type" class="form-control" v-model="password" placeholder="Password" />
+          <img
+            class="visibility"
+            src="../assets/visibility_black_24dp.svg"
+            alt=""
+            v-if="displaypassword == false"
+            @click="(type = 'text'), (displaypassword = true)"
           />
-          <img class="visibility" src="../assets/visibility_black_24dp.svg" alt="" v-if="displaypassword == false" @click="type = 'text', displaypassword = true">
-          <img class="visibility" src="../assets/visibility_off_black_24dp.svg" alt=""  v-if="displaypassword == true" @click="type = 'password', displaypassword = false">
+          <img
+            class="visibility"
+            src="../assets/visibility_off_black_24dp.svg"
+            alt=""
+            v-if="displaypassword == true"
+            @click="(type = 'password'), (displaypassword = false)"
+          />
         </div>
         <div class="checkbox mb-3">
-          <label>
-            <input type="checkbox" value="remember-me" /> Remember me
-          </label>
+          <label> <input type="checkbox" value="remember-me" /> Remember me </label>
         </div>
-        <button class="w-25 btn btn-lg btn-primary" type="submit">
-          LET'S GO
-        </button>
+        <button class="w-25 btn btn-lg btn-primary" type="submit">LET'S GO</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
       </form>
     </div>
+    <div>{{user}}</div>
+    <div>{{authenticated}}</div>
   </div>
 </template>
 
@@ -50,14 +44,15 @@ export default {
   data() {
     return {
       displaypassword: false,
-      type: 'password',
-      username: '',
-      password: '',
+      type: "password",
+      username: "",
+      password: "",
     };
   },
   computed: {
-    ...mapState("user", {
+    ...mapState("authentification", {
       user: (state) => state.user,
+      authenticated: (state) => state.authenticated,
     }),
   },
   methods: {
@@ -65,7 +60,14 @@ export default {
       log_user: "authentification/LOG_USER",
     }),
     submitForm() {
-      this.log_user()
+      if (this.username !== "" && this.password !== "") {
+        let body = {
+          username: this.username,
+          password: this.password,
+        };
+        this.log_user(body);
+        // this.$router.push('/');
+      }
     },
   },
 };

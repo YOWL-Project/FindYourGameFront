@@ -1,11 +1,6 @@
 <template>
   <div id="navigation">
-    <img
-      src="../assets/Logo.svg"
-      alt="Logo FindYourGame"
-      width="75"
-      height="75"
-    />
+    <img src="../assets/Logo.svg" alt="Logo FindYourGame" width="75" height="75" />
     <ul>
       <li><router-link to="/">HOME</router-link></li>
       <li><router-link to="/games">GAMES</router-link></li>
@@ -16,17 +11,26 @@
     </form>
     <div class="profile">
       <ul>
-        <li><router-link to="/login">USER</router-link></li>
-        <li><router-link to="/subscribe">SIGN UP</router-link></li>
-        <li>LOGOUT</li>
+        <li><router-link to="/login" v-if="authenticated === false">LOGIN</router-link></li>
+        <li><router-link to="/subscribe" v-if="authenticated === false">SIGN UP</router-link></li>
+        <li><router-link to="/admin/users" v-if="authenticated === true && isadmin === 1">ADMIN</router-link></li>
+        <li v-if="authenticated === true">LOGOUT</li>
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "Navbar",
+  computed: {
+    ...mapState("authentification", {
+      authenticated: (state) => state.authenticated,
+      isadmin: (state) => state.user.isadmin,
+    }),
+  },
 };
 </script>
 
@@ -87,9 +91,9 @@ export default {
   a:hover {
     border-style: solid;
     border-width: 0 0 2px 0;
-    padding-bottom:5px;
-    margin-bottom:20px;
-    width:fit-content;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    width: fit-content;
     border-image: linear-gradient(0.25turn, #00ffff, #ff005c) 1;
   }
 
