@@ -70,6 +70,11 @@ export default {
   props: {
     game: Object,
   },
+  data() {
+    return {
+      GamesSaved: [],
+    };
+  },
   computed: {
     ...mapState("authentification", {
       user: (state) => state.user,
@@ -94,8 +99,10 @@ export default {
       CreateUserGameSaved: "userGamesSaved/CREATE_GAMESAVED",
     }),
     favGame(game_id) {
-      this.userGamesSaved.forEach((userGameSaved) => {
+      this.GamesSaved.forEach((userGameSaved) => {
+          // console.log(userGameSaved.game_id);
         if (userGameSaved.game_id == game_id) {
+          console.log(userGameSaved.game_id);
           return true;
         } else {
           return false;
@@ -120,8 +127,9 @@ export default {
       return false;
     },
   },
-  mounted() {
+  created() {
     this.fetchUserGamesSaved(this.user.id);
+    this.GamesSaved = this.userGamesSaved;
   },
 };
 </script>
