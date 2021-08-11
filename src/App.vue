@@ -57,10 +57,10 @@ export default {
     cookies.forEach((cookie) => {
       let goodOne = cookie.trim().startsWith("profil" + "=");
       if (goodOne) {
-        user = cookie.trim().split('profil=')[1];
+        user = cookie.trim().split("profil=")[1];
+        this.$store.state.user = JSON.parse(user);
       }
     });
-    this.$store.state.user = JSON.parse(user);
   },
 
   mounted() {},
