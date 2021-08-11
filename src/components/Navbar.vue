@@ -15,10 +15,14 @@
       <i class="fas fa-search"></i>
     </form>
     <div class="profile">
-      <ul>
-        <li><router-link to="/login">USER</router-link></li>
+      <ul v-if="user">
+        <li>Hello {{ user.username }} !</li>
+        <li><router-link to="/">PROFILE</router-link></li>
+        <li><router-link to="/logout">LOGOUT</router-link></li>
+      </ul>
+      <ul v-else>
+        <li><router-link to="/login">LOG IN</router-link></li>
         <li><router-link to="/subscribe">SIGN UP</router-link></li>
-        <li>LOGOUT</li>
       </ul>
     </div>
   </div>
@@ -27,6 +31,11 @@
 <script>
 export default {
   name: "Navbar",
+  data() {
+    return {
+      user: this.$store.state.user,
+    };
+  },
 };
 </script>
 
@@ -87,9 +96,9 @@ export default {
   a:hover {
     border-style: solid;
     border-width: 0 0 2px 0;
-    padding-bottom:5px;
-    margin-bottom:20px;
-    width:fit-content;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    width: fit-content;
     border-image: linear-gradient(0.25turn, #00ffff, #ff005c) 1;
   }
 

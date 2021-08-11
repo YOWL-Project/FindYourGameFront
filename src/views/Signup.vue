@@ -121,11 +121,16 @@
           />
           <span class="validity"></span>
         </div>
-        <div class="checkbox mb-3">
+        <div class="checkbox my-1">
           <label>
             <input type="checkbox" v-model="termsAndConditions" /> I accept the
             <a href="/">Terms and Conditions</a> of FindYourGame Ltd, and
             certify i'm at least 13 years old.
+          </label>
+        </div>
+        <div class="checkbox my-1">
+          <label>
+            <input type="checkbox" v-model="remember"/> Remember me
           </label>
         </div>
         <div class="text-center">
@@ -155,6 +160,7 @@ export default {
       termsAndConditions: false,
       errorsForm: [],
       formSubmitted: false,
+      remember: false,
     };
   },
   computed: {
@@ -206,6 +212,7 @@ export default {
           password: this.password,
           password_confirmation: this.passwordConfirm,
           birthdate: this.birthdate,
+          remember: this.remember,
         });
       }
     },

@@ -8,6 +8,7 @@ import Games from "../views/Games.vue";
 import Topics from "../views/Topics.vue";
 import Topic from "../views/Topic.vue";
 import Admin from "../views/Admin.vue"
+import Logout from "../views/Logout.vue"
 
 Vue.use(VueRouter);
 
@@ -56,6 +57,11 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: Admin,
+  },
+  {  
+    path: "/logout",
+    name: "Logout",
+    component: Logout,
   },
 ];
 

@@ -262,6 +262,10 @@ img {
   cursor: pointer;
 }
 
+h2 {
+  margin: 3rem 0 1rem 0;
+}
+
 .gamelittle {
   grid-row: 1 / span 1;
   grid-column: 1 / span 1;
