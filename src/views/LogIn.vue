@@ -8,11 +8,11 @@
         height="157"
         class="m-4 align-self-center"
       />
-      <div class="text-center" v-if="errors.message">
+      <div class="text-center" v-if="errors && errors.message">
         <h1>MISSION ACCOMPLISHED</h1>
         <!-- <h2>See you later</h2> -->
         <router-link to="/">
-          <button class="w-25 btn btn-lg btn-primary" type="submit">
+          <button @click="relocate()" class="w-25 btn btn-lg btn-primary" type="submit">
             GO HOME
           </button>
         </router-link>
@@ -117,7 +117,11 @@ export default {
         password: this.password,
         remember: this.remember,
       });
+      this.$store.state.user = this.user;
     },
+    relocate() {
+        window.location = `http://localhost:8081/`;
+    }
   },
 };
 </script>

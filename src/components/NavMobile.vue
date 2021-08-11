@@ -7,8 +7,15 @@
     <ul>
       <li>HOME</li>
       <li>GAMES</li>
-      <li>USER</li>
-      <li>LOG OUT</li>
+    </ul>
+    <ul v-if="user">
+      <li>Hello {{ user.username }} !</li>
+      <li><router-link to="/">PROFILE</router-link></li>
+      <li><router-link to="/logout">LOGOUT</router-link></li>
+    </ul>
+    <ul v-else>
+      <li><router-link to="/login">LOG IN</router-link></li>
+      <li><router-link to="/subscribe">SIGN UP</router-link></li>
     </ul>
     <div class="social-media">
       <i class="fab fa-twitter"></i>
@@ -20,6 +27,11 @@
 <script>
 export default {
   name: "NavMobile",
+  data() {
+    return {
+      user: this.$store.state.user
+    }
+  }
 };
 </script>
 
