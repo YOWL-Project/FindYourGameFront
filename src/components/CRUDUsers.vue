@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="container">
+  <div class="container-fluid">
     <h2>MANAGE USERS</h2>
     <table width="100%" id="table">
       <thead id="firstrow">
@@ -16,17 +16,17 @@
         </tr>
       </thead>
       <tbody id="users" v-for="user in users" :key="user.id" :user="user">
-        <tr class="test">
-          <th scope="row">{{user.id}}</th>
-          <td>{{user.username}}</td>
-          <td>{{user.email}}</td>
-          <td>{{user.birthdate}}</td>
-          <td>{{user.isadmin}}</td>
-          <td>{{user.created_at}}</td>
-          <td>{{user.updated_at}}</td>
+        <tr class="test" :id="'user-' + user.id">
+          <th scope="row">{{ user.id }}</th>
+          <td><input type="text" v-model="user.username" /></td>
+          <td><input type="text" v-model="user.email" /></td>
+          <td><input type="text" v-model="user.birthdate" /></td>
+          <td><input type="text" v-model="user.isadmin" /></td>
+          <td>{{ user.created_at }}</td>
+          <td>{{ user.updated_at }}</td>
           <td>
-            <button type="button" class="btn btn-primary btn-sm px-2">
-              <img src="../assets/edit.svg" width="20" height="20" />
+            <button type="button" class="btn btn-success btn-sm px-2" @click="update(user.id)">
+              <img src="../assets/done.svg" width="20" height="20" />
             </button>
           </td>
           <td>
@@ -54,7 +54,24 @@ export default {
   methods: {
     ...mapActions({
       fetchUsers: "authentification/FETCH_USERS",
+      updateUser: "authentification/UPDATE_USER",
     }),
+    update(id) {
+      let inputs = document.querySelector(`#user-${id}`).querySelectorAll("input");
+
+      let body = {
+        token: this.token,
+        id: id,
+        body: JSON.stringify({
+          username: inputs[0].value,
+          email: inputs[1].value,
+          birthdate: inputs[2].value,
+          isadmin: inputs[3].value,
+        }),
+      };
+
+      this.updateUser(body);
+    },
   },
   mounted() {
     this.fetchUsers(this.token);
@@ -63,12 +80,6 @@ export default {
 </script>
 
 <style scoped>
-#container {
-  background-color: #222222;
-  border-radius: 8px;
-  padding: 2%;
-}
-
 h2 {
   font-size: 1.6em;
   text-align: left;

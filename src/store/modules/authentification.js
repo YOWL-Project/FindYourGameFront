@@ -8,8 +8,12 @@ export default {
     authenticated: false,
   },
   mutations: {
-    SET_USER: (state, user) => ((state.user = user, state.authenticated = true)),
+    SET_USER: (state, user) => ((state.user = user), (state.authenticated = true)),
     SET_USERS: (state, users) => (state.users = users),
+    UPDATE_USER: (state, newuser) => {
+      let index = state.users.findIndex((user) => user.id === newuser.id);
+      state.users.splice(index, 1, newuser);
+    },
   },
   actions: {
     REGISTER_USER({ commit }, body) {
@@ -35,10 +39,21 @@ export default {
     },
     async FETCH_USERS({ commit }, token) {
       let headers = {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
-      const {data} = await apiLaravel.get("/users", {headers: headers}).catch((error) => console.log(JSON.stringify(error.message)));
+      const { data } = await apiLaravel.get("/users", { headers: headers }).catch((error) => console.log(JSON.stringify(error.message)));
       commit("SET_USERS", data.data.users);
+    },
+    async UPDATE_USER({ commit }, body) {
+      let headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${body.token}`,
+      };
+      const { data } = await apiLaravel
+        .put(`/users/${body.id}`, body.body, { headers: headers })
+        .catch((error) => console.log(JSON.stringify(error.message)));
+      commit("UPDATE_USER", data.data);
     },
   },
   getters: {
