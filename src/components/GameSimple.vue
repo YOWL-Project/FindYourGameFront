@@ -74,6 +74,7 @@ export default {
   transition: 0.25s;
   border: 1px solid transparent;
   color: white;
+  border-radius: 24px;
 }
 
 .game:hover {
@@ -86,17 +87,20 @@ export default {
   left: 0;
   width: 100%;
   background-color: rgb(0, 0, 0, 0.7);
+  border-radius: 24px;
 }
 
 h1 {
   color: white;
   text-decoration: none;
+  font-size: 1.5em;
 }
 
 h1:hover {
   text-decoration: none;
   text-decoration: underline;
   text-decoration: white;
+  font-size: 1.8em;
 }
 
 .selected {
