@@ -8,18 +8,18 @@
         height="157"
         class="m-4 align-self-center"
       />
-      <div class="text-center" v-if="errors && errors.message">
+      <div class="text-center" v-if="authentificated">
         <h1>MISSION ACCOMPLISHED</h1>
         <!-- <h2>See you later</h2> -->
         <router-link to="/">
-          <button @click="relocate()" class="w-25 btn btn-lg btn-primary" type="submit">
+          <button class="w-25 btn btn-lg btn-primary" type="submit">
             GO HOME
           </button>
         </router-link>
       </div>
       <form v-else @submit.prevent="submitForm">
         <h1>WELCOME BACK</h1>
-        <div v-if="errors">
+        <div v-if="!authentificated && !errors.message">
           <div
             style="
               background-color: rgb(255, 0, 0, 0.1);
@@ -31,12 +31,8 @@
             :key="index"
             :error="error"
           >
-            <p
-              v-for="(message, index) in error"
-              :key="index"
-              :message="message"
-            >
-              {{ message }}
+            <p>
+              {{ error }}
             </p>
           </div>
         </div>
@@ -102,6 +98,7 @@ export default {
   computed: {
     ...mapState("authentification", {
       user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
     }),
     ...mapState("errors", {
       errors: (state) => state.errors,
@@ -119,9 +116,6 @@ export default {
       });
       this.$store.state.user = this.user;
     },
-    relocate() {
-       window.location = `/`;
-    }
   },
 };
 </script>

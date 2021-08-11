@@ -8,7 +8,7 @@
       <li>HOME</li>
       <li>GAMES</li>
     </ul>
-    <ul v-if="user">
+    <ul v-if="authentificated">
       <li>Hello {{ user.username }} !</li>
       <li><router-link to="/">PROFILE</router-link></li>
       <li><router-link to="/logout">LOGOUT</router-link></li>
@@ -25,13 +25,25 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "NavMobile",
+  computed: {
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
+    }),
+  },
   data() {
     return {
-      user: this.$store.state.user
-    }
-  }
+      // user: this.$store.state.authentification.user,
+    };
+  },
+  methods: {
+  },
+  mounted() {
+  },
 };
 </script>
 
