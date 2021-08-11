@@ -30,7 +30,7 @@
             </button>
           </td>
           <td>
-            <button type="button" class="btn btn-danger btn-sm px-2">
+            <button type="button" class="btn btn-danger btn-sm px-2" @click="deleteUser({id:user.id, token:token})">
               <img src="../assets/delete.svg" width="20" height="20" />
             </button>
           </td>
@@ -55,6 +55,7 @@ export default {
     ...mapActions({
       fetchUsers: "authentification/FETCH_USERS",
       updateUser: "authentification/UPDATE_USER",
+      deleteUser: "authentification/DELETE_USER",
     }),
     update(id) {
       let inputs = document.querySelector(`#user-${id}`).querySelectorAll("input");

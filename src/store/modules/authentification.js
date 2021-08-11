@@ -14,6 +14,10 @@ export default {
       let index = state.users.findIndex((user) => user.id === newuser.id);
       state.users.splice(index, 1, newuser);
     },
+    DELETE_USER: (state, removeuser) => {
+      let index = state.users.findIndex((user) => user.id === removeuser.id);
+      state.users.splice(index, 1);
+    },
   },
   actions: {
     REGISTER_USER({ commit }, body) {
@@ -54,6 +58,16 @@ export default {
         .put(`/users/${body.id}`, body.body, { headers: headers })
         .catch((error) => console.log(JSON.stringify(error.message)));
       commit("UPDATE_USER", data.data);
+    },
+    async DELETE_USER({ commit }, body) {
+      let headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${body.token}`,
+      };
+      const { data } = await apiLaravel
+        .delete(`/users/${body.id}`, { headers: headers })
+        .catch((error) => console.log(JSON.stringify(error.message)));
+      commit("DELETE_USER", data.data);
     },
   },
   getters: {
