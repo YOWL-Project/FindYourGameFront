@@ -46,8 +46,8 @@ const routes = [
     name: "Topics",
     component: Topics,
   },
-  { // a changer selon les params des topics - ici c'est juste pour voir ce qui est fait
-    path: "/topic/",
+  {
+    path: "/topic/:id",
     name: "Topic",
     component: Topic,
   },

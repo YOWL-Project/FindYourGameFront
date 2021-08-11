@@ -67,11 +67,15 @@
         </div>
         <!-- Fin de l'extrait -->
 
-        <div class="row" id="hottopics" v-if="hastopic == false">
-          <div class="col-12" align="left">
+        <!-- Affichage s'il n'y a pas de topic -->
+        <div class="row" id="notopics" v-if="hastopic == false">
+          <div class="col">
             <p class="topic-title">No topics</p>
           </div>
         </div>
+        <!-- Fin de l'affichage -->
+
+        <!-- Affichage pour aller chercher tous les topics sur le jeu -->
         <div style="display: inline-flex; width: 100%" v-if="hastopic == true">
           <p>See all topics on this game</p>
           <span class="arrow-right"
@@ -80,6 +84,8 @@
           ></span>
         </div>
       </div>
+      <!-- Fin de l'affichage -->
+      
 
       <!-- Row #4 : Last Comments (sur les topics du jeu) -->
       <div class="row" v-if="hascomments == true">
@@ -305,5 +311,13 @@ input[type="checkbox"].btn-tag:checked + label {
 .topic-title {
   font-size: 1.2em;
   color: #cccccc;
+}
+
+#notopics {
+  background-color: #222222;
+  border-radius: 8px;
+  margin: 2%;
+  padding: 2%;
+  min-width: 80%;
 }
 </style>

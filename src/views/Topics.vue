@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
 
-    <h1> <span class="plus">+</span> CHECK THE HOT TOPICS ON YOUR FAVORITE GAME</h1>
+    <h1> <span class="plus">+</span> CHECK THE HOT TOPICS ON FINDYOURGAME</h1>
 
     <div
       v-masonry="containerId"
@@ -12,102 +12,16 @@
     >
       <div class="row my-5">
         <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
+        <div v-masonry-tile class="col-lg-4" v-for="topic in topics" :key="topic.id">
           <div class="container">
             <div class="row" id="hottopics">
               <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p> 
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p>
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p>
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p>
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p>
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic</p>
-                <p class="topic-details">Username, date and last update</p>
+                <p class="topic-title">{{ topic.title }}</p>
+                <p class="topic-details">
+                  {{ getUser(topic.user_id) }} - 
+                  {{ formatDate(topic.created_at) }} Last update
+                  {{ getLastUpdate(topic.updated_at) }}
+                </p>
                 <div class="row" id="details">
                 <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
                 <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
@@ -115,25 +29,7 @@
                 </div>
               </div>
               <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- FIN TOPIC -->
-
-        <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4">
-          <div class="container">
-            <div class="row" id="hottopics">
-              <div class="col-10" align="left">
-                <p class="topic-title">Title of the Topic and TAG</p>
-                <p class="topic-details">Username, date and last update</p>
-                <img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="25" height="25">
-                <img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="non favori" width="25" height="25">
-              </div>
-              <div class="col-2 align-self-center">
-                <p class="nb-comments">NB</p>
+                <p class="nb-comments">{{ getNbComments(topic.id) }}</p>
               </div>
             </div>
           </div>
@@ -151,6 +47,9 @@ Vue.use(VueMasonryPlugin);
 // v-for="(item, index) in blocks"  -> v-for à faire dans le v-masonry-tile selon ce qui va être pris
 // Par exemple :  v-for="(post, index) in posts" pour des articles de blogs
 
+import moment from "moment";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "Topics",
 
@@ -159,13 +58,81 @@ export default {
   }),
 
   methods: {
-      putFav() {
-          this.favTopic = true;
-      },
-      unFav() {
-          this.favTopic = false;
+    // FAV OR NOT
+    putFav() {
+        this.favTopic = true;
+    },
+    unFav() {
+        this.favTopic = false;
+    },
+
+    // GESTION DU FORMAT DATE
+    formatDate: (value) => {
+      if (value) {
+        return moment(String(value)).format("DD/MM/YYYY");
       }
-  }
+    },
+    getLastUpdate(update) {
+      return moment(String(update)).calendar();
+    },
+
+    // FETCH DES INFOS
+    ...mapActions({
+      fetchTopics: "topics/FETCH_TOPICS",
+      fetchComments: "comments/FETCH_COMMENTS",
+      fetchUsers: "users/FETCH_USERS",
+    }),
+
+    // METHODES DE RECUP USER ET COMMENTS
+
+    // -> Ma méthode ne marche pas..
+    // getUser(user_id) {
+    //   let username = "";
+    //   for (var user in this.users) {
+    //     if(user.id == user_id) {
+    //       username += user.username;
+    //     }
+    //   }
+    //   return username;
+    // },
+    getUser(user_id) {
+      let username = "";
+      this.users.forEach((user) => {
+        if (user.id == user_id) {
+          username += user.username;
+        }
+      });
+      return username;
+    },
+
+    getNbComments(topic_id) {
+      let nbcomments = 0;
+      this.comments.forEach((comment) => {
+        if (comment.topic_id == topic_id) {
+          nbcomments += 1;
+        }
+      });
+      return nbcomments;
+    },
+  },
+
+  computed: {
+    ...mapState("topics", {
+      topics: (state) => state.topics,
+    }),
+    ...mapState("comments", {
+      comments: (state) => state.comments,
+    }),
+    ...mapState("users", {
+      users: (state) => state.users,
+    }),    
+  },
+
+  mounted() {
+    this.fetchTopics();
+    this.fetchComments();
+    this.fetchUsers();
+  },
 };
 </script>
 
