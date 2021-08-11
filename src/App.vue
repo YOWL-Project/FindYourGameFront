@@ -46,17 +46,19 @@ export default {
   created() {
     this.handleView();
     window.addEventListener("resize", this.handleView);
-    if (document.cookie.split("profil=")[1]) {
-      console.log("ok cookie");
-      this.$store.state.user = JSON.parse(document.cookie.split("profil=")[1]);
-      // console.log(this.user.username);
-    } else {
-      console.log("no cookie");
-    }
+    var user = "";
+    let cookies = document.cookie.split(";");
+    cookies.forEach((cookie) => {
+      let goodOne = cookie.trim().startsWith("profil" + "=");
+      if (goodOne) {
+        user = cookie.trim().split("profil=")[1];
+        this.$store.state.authentification.user = JSON.parse(user);
+        this.$store.state.authentification.authentificated = true;
+      }
+    });
   },
 
-  // mounted() {
-  // },
+  mounted() {},
 };
 
 // (function() {

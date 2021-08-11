@@ -1,15 +1,58 @@
 <template>
   <div class="container">
     <div class="d-flex flex-column align-self-center">
-      <form @submit.prevent="submitForm">
-        <img class="m-4" src="../assets/Logo.svg" alt="" width="172" height="157" />
+      <img
+        src="../assets/Logo.svg"
+        alt=""
+        width="172"
+        height="157"
+        class="m-4 align-self-center"
+      />
+      <div class="text-center" v-if="authentificated">
+        <h1>MISSION ACCOMPLISHED</h1>
+        <!-- <h2>See you later</h2> -->
+        <router-link to="/">
+          <button class="w-25 btn btn-lg btn-primary" type="submit">
+            GO HOME
+          </button>
+        </router-link>
+      </div>
+      <form v-else @submit.prevent="submitForm">
         <h1>WELCOME BACK</h1>
-
+        <div v-if="!authentificated && !errors.message">
+          <div
+            style="
+              background-color: rgb(255, 0, 0, 0.1);
+              color: rgb(255, 255, 255, 0.7);
+              border: 1px solid rgb(255, 255, 255, 0.3);
+            "
+            class="pt-3 m-2 text-center"
+            v-for="(error, index) in errors"
+            :key="index"
+            :error="error"
+          >
+            <p>
+              {{ error }}
+            </p>
+          </div>
+        </div>
         <div>
-          <input type="text" class="form-control" v-model="username" placeholder="Username" />
+          <input
+            type="text"
+            class="form-control"
+            v-model="username"
+            placeholder="Username"
+            require
+          />
         </div>
         <div style="position: relative">
-          <input :type="type" class="form-control" v-model="password" placeholder="Password" />
+          <input
+            :type="type"
+            class="form-control"
+            v-model="password"
+            placeholder="Password"
+            require
+          />
           <img
             class="visibility"
             src="../assets/visibility_black_24dp.svg"
@@ -26,14 +69,14 @@
           />
         </div>
         <div class="checkbox mb-3">
-          <label> <input type="checkbox" value="remember-me" /> Remember me </label>
+          <label>
+            <input type="checkbox" v-model="remember" /> Remember me
+          </label>
         </div>
         <button class="w-25 btn btn-lg btn-primary" type="submit">LET'S GO</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
       </form>
     </div>
-    <div>{{user}}</div>
-    <div>{{authenticated}}</div>
   </div>
 </template>
 
@@ -47,12 +90,16 @@ export default {
       type: "password",
       username: "",
       password: "",
+      remember: false,
     };
   },
   computed: {
     ...mapState("authentification", {
       user: (state) => state.user,
-      authenticated: (state) => state.authenticated,
+      authentificated: (state) => state.authentificated,
+    }),
+    ...mapState("errors", {
+      errors: (state) => state.errors,
     }),
   },
   methods: {
@@ -60,14 +107,12 @@ export default {
       log_user: "authentification/LOG_USER",
     }),
     submitForm() {
-      if (this.username !== "" && this.password !== "") {
-        let body = {
-          username: this.username,
-          password: this.password,
-        };
-        this.log_user(body);
-        // this.$router.push('/');
-      }
+      this.log_user({
+        username: this.username,
+        password: this.password,
+        remember: this.remember,
+      });
+      this.$store.state.user = this.user;
     },
   },
 };

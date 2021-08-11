@@ -2,9 +2,9 @@
   <div class="home">
     <div class="content container text-left">
       <div>
-        <h1><span class="plus">+</span> Welcome <span v-if="user">{{user.username}}</span></h1>
+        <h1><span class="plus">+</span> Welcome <span v-if="authentificated">{{user.username}}</span></h1>
       </div>
-      <div v-if="!user">
+      <div v-if="!authentificated">
         <h2><router-link to="/subscribe">Join us</router-link> to enjoy all the possibilities of FindYourGame !</h2>
       </div>
       <form style="position: relative">
@@ -171,13 +171,17 @@ export default {
       nbgamesnew: 10,
       nbgamesdisplayed: 0,
       windowWidth: window.innerWidth,
-      user: this.$store.state.user,
+      // user: this.$store.state.user,
     };
   },
   computed: {
     ...mapState("games", {
       games: (state) => state.games,
       gamesFiltered: (state) => state.games_filtered,
+    }),
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
     }),
     // ...mapGetters({
     //   user: "authentification/GET_USER",
@@ -260,6 +264,10 @@ export default {
 <style scoped>
 img {
   cursor: pointer;
+}
+
+h2 {
+  margin: 3rem 0 1rem 0;
 }
 
 .gamelittle {

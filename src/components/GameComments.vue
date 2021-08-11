@@ -49,7 +49,7 @@
             >
               <p class="topic-title">{{ topic.title }}</p>
               <p class="topic-details">
-                {{ getUser(topic.user_id) }} -
+                {{ topic.username }} -
                 {{ formatDate(topic.created_at) }} Last update
                 {{ getLastUpdate(topic.updated_at) }}
               </p>
@@ -98,6 +98,7 @@
           :key="topic.id"
           :topic="topic"
         >
+        <!-- kkk -->
           <div v-if="topic.game_id == game.id">
             <div
               v-for="comment in comments"
@@ -106,7 +107,7 @@
             >
               <div class="row" id="hottopics" v-if="comment.topic_id == topic.id">
                 <div class="col-7" align="left">
-                  {{ getUser(comment.user_id) }} on "{{ topic.title }}"
+                  {{ (comment.username) }} on "{{ topic.title }}"
                 </div>
                 <div class="col-5" align="right">{{getLastUpdate(comment.updated_at)}}</div>
                 <div class="col-12"><p>{{ comment.content.slice(0,50) }}...</p></div>
@@ -151,9 +152,6 @@ export default {
     ...mapState("topics", {
       topics: (state) => state.topics,
     }),
-    ...mapState("users", {
-      users: (state) => state.users,
-    }),
     ...mapState("comments", {
       comments: (state) => state.comments,
     }),
@@ -164,7 +162,6 @@ export default {
   methods: {
     ...mapActions({
       fetchTopics: "topics/FETCH_TOPICS",
-      fetchUsers: "users/FETCH_USERS",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
     }),
@@ -176,15 +173,15 @@ export default {
     getLastUpdate(update) {
       return moment(String(update)).calendar();
     },
-    getUser(user_id) {
-      let username = "";
-      this.users.forEach((user) => {
-        if (user.id == user_id) {
-          username += user.username;
-        }
-      });
-      return username;
-    },
+    // getUser(user_id) {
+    //   let username = "";
+    //   this.users.forEach((user) => {
+    //     if (user.id == user_id) {
+    //       username += user.username;
+    //     }
+    //   });
+    //   return username;
+    // },
     getNbComments(topic_id) {
       let nbcomments = 0;
       this.comments.forEach((comment) => {
@@ -212,7 +209,6 @@ export default {
   },
   mounted() {
     this.fetchTopics();
-    this.fetchUsers();
     this.fetchComments();
     this.fetchVotesComments();
   },

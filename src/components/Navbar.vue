@@ -10,11 +10,14 @@
       <i class="fas fa-search"></i>
     </form>
     <div class="profile">
-      <ul>
-        <li><router-link to="/login" v-if="authenticated === false">LOGIN</router-link></li>
-        <li><router-link to="/subscribe" v-if="authenticated === false">SIGN UP</router-link></li>
-        <li><router-link to="/admin/users" v-if="authenticated === true && isadmin === 1">ADMIN</router-link></li>
-        <li v-if="authenticated === true">LOGOUT</li>
+      <ul v-if="authentificated">
+        <li>Hello {{ user.username }} !</li>
+        <li><router-link to="/admin" v-if="user.isadmin === 1">ADMIN</router-link></li>
+        <li><router-link to="/logout">LOGOUT</router-link></li>
+      </ul>
+      <ul v-else>
+        <li><router-link to="/login">LOG IN</router-link></li>
+        <li><router-link to="/subscribe">SIGN UP</router-link></li>
       </ul>
     </div>
   </div>
@@ -22,14 +25,20 @@
 
 <script>
 import { mapState } from "vuex";
-
 export default {
   name: "Navbar",
   computed: {
     ...mapState("authentification", {
-      authenticated: (state) => state.authenticated,
-      isadmin: (state) => state.user.isadmin,
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
     }),
+  },
+  data() {
+    return {
+      // user: this.$store.state.authentification.user,
+    };
+  },
+  mounted() {
   },
 };
 </script>

@@ -10,6 +10,7 @@ import Topic from "../views/Topic.vue";
 import Admin from "../views/Admin.vue"
 import CRUDUsers from "@/components/CRUDUsers.vue"
 import Dashboard from "@/components/Dashboard.vue"
+import Logout from "../views/Logout.vue"
 
 Vue.use(VueRouter);
 
@@ -68,6 +69,11 @@ const routes = [
     path: "/admin/dashboard", // a protéger admin
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/logout",
+    name: "Logout",
+    component: Logout,
   },
 ];
 
