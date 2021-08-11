@@ -15,14 +15,6 @@
           rows="4"
           placeholder="Your comment here"
         />
-        <div class="form-check">
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-a" />
-          <label for="tag-a">NEWBIE</label>
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-b" />
-          <label for="tag-b">HELP</label>
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-c" />
-          <label for="tag-c">CHEATS AND TIPS</label>
-        </div>
       </div>
 
       <!-- Row #2 : Bouton de post -->
@@ -245,21 +237,6 @@ p {
   padding: 5px;
   padding-left: 20px;
   margin: 2%;
-}
-
-input[type="checkbox"].btn-tag {
-  display: none;
-}
-input[type="checkbox"].btn-tag + label {
-  padding: 8px 18px;
-  border: 1px solid;
-  border-image-slice: 1;
-  border-radius: 24px;
-  border-image-source: linear-gradient(0.25turn, #00ffff, #ff005c);
-}
-input[type="checkbox"].btn-tag:checked + label {
-  border: none;
-  background: linear-gradient(0.25turn, #00ffff, #ff005c);
 }
 
 .postit {

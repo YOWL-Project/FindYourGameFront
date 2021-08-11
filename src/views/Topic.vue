@@ -65,7 +65,7 @@
             "useless" votes
           </div>
           <div class="col-4"> 
-            <img src="../assets/delete.svg" width="25" height="25" /> Delete this comment
+            <img src="../assets/delete.svg" width="25" height="25" @click="deleteComment(comment.id)"/> Delete this comment
           </div>
       </div>
     </div>
@@ -115,6 +115,7 @@ export default {
       getTopic: "topics/GET_TOPIC",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
+      deleteComment: "comments/DELETE_COMMENT"
     }),
 
     // + OU - DE COMMENTS (Formule de Manon)

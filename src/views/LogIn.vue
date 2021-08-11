@@ -120,7 +120,7 @@ export default {
       this.$store.state.user = this.user;
     },
     relocate() {
-        window.location = `http://localhost:8081/`;
+       window.location = `/`;
     }
   },
 };

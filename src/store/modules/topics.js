@@ -23,5 +23,14 @@ export default {
             }).catch((error) => console.log(JSON.stringify(error.message)));
             commit("SET_TOPIC", data.data.topic);
         },
+
+        async DELETE_TOPIC ({ dispatch }, body) {
+            const { data } = await apiLaravel.delete(`/topics/${body.id}`,
+            { headers: { 
+                'Authorization': `Bearer ${body.token}`
+              }})
+                .catch((error) => console.log(JSON.stringify(error.message)));
+            dispatch("FETCH_TOPICS", data);
+        },
     },
 }
