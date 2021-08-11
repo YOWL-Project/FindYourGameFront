@@ -58,7 +58,7 @@ export default {
   },
 
   data: () => ({
-      favTopic: false
+      favTopic: false,
   }),
 
   methods: {
@@ -84,7 +84,6 @@ export default {
     ...mapActions({
       fetchTopics: "topics/FETCH_TOPICS",
       fetchComments: "comments/FETCH_COMMENTS",
-      fetchUsers: "users/FETCH_USERS",
     }),
 
     // METHODES DE RECUP COMMENTS
@@ -106,15 +105,11 @@ export default {
     ...mapState("comments", {
       comments: (state) => state.comments,
     }),
-    ...mapState("users", {
-      users: (state) => state.users,
-    }),    
   },
 
   mounted() {
     this.fetchTopics();
     this.fetchComments();
-    this.fetchUsers();
   },
 };
 </script>
@@ -166,5 +161,9 @@ img {
   background: linear-gradient(0.25turn, #00ffff, #ff005c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+a {
+  color: white
 }
 </style>

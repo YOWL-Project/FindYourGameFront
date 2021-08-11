@@ -1,16 +1,10 @@
 <template>
   <div id="app">
-    <NavMobile />
-    <div class="content" :class="{ open: showNav }">
+    <div >
       <div class="top-bar">
-        <div id="navigation-icon" v-if="mobileView">
-          <img
-            src="./assets/toggle.svg"
-            alt="Menu Burger"
-            width="30"
-            height="30"
-            @click="showNav = !showNav"
-          />
+          <NavMobile v-if="showNav" />
+        <div id="navigation-icon" v-if="mobileView" class="content" :class="{ open: showNav }">
+          <img src="./assets/toggle.svg" alt="Menu Burger" width="30" height="30" @click="showNav = !showNav" />
         </div>
         <Navbar v-if="!mobileView" />
       </div>
