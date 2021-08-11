@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     ...mapState("games", {
-      games: (state) => state.games,
+      games: (state) => state.games.slice(0, 20),
     }),
   },
   methods: {

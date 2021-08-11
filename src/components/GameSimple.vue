@@ -14,7 +14,11 @@
               <h1>{{ game.title }}</h1>
             </router-link>
             <p class="card-text">
-                <span class="selected" @click="reloadPage('none', game.genre, 'none')">{{ game.genre }}</span>
+              <span
+                class="selected"
+                @click="reloadPage('none', game.genre, 'none')"
+                >{{ game.genre }}</span
+              >
               <span class="plus"> +</span>
               <span class="releasedate">
                 Release {{ formatDate(game.release_date) }}
@@ -30,6 +34,26 @@
               <span class="mx-2">125 votes</span>
               <img src="../assets/negatif.svg" alt="" height="20px" />
             </div>
+            <div class="favgame" v-if="authentificated">
+              <img
+                class="fav"
+                @click="putFav(game.id)"
+                v-if="favGame(game.id) == false"
+                src="../assets/nonfavori.svg"
+                alt="non favori"
+                width="25"
+                height="25"
+              />
+              <img
+                class="fav"
+                @click="unFav(game.id)"
+                v-if="favGame(game.id) == true"
+                src="../assets/favori.svg"
+                alt="favori"
+                width="25"
+                height="25"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -39,6 +63,7 @@
 
 <script>
 import moment from "moment";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "GameSimple",
@@ -46,9 +71,13 @@ export default {
     game: Object,
   },
   computed: {
-    // ...mapState("games", {
-    //   games: (state) => state.games,
-    // }),
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
+    }),
+    ...mapState("userGamesSaved", {
+      userGamesSaved: (state) => state.userGamesSaved,
+    }),
   },
   methods: {
     formatDate: (value) => {
@@ -58,11 +87,41 @@ export default {
     },
     reloadPage(platform, category, sortBy) {
       console.log(platform);
-      window.location = `/games/${platform}/${category}/${sortBy}`
+      window.location = `/games/${platform}/${category}/${sortBy}`;
     },
-    // ...mapActions({
-    //   fetchGames: "games/FETCH_GAMES",
-    // }),
+    ...mapActions({
+      fetchUserGamesSaved: "userGamesSaved/FETCH_USERGAMESSAVED",
+      CreateUserGameSaved: "userGamesSaved/CREATE_GAMESAVED",
+    }),
+    favGame(game_id) {
+      this.userGamesSaved.forEach((userGameSaved) => {
+        if (userGameSaved.game_id == game_id) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+    },
+    putFav(game_id) {
+      let infos = {
+        body: {
+          game_id: game_id,
+          user_id: this.user.id,
+        },
+        headers: {
+          Authorization: `Bearer ${this.user.token}`,
+        },
+      };
+      console.log(infos);
+      this.CreateUserGameSaved(infos);
+    },
+    unFav(game_id) {
+      game_id;
+      return false;
+    },
+  },
+  mounted() {
+    this.fetchUserGamesSaved(this.user.id);
   },
 };
 </script>
@@ -105,7 +164,7 @@ h1:hover {
 
 .selected {
   cursor: pointer;
-  transition: 0.25s; 
+  transition: 0.25s;
 }
 
 .selected:hover {

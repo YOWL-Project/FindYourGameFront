@@ -135,4 +135,11 @@ body {
 .open {
   transform: translateX(300px);
 }
+
+.fav {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 1rem;
+}
 </style>

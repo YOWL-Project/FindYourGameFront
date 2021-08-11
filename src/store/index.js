@@ -8,6 +8,7 @@ import votesComments from './modules/votesComments';
 import votesGames from './modules/votesGames';
 import users from './modules/users';
 import errors from './modules/errors';
+import userGamesSaved from './modules/userGamesSaved';
 
 Vue.use(Vuex);
 
@@ -28,5 +29,6 @@ export default new Vuex.Store({
     votesGames,
     users,
     errors,
+    userGamesSaved,
   },
 });
