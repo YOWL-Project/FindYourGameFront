@@ -15,11 +15,11 @@
       <i class="fas fa-search"></i>
     </form>
     <div class="profile">
-    <ul>
+      <ul>
         <li><router-link to="/login">USER</router-link></li>
         <li><router-link to="/subscribe">SIGN UP</router-link></li>
         <li>LOGOUT</li>
-    </ul>
+      </ul>
     </div>
   </div>
 </template>
@@ -60,10 +60,10 @@ export default {
     justify-content: flex-start;
     flex: 3;
     input {
-    min-height: 50px;
-    border-radius: 24px;
-    padding-left: 10px;
-    align-self: center;
+      min-height: 50px;
+      border-radius: 24px;
+      padding-left: 10px;
+      align-self: center;
       flex: 1;
     }
     i {
@@ -82,14 +82,19 @@ export default {
   }
 
   a:link {
-  text-decoration: none;
+    text-decoration: none;
   }
   a:hover {
-  text-decoration: underline;
-}
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    padding-bottom:5px;
+    margin-bottom:20px;
+    width:fit-content;
+    border-image: linear-gradient(0.25turn, #00ffff, #ff005c) 1;
+  }
 
   a {
-      color: white;
+    color: white;
   }
 }
 </style>

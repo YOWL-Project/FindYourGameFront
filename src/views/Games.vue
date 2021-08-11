@@ -200,6 +200,7 @@ export default {
 <style scoped>
 .container-fluid {
   margin-top: 4%;
+  width: 80%;
 }
 
 .pagination {

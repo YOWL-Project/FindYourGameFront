@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
 
-    <h1> <span class="plus">+</span> CHECK THE HOT TOPICS ON FINDYOURGAME</h1>
+    <h1> <span class="plus">+</span> CHECK OUR TOPICS !</h1>
 
     <div
-      v-masonry="containerId"
+      v-masonry
       transition-duration="0.3s"
       item-selector=".item"
       :origin-top="true"
@@ -18,7 +18,7 @@
               <div class="col-10" align="left">
                 <p class="topic-title">{{ topic.title }}</p>
                 <p class="topic-details">
-                  {{ getUser(topic.user_id) }} - 
+                  {{ topic.username}} - 
                   {{ formatDate(topic.created_at) }} Last update
                   {{ getLastUpdate(topic.updated_at) }}
                 </p>
@@ -83,28 +83,7 @@ export default {
       fetchUsers: "users/FETCH_USERS",
     }),
 
-    // METHODES DE RECUP USER ET COMMENTS
-
-    // -> Ma méthode ne marche pas..
-    // getUser(user_id) {
-    //   let username = "";
-    //   for (var user in this.users) {
-    //     if(user.id == user_id) {
-    //       username += user.username;
-    //     }
-    //   }
-    //   return username;
-    // },
-    getUser(user_id) {
-      let username = "";
-      this.users.forEach((user) => {
-        if (user.id == user_id) {
-          username += user.username;
-        }
-      });
-      return username;
-    },
-
+    // METHODES DE RECUP COMMENTS
     getNbComments(topic_id) {
       let nbcomments = 0;
       this.comments.forEach((comment) => {
