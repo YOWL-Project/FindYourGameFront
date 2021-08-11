@@ -11,7 +11,7 @@
       <h1>MISSION ACCOMPLISHED</h1>
       <h2>See you later</h2>
       <router-link to="/">
-        <button @click="relocate()" class="w-25 btn btn-lg btn-primary" type="submit">
+        <button class="w-25 btn btn-lg btn-primary" type="submit">
           GO BACK HOME
         </button>
       </router-link>
@@ -20,34 +20,20 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  name: "LogIn",
-  data() {
-    return {
-      user: this.$store.state.user,
-    };
-  },
+  name: "LogOut",
   computed: {},
+  data() {
+    return {};
+  },
   methods: {
-    logout() {
-      let hasCookie = document.cookie.split(";").some((c) => {
-        return c.trim().startsWith("profil" + "=");
-      });
-      if (hasCookie) {
-        document.cookie =
-          "profil" +
-          "=" +
-          ";path=/;secure" +
-          ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
-      }
-      this.$store.state.user = "";
-    },
-    relocate() {
-        window.location = `http://localhost:8081/`;
-    }
+    ...mapActions({
+      log_out: "authentification/LOG_OUT",
+    }),
   },
   mounted() {
-    this.logout();
+    this.log_out();
   },
 };
 </script>
