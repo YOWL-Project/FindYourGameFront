@@ -32,5 +32,20 @@ export default {
                 .catch((error) => console.log(JSON.stringify(error.message)));
             dispatch("FETCH_TOPICS", data);
         },
+
+        async ADD_TOPIC({ dispatch }, body, {id, title}) {
+            let data = {
+                game_id: id,
+                user_id: id,
+                title: title
+            }
+            const response = await apiLaravel.post('/topics/', 
+        { data, headers: {
+            'Authorization': `Bearer ${body.token}`,
+            'Content-Type': 'application/json'
+        }})
+                .catch((error) => console.log(JSON.stringify(error.message)));
+            dispatch("FETCH_TOPICS", response.data);
+        }
     },
 }

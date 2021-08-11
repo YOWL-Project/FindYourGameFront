@@ -8,7 +8,7 @@ export default {
     authentificated: false,
   },
   mutations: {
-    SET_USER: (state, user) => (state.user = user.profile, state.authentificated = user.authentificated),
+    SET_USER: (state, user) => (state.user = user.profile, state.authentificated = true),
   },
   actions: {
     REGISTER_USER({ commit }, infos) {

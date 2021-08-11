@@ -23,9 +23,9 @@
     </div>
     <h2>Posted by : {{ topic.username }}</h2>
     <h3>posted on {{ formatDate(topic.created_at) }}</h3>
-    <div class="row my-4">
+    <div class="row my-4" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)">
       <span class="tags"><img src="../assets/edit.svg" width="25" height="25" /></span>
-      <span class="tags"><img src="../assets/delete.svg" width="25" height="25" /></span>
+      <span class="tags"><img src="../assets/delete.svg" width="25" height="25" @click="deleteThisTopic(topic.id)" /></span>
     </div>
 
     <div class="row" id="yourpost">
@@ -34,11 +34,12 @@
         id="comment"
         rows="4"
         placeholder="Your comment here"
+        v-model="content"
       />
     </div>
 
     <div class="row">
-      <button class="postit">POST IT !</button>
+      <button class="postit" @submit="onSubmit">POST IT !</button>
     </div>
 
     <!-- Début de la section commentaires -->
@@ -56,16 +57,16 @@
         <div class="col-12">
           <p>{{ comment.content }}</p>
         </div>
-          <div class="col-4"> 
+          <div class="col-4" v-if="authentificated == true"> 
             <img src="../assets/positif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_plus}}
             "usefull" votes
           </div>
-          <div class="col-4"> 
+          <div class="col-4" v-if="authentificated == true"> 
             <img src="../assets/negatif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_minus}}
             "useless" votes
           </div>
-          <div class="col-4"> 
-            <img src="../assets/delete.svg" width="25" height="25" @click="deleteComment(comment.id)"/> Delete this comment
+          <div class="col-4" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)"> 
+            <img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({id:comment.id, token:user.token})"/> Delete this comment
           </div>
       </div>
     </div>
@@ -91,10 +92,17 @@ export default {
 
   data: () => ({
     favTopic: false,
-    hascomments: false
+    hascomments: false,
+    content: ''
   }),
 
   methods: {
+    // SUPPRESSION DU TOPIC
+    deleteThisTopic(id) {
+      this.deleteTopic({id:id, token:this.user.token}), 
+      this.$router.push('/')
+    },
+
     // MISE DU TOPIC EN FAV
     putFav() {
       this.favTopic = true;
@@ -110,12 +118,14 @@ export default {
       }
     },
 
-    // FETCH DES INFOS
+    // MAP DES ACTIONS DU STORE
     ...mapActions({
       getTopic: "topics/GET_TOPIC",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
-      deleteComment: "comments/DELETE_COMMENT"
+      deleteComment: "comments/DELETE_COMMENT",
+      deleteTopic: "topics/DELETE_TOPIC",
+      addComment: "comments/POST_COMMENT"
     }),
 
     // + OU - DE COMMENTS (Formule de Manon)
@@ -134,6 +144,17 @@ export default {
       let nb_votes = {votes_plus: nb_votes_comments_plus, votes_minus: nb_votes_comments_minus}
       return nb_votes;
     },
+
+    onSubmit(e) {
+      e.preventDefault()
+      if (!this.content) {
+        alert('Please add a card')
+        return
+      }
+
+      this.addComment([this.content, [this.id]]);
+     // this.card = ''
+    },
   },
 
   computed: {
@@ -146,6 +167,10 @@ export default {
     ...mapState("votesComments", {
       votesComments: (state) => state.votesComments,
     }),
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated
+    })
   },
 
   mounted() {

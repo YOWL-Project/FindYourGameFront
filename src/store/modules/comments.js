@@ -21,9 +21,8 @@ export default {
                 .catch((error) => console.log(JSON.stringify(error.message)));
             commit("SET_COMMENT", data.data.comment);
         },
-        // async POST_COMMENT({ commmit }) {
 
-        // }
+        // Supprimer un comment
         async DELETE_COMMENT ({ dispatch }, body) {
             const { data } = await apiLaravel.delete(`/comments/${body.id}`,
             { headers: { 
@@ -33,17 +32,19 @@ export default {
             dispatch("FETCH_COMMENTS", data);
         },
 
-        // async UPDATE_USER({ commit }, body) {
-        //     let headers = {
-        //       "Content-Type": "application/json",
-        //       Authorization: Bearer ${body.token},
-        //     };
-        //     const { data } = await apiLaravel
-        //       .put(/users/${body.id}, body.body, { headers: headers })
-        //       .catch((error) => console.log(JSON.stringify(error.message)));
-        //     console.log(commit);
-        //     console.log(data);
-        //     // commit("UPDATE_USER", data.data);
-        //   },
+        // Ajouter un comment
+        async POST_COMMENT ({ dispatch }, body, {content, id}) {
+            const data = {
+                topic_id: id,
+                user_id: id,
+                content: content,
+            }
+            await apiLaravel.post("/comments/", 
+            { headers: {
+                'Authorization' : `Bearer ${body.token}`
+            }})
+                .catch((error) => console.log(JSON.stringify(error.message)));
+            dispatch("FETCH_COMMENTS", data);
+        },
     },
 }
