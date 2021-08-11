@@ -9,7 +9,7 @@ import Topics from "../views/Topics.vue";
 import Topic from "../views/Topic.vue";
 import Admin from "../views/Admin.vue";
 import CRUDUsers from "@/components/CRUDUsers.vue";
-import Dashboard from "@/components/Dashboard.vue";
+// import Dashboard from "@/components/Dashboard.vue";
 import Logout from "../views/Logout.vue";
 
 Vue.use(VueRouter);
@@ -65,11 +65,11 @@ const routes = [
     name: "CRUDUsers",
     component: CRUDUsers,
   },
-  {
-    path: "/admin/dashboard", // a protéger admin
-    name: "Dashboard",
-    component: Dashboard,
-  },
+  // {
+  //   path: "/admin/dashboard", // a protéger admin
+  //   name: "Dashboard",
+  //   component: Dashboard,
+  // },
   {
     path: "/logout",
     name: "Logout",
@@ -106,7 +106,7 @@ const routes = [
     component: () => import("../views/DashBoard/Rate.vue"),
   },
   {
-    path: "/dashboard",
+    path: "/admin/dashboard",
     name: "DashBoard",
     component: () => import("../views/DashBoard/DashBoard.vue"),
   },

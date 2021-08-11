@@ -14,20 +14,19 @@
       </div>
       <!-- Intégration du component de topics et commentaires-->
       <div class="col-md">
-        <Dashboard />
+        <h2>USERS</h2>
+        <router-link to="/admin/dashboard">
+          <img src="@/assets/yowl-dashboard.jpg" alt="dashboard" width="80%">
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Dashboard from "@/components/Dashboard.vue";
 
 export default {
   name: "Admin",
-  components: {
-    Dashboard,
-  },
 };
 </script>
 
