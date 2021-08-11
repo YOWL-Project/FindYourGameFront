@@ -6,7 +6,8 @@ import SignUp from "../views/Signup.vue";
 import Game from "../views/Game.vue";
 import Games from "../views/Games.vue";
 import Topics from "../views/Topics.vue";
-import Topic from "../views/Topic.vue"
+import Topic from "../views/Topic.vue";
+import Admin from "../views/Admin.vue"
 
 Vue.use(VueRouter);
 
@@ -50,6 +51,11 @@ const routes = [
     path: "/topic/:id",
     name: "Topic",
     component: Topic,
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
   },
 ];
 

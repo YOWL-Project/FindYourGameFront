@@ -12,11 +12,11 @@
     >
       <div class="row my-5">
         <!-- TOPIC -->
-        <div v-masonry-tile class="col-lg-4" v-for="topic in topics" :key="topic.id">
+        <div v-masonry-tile class="col-lg-4" v-for="topic in topics" :key="topic.id" :topic="topic">
           <div class="container">
             <div class="row" id="hottopics">
               <div class="col-10" align="left">
-                <p class="topic-title">{{ topic.title }}</p>
+                <p class="topic-title"><router-link :to="'topic/'+topic.id">{{ topic.title }}</router-link></p>
                 <p class="topic-details">
                   {{ topic.username}} - 
                   {{ formatDate(topic.created_at) }} Last update
@@ -52,6 +52,10 @@ import { mapState, mapActions } from "vuex";
 
 export default {
   name: "Topics",
+
+  props: {
+    topic: Object,
+  },
 
   data: () => ({
       favTopic: false
