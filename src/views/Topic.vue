@@ -304,7 +304,6 @@ export default {
     this.getTopic(this.$route.params.id);
     this.fetchComments();
     this.fetchVotesComments();
-    this.getGame(this.$route.params.id);
   },
 };
 </script>
