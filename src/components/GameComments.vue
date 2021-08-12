@@ -114,11 +114,7 @@
                   {{ getLastUpdate(comment.updated_at) }}
                 </div>
                 <div class="col-12">
-                  <p @dblclick="changeContent = true" v-if="!changeContent">{{ comment.content.slice(0, 50) }}...</p>
-                  <p class="instructions" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
-                  Double click to change your comment
-                  </p>
-                  <textarea id="comment" placeholder="Your changes here" v-show="changeContent == true" v-model="content2"/>
+                  <p>{{ comment.content.slice(0, 50) }}...</p>
                 </div>
                 <div class="col-4">
                   <img src="../assets/positif.svg" width="25" height="25" />
