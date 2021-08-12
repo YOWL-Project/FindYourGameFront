@@ -2,32 +2,26 @@
   <div class="container-fluid">
     <div class="col">
       <!-- Row #1 : Form de création de topics -->
-      <div class="row">
+      <div class="row" v-if="authentificated == true">
         <h2>WHAT'S ON YOUR MIND ?</h2>
         <input
           class="subject"
           type="text"
+          v-model="title"
           placeholder="Subject of the discussion"
         />
         <textarea
           class="form-control"
           id="comment"
           rows="4"
+          v-model="content"
           placeholder="Your comment here"
         />
-        <div class="form-check">
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-a" />
-          <label for="tag-a">NEWBIE</label>
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-b" />
-          <label for="tag-b">HELP</label>
-          <input type="checkbox" name="tag" class="btn-tag" id="tag-c" />
-          <label for="tag-c">CHEATS AND TIPS</label>
-        </div>
       </div>
 
       <!-- Row #2 : Bouton de post -->
       <div class="row">
-        <button class="postit">POST IT !</button>
+        <button class="postit" @click="postTopic()">POST IT !</button>
       </div>
 
       <!-- Row #3 : Hot Topics (du jeu) -->
@@ -47,10 +41,10 @@
               align="left"
               v-bind:hastopic="(hastopic = true)"
             >
-              <p class="topic-title">{{ topic.title }}</p>
+              <p class="topic-title"><router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link></p>
               <p class="topic-details">
-                {{ topic.username }} -
-                {{ formatDate(topic.created_at) }} Last update
+                {{ topic.username }} - {{ formatDate(topic.created_at) }} Last
+                update
                 {{ getLastUpdate(topic.updated_at) }}
               </p>
             </div>
@@ -58,9 +52,13 @@
               class="col-2 align-self-center"
               v-if="getNbComments(topic.id) == 0"
             >
-              <p class="nb-comments" style="font-size: 0.8rem" >No comments</p>
+              <p class="nb-comments" style="font-size: 0.8rem">No comments</p>
             </div>
-            <div class="col-2 align-self-center" v-else v-bind:hascomments="(hascomments = true)">
+            <div
+              class="col-2 align-self-center"
+              v-else
+              v-bind:hascomments="(hascomments = true)"
+            >
               <p class="nb-comments">{{ getNbComments(topic.id) }}</p>
             </div>
           </div>
@@ -85,7 +83,6 @@
         </div>
       </div>
       <!-- Fin de l'affichage -->
-      
 
       <!-- Row #4 : Last Comments (sur les topics du jeu) -->
       <div class="row" v-if="hascomments == true">
@@ -98,30 +95,43 @@
           :key="topic.id"
           :topic="topic"
         >
-        <!-- kkk -->
+          <!-- kkk -->
           <div v-if="topic.game_id == game.id">
             <div
               v-for="comment in comments"
               :key="comment.id"
               :comment="comment"
             >
-              <div class="row" id="hottopics" v-if="comment.topic_id == topic.id">
+              <div
+                class="row"
+                id="hottopics"
+                v-if="comment.topic_id == topic.id"
+              >
                 <div class="col-7" align="left">
-                  {{ (comment.username) }} on "{{ topic.title }}"
+                  {{ comment.username }} on "<router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link>"
                 </div>
-                <div class="col-5" align="right">{{getLastUpdate(comment.updated_at)}}</div>
-                <div class="col-12"><p>{{ comment.content.slice(0,50) }}...</p></div>
+                <div class="col-5" align="right">
+                  {{ getLastUpdate(comment.updated_at) }}
+                </div>
+                <div class="col-12">
+                  <p @dblclick="changeContent = true" v-if="!changeContent">{{ comment.content.slice(0, 50) }}...</p>
+                  <p class="instructions" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+                  Double click to change your comment
+                  </p>
+                  <textarea id="comment" placeholder="Your changes here" v-show="changeContent == true" v-model="content2"/>
+                </div>
                 <div class="col-4">
-                  <img src="../assets/positif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_plus}}
+                  <img src="../assets/positif.svg" width="25" height="25" />
+                  {{ getNbVotesComments(comment.id).votes_plus }}
                   "usefull" votes
                 </div>
                 <div class="col-4">
-                  <img src="../assets/negatif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_minus}}
+                  <img src="../assets/negatif.svg" width="25" height="25" />
+                  {{ getNbVotesComments(comment.id).votes_minus }}
                   "useless" votes
                 </div>
-                <div class="col-4">
-                  <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol
-                  !" votes
+                <div class="col-4 d-flex" v-if=" authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+                  <div class="col"><img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({ id: comment.id, token: user.token })" /></div>
                 </div>
               </div>
             </div>
@@ -146,6 +156,10 @@ export default {
     return {
       hastopic: false,
       hascomments: false,
+      title: "",
+      content: "",
+      content2: "",
+      changeContent: false,
     };
   },
   computed: {
@@ -158,12 +172,19 @@ export default {
     ...mapState("votesComments", {
       votesComments: (state) => state.votesComments,
     }),
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
+    }),
   },
   methods: {
     ...mapActions({
       fetchTopics: "topics/FETCH_TOPICS",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
+      addTopicComment: "topics/ADD_TOPIC_COMMENT",
+     // addComment: "comments/ADD_COMMENT",
+      deleteComment: "comments/DELETE_COMMENT",
     }),
     formatDate: (value) => {
       if (value) {
@@ -173,15 +194,7 @@ export default {
     getLastUpdate(update) {
       return moment(String(update)).calendar();
     },
-    // getUser(user_id) {
-    //   let username = "";
-    //   this.users.forEach((user) => {
-    //     if (user.id == user_id) {
-    //       username += user.username;
-    //     }
-    //   });
-    //   return username;
-    // },
+
     getNbComments(topic_id) {
       let nbcomments = 0;
       this.comments.forEach((comment) => {
@@ -203,10 +216,45 @@ export default {
           }
         }
       });
-      let nb_votes = {votes_plus: nb_votes_comments_plus, votes_minus: nb_votes_comments_minus}
+      let nb_votes = {
+        votes_plus: nb_votes_comments_plus,
+        votes_minus: nb_votes_comments_minus,
+      };
       return nb_votes;
     },
+
+    // POST D'UN TOPIC CONTENANT UN COMMENTAIRE
+    postTopic() {
+      if (this.title == "" || this.content == "") {
+        alert("Please add a title and a content");
+        return;
+      }
+
+      this.addTopicComment({
+        token: this.user.token,
+        body: {
+          game_id: this.game.id,
+          user_id: this.user.id,
+          title: this.title,
+        },
+        bodycomment: {
+          user_id: this.user.id,
+          content: this.content,
+        },
+      })
+
+     // .then()
+      
+      // this.addComment({
+      //   token: this.user.token,
+      //   body: 
+      // }),
+
+        (this.title = "");
+        (this.content = "");
+    },
   },
+
   mounted() {
     this.fetchTopics();
     this.fetchComments();
@@ -229,6 +277,10 @@ p {
   text-align: left;
 }
 
+a {
+  color: white;
+}
+
 .subject {
   border-radius: 8px;
   width: 90%;
@@ -245,21 +297,6 @@ p {
   padding: 5px;
   padding-left: 20px;
   margin: 2%;
-}
-
-input[type="checkbox"].btn-tag {
-  display: none;
-}
-input[type="checkbox"].btn-tag + label {
-  padding: 8px 18px;
-  border: 1px solid;
-  border-image-slice: 1;
-  border-radius: 24px;
-  border-image-source: linear-gradient(0.25turn, #00ffff, #ff005c);
-}
-input[type="checkbox"].btn-tag:checked + label {
-  border: none;
-  background: linear-gradient(0.25turn, #00ffff, #ff005c);
 }
 
 .postit {
@@ -314,5 +351,16 @@ input[type="checkbox"].btn-tag:checked + label {
   margin: 2%;
   padding: 2%;
   min-width: 80%;
+}
+
+.instructions {
+  font-size: 0.7em;
+  font-style: italic;
+  color: #cccccc;
+  padding-left: 10px;
+}
+
+img {
+  cursor: pointer;
 }
 </style>
