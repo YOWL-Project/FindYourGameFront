@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="row">
-      <h1>{{ topic.title }}</h1>
+      <h1 @dblclick="changeTitle = true" v-if="!changeTitle">{{ topic.title }}</h1>
+      <input id="title" placeholder="Your changes here" v-show="changeTitle == true" v-model="title"/>
       <span class="fav"
         ><img
           @click="putFav"
@@ -21,14 +22,33 @@
           height="35"
       /></span>
     </div>
+    <div>
+      <p class="instructions" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)">
+        Double click on the title to change it
+      </p>
+    </div>
     <h2>Posted by : {{ topic.username }}</h2>
     <h3>posted on {{ formatDate(topic.created_at) }}</h3>
-    <div class="row my-4" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)">
-      <span class="tags"><img src="../assets/edit.svg" width="25" height="25" /></span>
-      <span class="tags"><img src="../assets/delete.svg" width="25" height="25" @click="deleteThisTopic(topic.id)" /></span>
+    <div
+      class="row my-4"
+      v-if="
+        authentificated == true &&
+        (user.id == topic.user_id || user.isadmin == 1)
+      "
+    >
+      <span class="tags"
+        ><img src="../assets/edit.svg" width="25" height="25" @click="pushTopic(topic.id)"
+      /></span>
+      <span class="tags"
+        ><img
+          src="../assets/delete.svg"
+          width="25"
+          height="25"
+          @click="deleteThisTopic(topic.id)"
+      /></span>
     </div>
 
-    <div class="row" id="yourpost">
+    <div class="row" id="yourpost" v-if="authentificated == true">
       <textarea
         class="form-control"
         id="comment"
@@ -39,7 +59,7 @@
     </div>
 
     <div class="row">
-      <button class="postit" @submit="onSubmit">POST IT !</button>
+      <button class="postit" @click="postComment()">POST IT !</button>
     </div>
 
     <!-- Début de la section commentaires -->
@@ -49,25 +69,76 @@
       :key="comment.id"
       :comment="comment"
     >
-      <div class="row" id="comments" v-if="comment.topic_id == topic.id" v-bind:hascomments="(hascomments = true)">
+      <div
+        class="row"
+        id="comments"
+        v-if="comment.topic_id == topic.id"
+        v-bind:hascomments="(hascomments = true)"
+      >
         <div class="col-7" align="left">{{ comment.username }}</div>
         <div class="col-5" align="right">
           {{ formatDate(comment.created_at) }}
         </div>
         <div class="col-12">
-          <p>{{ comment.content }}</p>
+          <p @dblclick="changeContent = true" v-if="!changeContent">
+            {{ comment.content }}
+          </p>
+          <p
+            class="instructions"
+            v-if="
+              authentificated == true &&
+              (user.id == topic.user_id || user.isadmin == 1)
+            "
+          >
+            Double click to change your comment
+          </p>
+          <textarea
+            id="comment"
+            placeholder="Your changes here"
+            v-show="changeContent == true"
+            v-model="content2"
+          />
         </div>
-          <div class="col-4" v-if="authentificated == true"> 
-            <img src="../assets/positif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_plus}}
-            "usefull" votes
-          </div>
-          <div class="col-4" v-if="authentificated == true"> 
-            <img src="../assets/negatif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_minus}}
-            "useless" votes
-          </div>
-          <div class="col-4" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)"> 
-            <img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({id:comment.id, token:user.token})"/> Delete this comment
-          </div>
+        <div class="col-3" v-if="authentificated == true">
+          <img src="../assets/positif.svg" width="25" height="25" />
+          {{ getNbVotesComments(comment.id).votes_plus }}
+          "usefull" votes
+        </div>
+        <div class="col-3" v-if="authentificated == true">
+          <img src="../assets/negatif.svg" width="25" height="25" />
+          {{ getNbVotesComments(comment.id).votes_minus }}
+          "useless" votes
+        </div>
+        <div
+          class="col-3 d-flex"
+          v-if="
+            authentificated == true &&
+            (user.id == topic.user_id || user.isadmin == 1)
+          "
+        >
+          <img
+            src="../assets/edit.svg"
+            width="25"
+            height="25"
+            @click="pushComment(comment.id)"
+          />
+          <p class="instructions">Click to commit your changes</p>
+        </div>
+        <div
+          class="col-3 d-flex"
+          v-if="
+            authentificated == true &&
+            (user.id == topic.user_id || user.isadmin == 1)
+          "
+        >
+          <img
+            src="../assets/delete.svg"
+            width="25"
+            height="25"
+            @click="deleteComment({ id: comment.id, token: user.token })"
+          />
+          <p class="instructions">Click to delete your comment</p>
+        </div>
       </div>
     </div>
 
@@ -75,11 +146,13 @@
     <div class="container">
       <div class="row" id="nocomments" v-if="hascomments == false">
         <div class="col">
-          <p class="nocomments-title">This topic has not been commented yet... Add your comment to start the discussion !</p>
+          <p class="nocomments-title">
+            This topic has not been commented yet... Add your comment to start
+            the discussion !
+          </p>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -93,16 +166,14 @@ export default {
   data: () => ({
     favTopic: false,
     hascomments: false,
-    content: ''
+    content: "",
+    content2: "",
+    title: "",
+    changeContent: false,
+    changeTitle: false,
   }),
 
   methods: {
-    // SUPPRESSION DU TOPIC
-    deleteThisTopic(id) {
-      this.deleteTopic({id:id, token:this.user.token}), 
-      this.$router.push('/')
-    },
-
     // MISE DU TOPIC EN FAV
     putFav() {
       this.favTopic = true;
@@ -125,7 +196,10 @@ export default {
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
       deleteComment: "comments/DELETE_COMMENT",
       deleteTopic: "topics/DELETE_TOPIC",
-      addComment: "comments/POST_COMMENT"
+      addComment: "comments/ADD_COMMENT",
+      editComment: "comments/EDIT_COMMENT",
+      editTopic: "topics/EDIT_TOPIC",
+      getGame: "games/GET_GAME",
     }),
 
     // + OU - DE COMMENTS (Formule de Manon)
@@ -141,20 +215,70 @@ export default {
           }
         }
       });
-      let nb_votes = {votes_plus: nb_votes_comments_plus, votes_minus: nb_votes_comments_minus}
+      let nb_votes = {
+        votes_plus: nb_votes_comments_plus,
+        votes_minus: nb_votes_comments_minus,
+      };
       return nb_votes;
     },
 
-    onSubmit(e) {
-      e.preventDefault()
-      if (!this.content) {
-        alert('Please add a card')
-        return
+    // SUPPRESSION DU TOPIC ET RELOAD
+    deleteThisTopic(id) {
+      this.deleteTopic({
+        id: id,
+        token: this.user.token,
+      }),
+        this.$router.push("/");
+    },
+
+    // AJOUT D'UN NOUVEAU COMMENT
+    postComment() {
+      if (this.content == "") {
+        alert("Please add a content to post a comment");
+        return;
       }
 
-      this.addComment([this.content, [this.id]]);
-     // this.card = ''
+      this.addComment({
+        token: this.user.token,
+        body: {
+          topic_id: this.topic.id,
+          user_id: this.user.id,
+          content: this.content,
+        },
+      }),
+        (this.content = "");
     },
+
+    // EDIT D'UN COMMENT
+    pushComment(id) {
+      (this.changeContent = false),
+        this.editComment({
+          id: id,
+          token: this.user.token,
+          body: {
+            topic_id: this.topic.id,
+            user_id: this.user.id,
+            content: this.content2,
+          },
+        }),
+        (this.content2 = "");
+    },
+
+    // EDIT D'UN TOPIC
+    pushTopic(id) {
+      (this.changeTitle = false),
+        this.editTopic({
+          id: id,
+          token: this.user.token,
+          body: {
+            game_id: this.game.id,
+            user_id: this.user.id,
+            title: this.title,
+          },
+        }),
+        (this.title = "");
+    },
+
   },
 
   computed: {
@@ -169,14 +293,18 @@ export default {
     }),
     ...mapState("authentification", {
       user: (state) => state.user,
-      authentificated: (state) => state.authentificated
-    })
+      authentificated: (state) => state.authentificated,
+    }),
+    ...mapState("games", {
+      game: (state) => state.game,
+    }),
   },
 
   mounted() {
     this.getTopic(this.$route.params.id);
     this.fetchComments();
     this.fetchVotesComments();
+    this.getGame(this.$route.params.id);
   },
 };
 </script>
@@ -218,23 +346,8 @@ h3 {
   margin: 2%;
 }
 
-input[type="checkbox"].btn-tag {
-  display: none;
-}
-input[type="checkbox"].btn-tag + label {
-  padding: 8px 18px;
-  border: 1px solid;
-  border-image-slice: 1;
-  border-radius: 24px;
-  border-image-source: linear-gradient(0.25turn, #00ffff, #ff005c);
-}
-input[type="checkbox"].btn-tag:checked + label {
-  border: none;
-  border-radius: 24px;
-  background: linear-gradient(0.25turn, #00ffff, #ff005c);
-}
-
 .postit {
+  color: white;
   margin: 3%;
   padding: 8px 18px;
   border: 1px solid linear-gradient(0.25turn, #00ffff, #ff005c);
@@ -273,5 +386,21 @@ input[type="checkbox"].btn-tag:checked + label {
 .nocomment-title {
   font-size: 1.2em;
   color: #cccccc;
+}
+
+.instructions {
+  font-size: 0.7em;
+  font-style: italic;
+  color: #cccccc;
+  padding-left: 10px;
+}
+
+#title {
+  border-radius: 8px;
+  width: 90%;
+  border: none;
+  padding: 5px;
+  padding-left: 20px;
+  margin: 2%;
 }
 </style>

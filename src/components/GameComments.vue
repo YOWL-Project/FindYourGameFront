@@ -2,24 +2,26 @@
   <div class="container-fluid">
     <div class="col">
       <!-- Row #1 : Form de création de topics -->
-      <div class="row">
+      <div class="row" v-if="authentificated == true">
         <h2>WHAT'S ON YOUR MIND ?</h2>
         <input
           class="subject"
           type="text"
+          v-model="title"
           placeholder="Subject of the discussion"
         />
         <textarea
           class="form-control"
           id="comment"
           rows="4"
+          v-model="content"
           placeholder="Your comment here"
         />
       </div>
 
       <!-- Row #2 : Bouton de post -->
       <div class="row">
-        <button class="postit">POST IT !</button>
+        <button class="postit" @click="postTopic()">POST IT !</button>
       </div>
 
       <!-- Row #3 : Hot Topics (du jeu) -->
@@ -39,10 +41,10 @@
               align="left"
               v-bind:hastopic="(hastopic = true)"
             >
-              <p class="topic-title">{{ topic.title }}</p>
+              <p class="topic-title"><router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link></p>
               <p class="topic-details">
-                {{ topic.username }} -
-                {{ formatDate(topic.created_at) }} Last update
+                {{ topic.username }} - {{ formatDate(topic.created_at) }} Last
+                update
                 {{ getLastUpdate(topic.updated_at) }}
               </p>
             </div>
@@ -50,9 +52,13 @@
               class="col-2 align-self-center"
               v-if="getNbComments(topic.id) == 0"
             >
-              <p class="nb-comments" style="font-size: 0.8rem" >No comments</p>
+              <p class="nb-comments" style="font-size: 0.8rem">No comments</p>
             </div>
-            <div class="col-2 align-self-center" v-else v-bind:hascomments="(hascomments = true)">
+            <div
+              class="col-2 align-self-center"
+              v-else
+              v-bind:hascomments="(hascomments = true)"
+            >
               <p class="nb-comments">{{ getNbComments(topic.id) }}</p>
             </div>
           </div>
@@ -77,7 +83,6 @@
         </div>
       </div>
       <!-- Fin de l'affichage -->
-      
 
       <!-- Row #4 : Last Comments (sur les topics du jeu) -->
       <div class="row" v-if="hascomments == true">
@@ -90,25 +95,35 @@
           :key="topic.id"
           :topic="topic"
         >
-        <!-- kkk -->
+          <!-- kkk -->
           <div v-if="topic.game_id == game.id">
             <div
               v-for="comment in comments"
               :key="comment.id"
               :comment="comment"
             >
-              <div class="row" id="hottopics" v-if="comment.topic_id == topic.id">
+              <div
+                class="row"
+                id="hottopics"
+                v-if="comment.topic_id == topic.id"
+              >
                 <div class="col-7" align="left">
-                  {{ (comment.username) }} on "{{ topic.title }}"
+                  {{ comment.username }} on "{{ topic.title }}"
                 </div>
-                <div class="col-5" align="right">{{getLastUpdate(comment.updated_at)}}</div>
-                <div class="col-12"><p>{{ comment.content.slice(0,50) }}...</p></div>
+                <div class="col-5" align="right">
+                  {{ getLastUpdate(comment.updated_at) }}
+                </div>
+                <div class="col-12">
+                  <p>{{ comment.content.slice(0, 50) }}...</p>
+                </div>
                 <div class="col-4">
-                  <img src="../assets/positif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_plus}}
+                  <img src="../assets/positif.svg" width="25" height="25" />
+                  {{ getNbVotesComments(comment.id).votes_plus }}
                   "usefull" votes
                 </div>
                 <div class="col-4">
-                  <img src="../assets/negatif.svg" width="25" height="25" /> {{getNbVotesComments(comment.id).votes_minus}}
+                  <img src="../assets/negatif.svg" width="25" height="25" />
+                  {{ getNbVotesComments(comment.id).votes_minus }}
                   "useless" votes
                 </div>
                 <div class="col-4">
@@ -138,6 +153,8 @@ export default {
     return {
       hastopic: false,
       hascomments: false,
+      title: "",
+      content: "",
     };
   },
   computed: {
@@ -150,12 +167,18 @@ export default {
     ...mapState("votesComments", {
       votesComments: (state) => state.votesComments,
     }),
+    ...mapState("authentification", {
+      user: (state) => state.user,
+      authentificated: (state) => state.authentificated,
+    }),
   },
   methods: {
     ...mapActions({
       fetchTopics: "topics/FETCH_TOPICS",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
+      addTopic: "topics/ADD_TOPIC",
+      addComment: "comments/ADD_COMMENT"
     }),
     formatDate: (value) => {
       if (value) {
@@ -195,8 +218,39 @@ export default {
           }
         }
       });
-      let nb_votes = {votes_plus: nb_votes_comments_plus, votes_minus: nb_votes_comments_minus}
+      let nb_votes = {
+        votes_plus: nb_votes_comments_plus,
+        votes_minus: nb_votes_comments_minus,
+      };
       return nb_votes;
+    },
+
+    postTopic() {
+      if (this.title == "" || this.content == "") {
+        alert("Please add a title and a content");
+        return;
+      }
+
+      this.addTopic({
+        token: this.user.token,
+        body: {
+          game_id: this.game.id,
+          user_id: this.user.id,
+          title: this.title,
+        },
+      }),
+      
+      this.addComment({
+        token: this.user.token,
+        body: {
+          topic_id: this.topic.id,
+          user_id: this.user.id,
+          content: this.content,
+        },
+      }),
+
+        (this.title = "");
+        (this.content = "");
     },
   },
   mounted() {
@@ -219,6 +273,10 @@ h2 {
 
 p {
   text-align: left;
+}
+
+a {
+  color: white;
 }
 
 .subject {

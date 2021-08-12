@@ -9,6 +9,7 @@ export default {
     mutations: {
         SET_TOPICS: (state, topics) => (state.topics = topics),
         SET_TOPIC: (state, topic) => (state.topic = topic),
+        //ADD_NEW_TOPIC: (state, topic) => state.topics.push(topic),
     },
     actions: {
         async FETCH_TOPICS({ commit }) {
@@ -24,6 +25,7 @@ export default {
             commit("SET_TOPIC", data.data.topic);
         },
 
+        // DELETE D'UN TOPIC
         async DELETE_TOPIC ({ dispatch }, body) {
             const { data } = await apiLaravel.delete(`/topics/${body.id}`,
             { headers: { 
@@ -33,19 +35,26 @@ export default {
             dispatch("FETCH_TOPICS", data);
         },
 
-        async ADD_TOPIC({ dispatch }, body, {id, title}) {
-            let data = {
-                game_id: id,
-                user_id: id,
-                title: title
-            }
-            const response = await apiLaravel.post('/topics/', 
-        { data, headers: {
-            'Authorization': `Bearer ${body.token}`,
-            'Content-Type': 'application/json'
-        }})
+        // AJOUT D'UN TOPIC
+        async ADD_TOPIC({ dispatch }, body) {
+            const check = await apiLaravel.post('/topics/', body.body, 
+            { headers: {
+            'Authorization': `Bearer ${body.token}`
+            }})
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            dispatch("FETCH_TOPICS", response.data);
+                if(check) {
+                    dispatch("FETCH_TOPICS")
+                }
+        },
+
+        // EDIT D'UN TOPIC
+        async EDIT_TOPIC({ dispatch }, body) {
+            const { data } = await apiLaravel.put(`topics/${body.id}`, body.body,
+            { headers: {
+                'Authorization': `Bearer ${body.token}`
+            }})
+                .catch((error) => console.log(JSON.stringify(error.message)));
+            dispatch("FETCH_TOPICS", data.data)
         }
     },
 }

@@ -9,6 +9,7 @@ export default {
     mutations: {
         SET_COMMENTS: (state, comments) => (state.comments = comments),
         SET_COMMENT: (state, comment) => (state.comment = comment),
+        // ADD_NEW_COMMENT: (state, comment) => state.comments.push(comment),
     },
     actions: {
         async FETCH_COMMENTS({ commit }) {
@@ -33,18 +34,25 @@ export default {
         },
 
         // Ajouter un comment
-        async POST_COMMENT ({ dispatch }, body, {content, id}) {
-            const data = {
-                topic_id: id,
-                user_id: id,
-                content: content,
-            }
-            await apiLaravel.post("/comments/", 
+        async ADD_COMMENT({ dispatch }, body) {
+            const check = await apiLaravel.post('/comments/', body.body, 
             { headers: {
-                'Authorization' : `Bearer ${body.token}`
+            'Authorization': `Bearer ${body.token}`
             }})
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            dispatch("FETCH_COMMENTS", data);
+                if(check) {
+                    dispatch("FETCH_COMMENTS");
+                }
         },
+
+        // Edit les comments
+        async EDIT_COMMENT({ dispatch }, body) {
+            const { data } = await apiLaravel.put(`comments/${body.id}`, body.body,
+            { headers: {
+                'Authorization': `Bearer ${body.token}`
+            }})
+                .catch((error) => console.log(JSON.stringify(error.message)));
+            dispatch("FETCH_COMMENTS", data.data)
+        }
     },
 }
