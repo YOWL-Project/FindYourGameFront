@@ -12,7 +12,7 @@
             <bar-chart style="height: 270px"></bar-chart>
           </div>
           <div @click="line()" class="graph line">
-            <h5>Visits total number</h5>
+            <h5>Inscriptions number by day last week</h5>
             <line-chart style="height: 270px"></line-chart>
           </div>
           <div @click="pie()" class="graph pie">
@@ -30,11 +30,11 @@
             <sign-chart style="height: 270px"></sign-chart>
           </div>
           <div class="graph coms">
-            <h5>Coms number by day</h5>
-            <div class="number">1 256</div>
+            <h5>Converson Rate Rouded</h5>
+            <div class="number">{{ conversionRate }}</div>
           </div>
           <div @click="rate()" class="graph rate">
-            <h5>Activity Rate</h5>
+            <h5>Comments number by day last week</h5>
             <rate-chart style="height: 270px"></rate-chart>
           </div>
         </div>
@@ -50,6 +50,8 @@ import PieChart from "@/components/DashBoard/PieChart";
 import VisitChart from "@/components/DashBoard/VisitChart";
 import SignChart from "@/components/DashBoard/SignChart";
 import RateChart from "@/components/DashBoard/RateChart";
+import apiLaravel from "@/common/api-back";
+import { mapState } from "vuex";
 
 export default {
   name: "DashBoard",
@@ -61,6 +63,16 @@ export default {
     VisitChart,
     SignChart,
     RateChart,
+  },
+  data() {
+    return {
+      conversionRate: 0,
+    };
+  },
+  computed: {
+    ...mapState("authentification", {
+      token: (state) => state.user.token,
+    }),
   },
   methods: {
     bar() {
@@ -81,6 +93,14 @@ export default {
     rate() {
       this.$router.push("/rate");
     },
+  },
+  async mounted() {
+    let headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${this.token}`,
+    };
+    const { data } = await apiLaravel.get("/conversion", { headers: headers }).catch((error) => console.log(JSON.stringify(error.message)));
+    this.conversionRate = Math.round(data.data);
   },
 };
 </script>
@@ -143,6 +163,7 @@ export default {
   color: rgb(75, 170, 123);
   vertical-align: middle;
   line-height: 200px;
+  padding-left: 25%;
 }
 
 h2 {

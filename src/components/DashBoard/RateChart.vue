@@ -1,23 +1,11 @@
 <script>
-import { Line } from 'vue-chartjs'
+import { Line } from "vue-chartjs";
+import { mapState, mapActions } from "vuex";
 
 export default {
   extends: Line,
   data() {
     return {
-      chartData: {
-        labels: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
-        datasets: [
-          {
-            label: 'Line Chart',
-            data: [15, 16, 16, 14, 15, 16,17],
-            fill: false,
-            borderColor: '#2554FF',
-            backgroundColor: '#2554FF',
-            borderWidth: 1,
-          },
-        ],
-      },
       options: {
         scales: {
           yAxes: [
@@ -44,10 +32,38 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
       },
-    }
+    };
+  },
+  computed: {
+    ...mapState("authentification", {
+      token: (state) => state.user.token,
+    }),
+    ...mapState("dashboard", {
+      comments: (state) => state.comments,
+    }),
+  },
+  methods: {
+    ...mapActions({
+      fetchcomments: "dashboard/FETCH_COMMENTS",
+    }),
   },
   mounted() {
-    this.renderChart(this.chartData, this.options)
+    this.fetchcomments(this.token);
+    let chartData = {
+      labels: this.comments.labels,
+      datasets: [
+        {
+          label: "Line Chart",
+          data: this.comments.data,
+          fill: false,
+          borderColor: "#2554FF",
+          backgroundColor: "#2554FF",
+          borderWidth: 1,
+        },
+      ],
+    };
+    this.renderChart(chartData, this.options);
+    console.log("test")
   },
-}
+};
 </script>

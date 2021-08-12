@@ -39,22 +39,22 @@ export default {
       token: state => state.user.token,
     }),
     ...mapState("dashboard", {
-      visits: state => state.visits,
+      inscriptions: state => state.inscriptions,
     })
   },
   methods: {
     ...mapActions({
-      fetchvisits: "dashboard/FETCH_VISITS",
+      fetchinscriptions: "dashboard/FETCH_INSCRIPTIONS",
     }),
   },
   mounted() {
-    this.fetchvisits(this.token);
+    this.fetchinscriptions(this.token);
     let chartData = {
-        labels: this.visits.labels,
+        labels: this.inscriptions.labels,
         datasets: [
           {
             label: 'Line Chart',
-            data: this.visits.data,
+            data: this.inscriptions.data,
             fill: false,
             borderColor: '#2554FF',
             backgroundColor: '#2554FF',
