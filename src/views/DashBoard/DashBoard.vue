@@ -1,37 +1,42 @@
 <template>
-  <div class="container">
-    <h2>Dashboard</h2>
-    <div class="dashboard">
-      <div class="up">
-        <div @click="bar()" class="graph bar">
-          <h5>Game categories</h5>
-          <bar-chart style="height: 270px"></bar-chart>
+  <div class="container-fluid">
+    <router-link to="/admin">
+      <button type="button" class="btn btn-primary btn-lg px-2">BACK TO ADMIN PAGE</button>
+    </router-link>
+    <div class="container">
+      <h2>Dashboard</h2>
+      <div class="dashboard">
+        <div class="up">
+          <div @click="bar()" class="graph bar">
+            <h5>Game categories</h5>
+            <bar-chart style="height: 270px"></bar-chart>
+          </div>
+          <div @click="line()" class="graph line">
+            <h5>Visits total number</h5>
+            <line-chart style="height: 270px"></line-chart>
+          </div>
+          <div @click="pie()" class="graph pie">
+            <h5>Top Five Games</h5>
+            <pie-chart style="height: 270px"></pie-chart>
+          </div>
         </div>
-        <div @click="line()" class="graph line">
-          <h5>Visits total number</h5>
-          <line-chart style="height: 270px"></line-chart>
-        </div>
-        <div @click="pie()" class="graph pie">
-          <h5>Top Five Games</h5>
-          <pie-chart style="height: 270px"></pie-chart>
-        </div>
-      </div>
-      <div class="down">
-        <div @click="visits()" class="graph visit">
-          <h5>Visits number by day last week</h5>
-          <visit-chart style="height: 270px"></visit-chart>
-        </div>
-        <div @click="sign()" class="graph signup">
-          <h5>Sign Up total number by week last month</h5>
-          <sign-chart style="height: 270px"></sign-chart>
-        </div>
-        <div class="graph coms">
-          <h5>Coms number by day</h5>
-          <div class="number">1 256</div>
-        </div>
-        <div @click="rate()" class="graph rate">
-          <h5>Activity Rate</h5>
-          <rate-chart style="height: 270px"></rate-chart>
+        <div class="down">
+          <div @click="visits()" class="graph visit">
+            <h5>Visits number by day last week</h5>
+            <visit-chart style="height: 270px"></visit-chart>
+          </div>
+          <div @click="sign()" class="graph signup">
+            <h5>Sign Up total number by week last month</h5>
+            <sign-chart style="height: 270px"></sign-chart>
+          </div>
+          <div class="graph coms">
+            <h5>Coms number by day</h5>
+            <div class="number">1 256</div>
+          </div>
+          <div @click="rate()" class="graph rate">
+            <h5>Activity Rate</h5>
+            <rate-chart style="height: 270px"></rate-chart>
+          </div>
         </div>
       </div>
     </div>

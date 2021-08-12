@@ -1,9 +1,13 @@
 <template>
-  <div class="container-fluid">
+<div class="container-fluid">
+  <router-link to="/admin">
+    <button type="button" class="btn btn-primary btn-lg px-2">BACK TO ADMIN PAGE</button>
+  </router-link>
+  <div class="container-fluid" id="container">
     <h2>MANAGE USERS</h2>
     <table width="100%" id="table">
       <thead id="firstrow">
-        <tr class="test">
+        <tr>
           <th scope="col">#id</th>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
@@ -16,7 +20,7 @@
         </tr>
       </thead>
       <tbody id="users" v-for="user in users" :key="user.id" :user="user">
-        <tr class="test" :id="'user-' + user.id">
+        <tr :id="'user-' + user.id">
           <th scope="row">{{ user.id }}</th>
           <td><input type="text" v-model="user.username" /></td>
           <td><input type="text" v-model="user.email" /></td>
@@ -37,6 +41,7 @@
         </tr>
       </tbody>
     </table>
+  </div>
   </div>
 </template>
 
@@ -84,37 +89,26 @@ export default {
 h2 {
   font-size: 1.6em;
   text-align: left;
-  padding-bottom: 2%;
+  /* padding-bottom: 2%; */
 }
 
 #table {
-  /* border: solid; */
   background-color: #111111;
 }
 
 #firstrow {
-  /* background-color: #111111; */
   border: solid #696868e0;
-  /* margin: 2%; */
   border-radius: 8px;
-  /* padding: 2%; */
 }
 
 #users {
-  /* background-color: #ffffff; */
   border: solid #696868e0;
-  /* color: #111111; */
-  /* margin: 2%; */
   border-radius: 8px;
-  /* padding: 2%; */
 }
 
-.test {
-  justify-content: center;
+#container {
+  padding: 2%;
+  /* margin: 2%; */
 }
 
-.user-details {
-  font-style: italic;
-  color: #cccccc;
-}
 </style>

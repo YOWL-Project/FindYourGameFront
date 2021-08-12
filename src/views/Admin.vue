@@ -9,7 +9,7 @@
       <div class="col-md">
         <h2>USERS</h2>
         <router-link to="/admin/users">
-          <img src="@/assets/yowl-crud-users.jpeg" alt="crud users" width="80%">
+          <img src="@/assets/yowl-crud-users.jpg" alt="crud users" width="90%" height="90%">
         </router-link>
       </div>
       <!-- Intégration du component de topics et commentaires-->
