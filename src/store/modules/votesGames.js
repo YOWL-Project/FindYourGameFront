@@ -7,11 +7,6 @@ export default {
     },
     mutations: {
         SET_VOTESGAMES: (state, votesGames) => (state.votesGames = votesGames),
-        CREATE_VOTESGAMES: (state, voteGame) => (state.votesGames = state.votesGames.push(voteGame)),
-        DELETE_VOTESGAMES: (state, id) => {
-            let index = state.votesGames.findIndex((elem) => elem.id === id)
-            state.votesGames.splice(index, 1)
-        }
     },
     actions: {
         async FETCH_VOTESGAMES({ commit }) {
@@ -19,21 +14,26 @@ export default {
                 .catch((error) => console.log(JSON.stringify(error.message)));
             commit("SET_VOTESGAMES", data.data.votes);
         },
-        async CREATE_VOTESGAMES({ commit }, infos) {
-            const { data } = await apiLaravel.post('/votesgames/', infos.body, { headers: infos.headers })
+        async CREATE_VOTESGAMES({ dispatch }, infos) {
+            await apiLaravel.post('/votesgames/', infos.body, { headers: infos.headers })
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            commit("CREATE_VOTESGAMES", data.data);
+            dispatch("FETCH_VOTESGAMES");
         },
-        async DELETE_VOTESGAMES({ commit }, infos) {
-            const { data } = await apiLaravel.delete(`/votesgames/${infos.id}`, { headers: infos.headers })
+        async DELETE_VOTESGAMES({ dispatch }, infos) {
+            await apiLaravel.delete(`/votesgames/${infos.id}`, { headers: infos.headers })
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            commit("DELETE_VOTESGAMES", data.data.id);
+            dispatch("FETCH_VOTESGAMES");
         },
-        async UPDATE_VOTESGAMES({ commit }, infos) {
-            const { data } = await apiLaravel.put(`/votesgames/${infos.id}`, infos.body, { headers: infos.headers })
+        async UPDATE_VOTESGAMES({ dispatch }, infos) {
+            await apiLaravel.put(`/votesgames/${infos.id}`, infos.body, { headers: infos.headers })
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            commit("DELETE_VOTESGAMES", data.data.id);
-            commit("CREATE_VOTESGAMES", data.data.id);
+            dispatch("FETCH_VOTESGAMES");
         },
     },
+    getters: {
+        FILTER_VOTESGAMES: (state, getters, rootState) => {
+            return state.votesGames
+                .filter((votesGame) => votesGame.user_id == rootState.authentification.user.id)
+        },
+    }
 }

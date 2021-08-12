@@ -20,14 +20,14 @@
           width="65"
           height="65"
           class="pouce positif"
-          @click="voteplus(game.id)"
+          @click="voteplus()"
         />
         <img
           src="../assets/negatif.svg"
           width="65"
           height="65"
           class="pouce negatif"
-          @click="voteminus(game.id)"
+          @click="voteminus()"
         />
       </div>
       <div class="col-6 d-flex" align="left">
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "GameVote",
   //props -> ID du jeu pour lier au vote
@@ -97,6 +97,9 @@ export default {
   computed: {
     ...mapState("votesGames", {
       votesGames: (state) => state.votesGames,
+    }),
+    ...mapGetters({
+      votesGamesUser: "votesGames/FILTER_VOTESGAMES",
     }),
     ...mapState("authentification", {
       user: (state) => state.user,
@@ -129,33 +132,27 @@ export default {
       return result;
     },
     voteplus() {
-      let infos = {
-        body: {
-          game_id: this.game.id,
-          user_id: this.user.id,
-          vote: 1,
-        },
-        headers: {
-          Authorization: `Bearer ${this.user.token}`,
-        },
-      };
-      let alreadyVote = [];
+      var havetoCreateVote = true;
       if (this.authentificated) {
-        this.votesGames.forEach((votesGame) => {
-          if (
-            votesGame.game_id == this.game.id &&
-            votesGame.user_id == this.user.id
-          ) {
-            alreadyVote.push(votesGame.id);
+        this.votesGamesUser.forEach((voteGamesUser) => {
+          if (voteGamesUser.game_id == this.game.id) {
+            let infos = {
+              id: voteGamesUser.id,
+              body: {
+                game_id: this.game.id,
+                user_id: this.user.id,
+                vote: 1,
+              },
+              headers: {
+                Authorization: `Bearer ${this.user.token}`,
+              },
+            };
+            this.updateVotesGames(infos);
+            havetoCreateVote = false;
           }
         });
-        if (alreadyVote) {
-          console.log(infos);
-          this.message = "";
-          this.createVotesGames(infos);
-        } else {
-          infos = {
-            id: alreadyVote[0],
+        if (havetoCreateVote) {
+          let infos = {
             body: {
               game_id: this.game.id,
               user_id: this.user.id,
@@ -165,61 +162,57 @@ export default {
               Authorization: `Bearer ${this.user.token}`,
             },
           };
-          console.log(alreadyVote);
-          this.updateVotesGames(infos);
+          this.createVotesGames(infos);
         }
+
+        document.querySelector(".positif").classList.add("checked");
+        document.querySelector(".negatif").classList.remove("checked");
       } else {
         this.message = "You have to be authentificated to vote";
       }
     },
     voteminus() {
-      let infos = {
-        body: {
-          game_id: this.game.id,
-          user_id: this.user.id,
-          vote: -1,
-        },
-        headers: {
-          Authorization: `Bearer ${this.user.token}`,
-        },
-      };
-      let alreadyVote = [];
+      var havetoCreateVote = true;
       if (this.authentificated) {
-        this.votesGames.forEach((votesGame) => {
-          if (
-            votesGame.game_id == this.game.id &&
-            votesGame.user_id == this.user.id
-          ) {
-            alreadyVote.push(votesGame.id);
+        this.votesGamesUser.forEach((voteGamesUser) => {
+          if (voteGamesUser.game_id == this.game.id) {
+            let infos = {
+              id: voteGamesUser.id,
+              body: {
+                game_id: this.game.id,
+                user_id: this.user.id,
+                vote: -1,
+              },
+              headers: {
+                Authorization: `Bearer ${this.user.token}`,
+              },
+            };
+            this.updateVotesGames(infos);
+            havetoCreateVote = false;
           }
         });
-        if (alreadyVote != []) {
-          infos = {
-            id: alreadyVote[0],
+        if (havetoCreateVote) {
+          let infos = {
             body: {
               game_id: this.game.id,
               user_id: this.user.id,
-              vote: 1,
+              vote: -1,
             },
             headers: {
               Authorization: `Bearer ${this.user.token}`,
             },
           };
-          this.updateVotesGames(infos);
-        } else {
-          this.message = "";
           this.createVotesGames(infos);
         }
+        document.querySelector(".positif").classList.remove("checked");
+        document.querySelector(".negatif").classList.add("checked");
       } else {
         this.message = "You have to be authentificated to vote";
       }
     },
     voted() {
-      this.votesGames.forEach((votesGame) => {
-        if (
-          votesGame.game_id == this.game.id &&
-          votesGame.user_id == this.user.id
-        ) {
+      this.votesGamesUser.forEach((votesGame) => {
+        if (votesGame.game_id == this.game.id) {
           if (votesGame.vote == 1) {
             document.querySelector(".positif").classList.add("checked");
           } else {
@@ -231,6 +224,7 @@ export default {
   },
   mounted() {
     this.fetchVotesGames();
+    console.log('ok')
     this.voted();
   },
 };
