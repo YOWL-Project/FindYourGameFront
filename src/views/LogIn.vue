@@ -73,9 +73,7 @@
             <input type="checkbox" v-model="remember" /> Remember me
           </label>
         </div>
-        <button class="w-25 btn btn-lg btn-primary" type="submit">
-          LET'S GO
-        </button>
+        <button class="w-25 btn btn-lg btn-primary" type="submit">LET'S GO</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
       </form>
     </div>

@@ -8,6 +8,8 @@ import Games from "../views/Games.vue";
 import Topics from "../views/Topics.vue";
 import Topic from "../views/Topic.vue";
 import Admin from "../views/Admin.vue"
+import CRUDUsers from "@/components/CRUDUsers.vue"
+import Dashboard from "@/components/Dashboard.vue"
 import Logout from "../views/Logout.vue"
 
 Vue.use(VueRouter);
@@ -54,11 +56,21 @@ const routes = [
     component: Topic,
   },
   {
-    path: "/admin",
+    path: "/admin", // a protéger admin
     name: "Admin",
     component: Admin,
   },
-  {  
+  {
+    path: "/admin/users", // a protéger admin
+    name: "CRUDUsers",
+    component: CRUDUsers,
+  },
+  {
+    path: "/admin/dashboard", // a protéger admin
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {
     path: "/logout",
     name: "Logout",
     component: Logout,

@@ -1,11 +1,6 @@
 <template>
   <div id="navigation">
-    <img
-      src="../assets/Logo.svg"
-      alt="Logo FindYourGame"
-      width="75"
-      height="75"
-    />
+    <img src="../assets/Logo.svg" alt="Logo FindYourGame" width="75" height="75" />
     <ul>
       <li><router-link to="/">HOME</router-link></li>
       <li><router-link to="/games">GAMES</router-link></li>
@@ -17,7 +12,7 @@
     <div class="profile">
       <ul v-if="authentificated">
         <li>Hello {{ user.username }} !</li>
-        <li><router-link to="/">PROFILE</router-link></li>
+        <li><router-link to="/admin" v-if="user.isadmin === 1">ADMIN</router-link></li>
         <li><router-link to="/logout">LOGOUT</router-link></li>
       </ul>
       <ul v-else>
