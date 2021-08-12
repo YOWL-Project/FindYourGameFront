@@ -63,7 +63,6 @@ export default {
       ],
     };
     this.renderChart(chartData, this.options);
-    console.log("test")
   },
 };
 </script>
