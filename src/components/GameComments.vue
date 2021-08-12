@@ -108,13 +108,17 @@
                 v-if="comment.topic_id == topic.id"
               >
                 <div class="col-7" align="left">
-                  {{ comment.username }} on "{{ topic.title }}"
+                  {{ comment.username }} on "<router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link>"
                 </div>
                 <div class="col-5" align="right">
                   {{ getLastUpdate(comment.updated_at) }}
                 </div>
                 <div class="col-12">
-                  <p>{{ comment.content.slice(0, 50) }}...</p>
+                  <p @dblclick="changeContent = true" v-if="!changeContent">{{ comment.content.slice(0, 50) }}...</p>
+                  <p class="instructions" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+                  Double click to change your comment
+                  </p>
+                  <textarea id="comment" placeholder="Your changes here" v-show="changeContent == true" v-model="content2"/>
                 </div>
                 <div class="col-4">
                   <img src="../assets/positif.svg" width="25" height="25" />
@@ -126,9 +130,8 @@
                   {{ getNbVotesComments(comment.id).votes_minus }}
                   "useless" votes
                 </div>
-                <div class="col-4">
-                  <img src="../assets/lol.svg" width="25" height="25" /> XX "Lol
-                  !" votes
+                <div class="col-4 d-flex" v-if=" authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+                  <div class="col"><img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({ id: comment.id, token: user.token })" /></div>
                 </div>
               </div>
             </div>
@@ -155,6 +158,8 @@ export default {
       hascomments: false,
       title: "",
       content: "",
+      content2: "",
+      changeContent: false,
     };
   },
   computed: {
@@ -178,7 +183,8 @@ export default {
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
       addTopic: "topics/ADD_TOPIC",
-      addComment: "comments/ADD_COMMENT"
+      addComment: "comments/ADD_COMMENT",
+      deleteComment: "comments/DELETE_COMMENT",
     }),
     formatDate: (value) => {
       if (value) {
@@ -188,15 +194,7 @@ export default {
     getLastUpdate(update) {
       return moment(String(update)).calendar();
     },
-    // getUser(user_id) {
-    //   let username = "";
-    //   this.users.forEach((user) => {
-    //     if (user.id == user_id) {
-    //       username += user.username;
-    //     }
-    //   });
-    //   return username;
-    // },
+
     getNbComments(topic_id) {
       let nbcomments = 0;
       this.comments.forEach((comment) => {
@@ -225,34 +223,36 @@ export default {
       return nb_votes;
     },
 
-    postTopic() {
-      if (this.title == "" || this.content == "") {
-        alert("Please add a title and a content");
-        return;
-      }
+    // POST D'UN TOPIC CONTENANT UN COMMENTAIRE
+    // postTopic() {
+    //   if (this.title == "" || this.content == "") {
+    //     alert("Please add a title and a content");
+    //     return;
+    //   }
 
-      this.addTopic({
-        token: this.user.token,
-        body: {
-          game_id: this.game.id,
-          user_id: this.user.id,
-          title: this.title,
-        },
-      }),
+    //   this.addTopic({
+    //     token: this.user.token,
+    //     body: {
+    //       game_id: this.game.id,
+    //       user_id: this.user.id,
+    //       title: this.title,
+    //     },
+    //   }),
       
-      this.addComment({
-        token: this.user.token,
-        body: {
-          topic_id: this.topic.id,
-          user_id: this.user.id,
-          content: this.content,
-        },
-      }),
+    //   this.addComment({
+    //     token: this.user.token,
+    //     body: {
+    //       topic_id: this.topic.id,
+    //       user_id: this.user.id,
+    //       content: this.content,
+    //     },
+    //   }),
 
-        (this.title = "");
-        (this.content = "");
-    },
+    //     (this.title = "");
+    //     (this.content = "");
+    // },
   },
+
   mounted() {
     this.fetchTopics();
     this.fetchComments();
@@ -349,5 +349,16 @@ a {
   margin: 2%;
   padding: 2%;
   min-width: 80%;
+}
+
+.instructions {
+  font-size: 0.7em;
+  font-style: italic;
+  color: #cccccc;
+  padding-left: 10px;
+}
+
+img {
+  cursor: pointer;
 }
 </style>

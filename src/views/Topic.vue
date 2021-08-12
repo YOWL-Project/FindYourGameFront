@@ -87,7 +87,7 @@
             class="instructions"
             v-if="
               authentificated == true &&
-              (user.id == topic.user_id || user.isadmin == 1)
+              (user.id == comment.user_id || user.isadmin == 1)
             "
           >
             Double click to change your comment
@@ -113,7 +113,7 @@
           class="col-3 d-flex"
           v-if="
             authentificated == true &&
-            (user.id == topic.user_id || user.isadmin == 1)
+            (user.id == comment.user_id || user.isadmin == 1)
           "
         >
           <img
@@ -128,7 +128,7 @@
           class="col-3 d-flex"
           v-if="
             authentificated == true &&
-            (user.id == topic.user_id || user.isadmin == 1)
+            (user.id == comment.user_id || user.isadmin == 1)
           "
         >
           <img
