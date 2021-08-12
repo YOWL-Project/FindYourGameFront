@@ -182,8 +182,8 @@ export default {
       fetchTopics: "topics/FETCH_TOPICS",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
-      addTopic: "topics/ADD_TOPIC",
-      addComment: "comments/ADD_COMMENT",
+      addTopicComment: "topics/ADD_TOPIC_COMMENT",
+     // addComment: "comments/ADD_COMMENT",
       deleteComment: "comments/DELETE_COMMENT",
     }),
     formatDate: (value) => {
@@ -224,33 +224,35 @@ export default {
     },
 
     // POST D'UN TOPIC CONTENANT UN COMMENTAIRE
-    // postTopic() {
-    //   if (this.title == "" || this.content == "") {
-    //     alert("Please add a title and a content");
-    //     return;
-    //   }
+    postTopic() {
+      if (this.title == "" || this.content == "") {
+        alert("Please add a title and a content");
+        return;
+      }
 
-    //   this.addTopic({
-    //     token: this.user.token,
-    //     body: {
-    //       game_id: this.game.id,
-    //       user_id: this.user.id,
-    //       title: this.title,
-    //     },
-    //   }),
+      this.addTopicComment({
+        token: this.user.token,
+        body: {
+          game_id: this.game.id,
+          user_id: this.user.id,
+          title: this.title,
+        },
+        bodycomment: {
+          user_id: this.user.id,
+          content: this.content,
+        },
+      })
+
+     // .then()
       
-    //   this.addComment({
-    //     token: this.user.token,
-    //     body: {
-    //       topic_id: this.topic.id,
-    //       user_id: this.user.id,
-    //       content: this.content,
-    //     },
-    //   }),
+      // this.addComment({
+      //   token: this.user.token,
+      //   body: 
+      // }),
 
-    //     (this.title = "");
-    //     (this.content = "");
-    // },
+        (this.title = "");
+        (this.content = "");
+    },
   },
 
   mounted() {

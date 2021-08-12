@@ -7,27 +7,7 @@
       <div v-if="!authentificated">
         <h2><router-link to="/subscribe">Join us</router-link> to enjoy all the possibilities of FindYourGame !</h2>
       </div>
-      <form style="position: relative">
-        <input
-          type="text"
-          class="form-control"
-          name="search"
-          id="search"
-          placeholder="Wich game are yoour looking for ?"
-        />
-        <img
-          style="
-            position: absolute;
-            top: 50%;
-            right: 1rem;
-            transform: translateY(-50%);
-            cursor: pointer;
-          "
-          src="../assets/search_black_24dp.svg"
-          alt=""
-          width="30px"
-        />
-      </form>
+
       <div>
         <h2>TRENDING GAMES ON DISCUSSIONS</h2>
         <div class="" style="display: flex" id="trendinggames">
@@ -64,7 +44,7 @@
         <div id="hottopics">
           <p>
             See all topics
-            <img src="../assets/arrow-right.svg" alt="" width="20px" />
+            <router-link to="/topics"><img src="../assets/arrow-right.svg" alt="" width="20px" /></router-link>
           </p>
         </div>
       </div>
@@ -172,6 +152,7 @@ export default {
       nbgamesdisplayed: 0,
       windowWidth: window.innerWidth,
       // user: this.$store.state.user,
+      search: "",
     };
   },
   computed: {

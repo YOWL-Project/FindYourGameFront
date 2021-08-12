@@ -1,5 +1,8 @@
 <template>
   <div class="container-fluid">
+    <div class="row" id="search">
+    <Search />
+    </div>
     <!-- <div> -->
     <!-- Intégration du component GameSimple-->
     <div class="row">
@@ -110,13 +113,13 @@
 import { mapState, mapActions } from "vuex";
 // import du component GameSimple
 import GameSimple from "@/components/GameSimple.vue";
-// import pagination
-// import SlidingPagination from "vue-sliding-pagination";
+import Search from "@/components/Search.vue"
 
 export default {
   name: "Games",
   components: {
     GameSimple,
+    Search,
   },
   data() {
     return {
