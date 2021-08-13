@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row" id="search">
+    <div class="row mb-5" id="search">
     <Search :games="games" v-on:search="searchGame($event)" />
     </div>
     <!-- <div> -->
