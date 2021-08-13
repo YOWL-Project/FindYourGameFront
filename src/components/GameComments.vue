@@ -2,20 +2,14 @@
   <div class="container-fluid">
     <div class="col">
       <!-- Row #1 : Form de création de topics -->
-      <div class="row" v-if="authentificated == true">
-        <h2>WHAT'S ON YOUR MIND ?</h2>
+      <div class="row d-flex flex-column" v-if="authentificated == true">
+        <h2>YOU WANT TO START THE DISCUSSION ?</h2><br />
+        <p>Post your own topic by writing your subject below</p>
         <input
           class="subject"
           type="text"
           v-model="title"
           placeholder="Subject of the discussion"
-        />
-        <textarea
-          class="form-control"
-          id="comment"
-          rows="4"
-          v-model="content"
-          placeholder="Your comment here"
         />
       </div>
 
@@ -42,18 +36,21 @@
               v-bind:hastopic="(hastopic = true)"
             >
               <p class="topic-title"><router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link></p>
+              <p v-if="getNbComments(topic.id) == 0">Don't hesitate to add a comment ! Click on the title of the topic</p>
               <p class="topic-details">
                 {{ topic.username }} - {{ formatDate(topic.created_at) }} Last
                 update
                 {{ getLastUpdate(topic.updated_at) }}
               </p>
             </div>
+            <!-- S'il n'y a pas de commentaires -->
             <div
               class="col-2 align-self-center"
               v-if="getNbComments(topic.id) == 0"
             >
               <p class="nb-comments" style="font-size: 0.8rem">No comments</p>
             </div>
+            <!-- S'il y a des commentaires -->
             <div
               class="col-2 align-self-center"
               v-else
@@ -95,7 +92,7 @@
           :key="topic.id"
           :topic="topic"
         >
-          <!-- kkk -->
+          <!-- Modèle d'un topic -->
           <div v-if="topic.game_id == game.id">
             <div
               v-for="comment in comments"
@@ -107,18 +104,14 @@
                 id="hottopics"
                 v-if="comment.topic_id == topic.id"
               >
-                <div class="col-7" align="left">
+                <div class="col-7" align="left" id="commentdetails">
                   {{ comment.username }} on "<router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link>"
                 </div>
                 <div class="col-5" align="right">
                   {{ getLastUpdate(comment.updated_at) }}
                 </div>
-                <div class="col-12">
-                  <p @dblclick="changeContent = true" v-if="!changeContent">{{ comment.content.slice(0, 50) }}...</p>
-                  <p class="instructions" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
-                  Double click to change your comment
-                  </p>
-                  <textarea id="comment" placeholder="Your changes here" v-show="changeContent == true" v-model="content2"/>
+                <div class="col-12" id="commentextract">
+                  <p>{{ comment.content.slice(0, 50) }}...</p>
                 </div>
                 <div class="col-4">
                   <img src="../assets/positif.svg" width="25" height="25" />
@@ -158,8 +151,6 @@ export default {
       hascomments: false,
       title: "",
       content: "",
-      content2: "",
-      changeContent: false,
     };
   },
   computed: {
@@ -182,8 +173,7 @@ export default {
       fetchTopics: "topics/FETCH_TOPICS",
       fetchComments: "comments/FETCH_COMMENTS",
       fetchVotesComments: "votesComments/FETCH_VOTESCOMMENTS",
-      addTopicComment: "topics/ADD_TOPIC_COMMENT",
-     // addComment: "comments/ADD_COMMENT",
+      addTopic: "topics/ADD_TOPIC",
       deleteComment: "comments/DELETE_COMMENT",
     }),
     formatDate: (value) => {
@@ -223,36 +213,24 @@ export default {
       return nb_votes;
     },
 
-    // POST D'UN TOPIC CONTENANT UN COMMENTAIRE
     postTopic() {
-      if (this.title == "" || this.content == "") {
-        alert("Please add a title and a content");
+      if (this.title == "") {
+        alert("Please add a title to post your topic");
         return;
       }
 
-      this.addTopicComment({
+      this.addTopic({
         token: this.user.token,
         body: {
           game_id: this.game.id,
           user_id: this.user.id,
           title: this.title,
         },
-        bodycomment: {
-          user_id: this.user.id,
-          content: this.content,
-        },
-      })
-
-     // .then()
-      
-      // this.addComment({
-      //   token: this.user.token,
-      //   body: 
-      // }),
-
+      }),
         (this.title = "");
-        (this.content = "");
     },
+
+
   },
 
   mounted() {
@@ -279,6 +257,7 @@ p {
 
 a {
   color: white;
+  text-decoration: underline;
 }
 
 .subject {
@@ -300,6 +279,7 @@ a {
 }
 
 .postit {
+  color: white;
   margin: 3%;
   padding: 8px 18px;
   border: 1px solid linear-gradient(0.25turn, #00ffff, #ff005c);
@@ -341,8 +321,9 @@ a {
 }
 
 .topic-title {
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: #cccccc;
+  font-weight: 700;
 }
 
 #notopics {
@@ -362,5 +343,14 @@ a {
 
 img {
   cursor: pointer;
+}
+
+#commentextract {
+  font-size: 1.3em;
+  padding-top: 10px;
+}
+
+#commentdetails {
+  font-style: italic;
 }
 </style>

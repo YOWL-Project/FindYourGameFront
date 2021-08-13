@@ -60,30 +60,7 @@ export default {
                     }
                 })
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            dispatch("FETCH_TOPICS", data.data)
-        },
-
-        // AJOUT D'UN TOPIC + COMMENT
-        ADD_TOPIC_COMMENT({ dispatch }, body) {
-            console.log(dispatch)
-            console.log(body)
-            // apiLaravel.post('/topics/', body.body,
-            //     {
-            //         headers: {
-            //             'Authorization': `Bearer ${body.token}`
-            //         }
-            //     })
-            //     .then(response => {
-            //         dispatch("FETCH_TOPICS");
-            //         dispatch("comments/ADD_COMMENT", {
-            //             topic_id: response.data.data.id,
-            //             user_id: body.bodycomment.user_id,
-            //             content: body.bodycomment.content,
-            //           })
-            //     })
-            //     .catch((error) => console.log(JSON.stringify(error.message)));
-
-
+            dispatch("GET_TOPIC", data.data.id)
         },
     },
 }

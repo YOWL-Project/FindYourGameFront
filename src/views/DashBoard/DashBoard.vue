@@ -76,22 +76,22 @@ export default {
   },
   methods: {
     bar() {
-      this.$router.push("/bar");
+      this.$router.push("/admin/dashboard/bar");
     },
     line() {
-      this.$router.push("/line");
+      this.$router.push("/admin/dashboard/line");
     },
     pie() {
-      this.$router.push("/pie");
+      this.$router.push("/admin/dashboard/pie");
     },
     visits() {
-      this.$router.push("/visit");
+      this.$router.push("/admin/dashboard/visit");
     },
     sign() {
-      this.$router.push("/sign");
+      this.$router.push("/admin/dashboard/sign");
     },
     rate() {
-      this.$router.push("/rate");
+      this.$router.push("/admin/dashboard/rate");
     },
   },
   async mounted() {

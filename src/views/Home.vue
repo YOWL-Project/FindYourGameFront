@@ -2,10 +2,16 @@
   <div class="home">
     <div class="content container text-left">
       <div>
-        <h1><span class="plus">+</span> Welcome <span v-if="authentificated">{{user.username}}</span></h1>
+        <h1>
+          <span class="plus">+</span> Welcome
+          <span v-if="authentificated">{{ user.username }}</span>
+        </h1>
       </div>
       <div v-if="!authentificated">
-        <h2><router-link to="/subscribe">Join us</router-link> to enjoy all the possibilities of FindYourGame !</h2>
+        <h2>
+          <router-link to="/subscribe">Join us</router-link> to enjoy all the
+          possibilities of FindYourGame !
+        </h2>
       </div>
 
       <div>
@@ -42,16 +48,46 @@
       <div>
         <h2>CHECK THE HOT TOPICS</h2>
         <div id="hottopics">
+          <div style="display: flex" id="newgames">
+            <img
+              src="../assets/arrow-left.svg"
+              alt=""
+              width="40px"
+              class="mr-2"
+              @click="translategame(4, 'backward')"
+            />
+            <div class="" style="overflow: hidden">
+              <div
+                class="gamelittle"
+                :style="'transform : translateX(' + translateX4 + 'rem)'"
+              >
+                <TopicLittle
+                  v-for="topic in topics.slice(0, nbgamesnew)"
+                  :key="topic.id"
+                  :topic="topic"
+                />
+              </div>
+            </div>
+            <img
+              src="../assets/arrow-right.svg"
+              alt=""
+              width="40px"
+              class="ml-2"
+              @click="translategame(4, 'forward')"
+            />
+          </div>
           <p>
             See all topics
-            <router-link to="/topics"><img src="../assets/arrow-right.svg" alt="" width="20px" /></router-link>
+            <router-link to="/topics"
+              ><img src="../assets/arrow-right.svg" alt="" width="20px"
+            /></router-link>
           </p>
         </div>
       </div>
-      <div>
+      <!-- <div>
         <h2>FRESH OFF THE BAKERY</h2>
         <div id="commentsnew"></div>
-      </div>
+      </div> -->
       <div>
         <h2>BEST NEW GAMES</h2>
         <div style="display: flex" id="newgames">
@@ -133,11 +169,13 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import GameLittle from "@/components/GameLittle.vue";
+import TopicLittle from "@/components/TopicLittle.vue";
 
 export default {
   name: "Home",
   components: {
     GameLittle,
+    TopicLittle,
   },
   data() {
     return {
@@ -148,6 +186,7 @@ export default {
       translateX1: 0,
       translateX2: 0,
       translateX3: 0,
+      translateX4: 0,
       nbgamesnew: 10,
       nbgamesdisplayed: 0,
       windowWidth: window.innerWidth,
@@ -164,6 +203,12 @@ export default {
       user: (state) => state.user,
       authentificated: (state) => state.authentificated,
     }),
+    ...mapState("topics", {
+      topics: (state) => state.topics,
+    }),
+    ...mapState("comments", {
+      comments: (state) => state.comments,
+    }),
     // ...mapGetters({
     //   user: "authentification/GET_USER",
     // }),
@@ -172,6 +217,11 @@ export default {
     ...mapActions({
       fetchGames: "games/FETCH_GAMES",
       fetchGamesFiltered: "games/FETCH_GAMES_FILTERED",
+    }),
+    // FETCH DES INFOS
+    ...mapActions({
+      fetchTopics: "topics/FETCH_TOPICS",
+      fetchComments: "comments/FETCH_COMMENTS",
     }),
     translategame(nbCaroussel, sens) {
       if (nbCaroussel == 1) {
@@ -182,7 +232,10 @@ export default {
           }
         } else if (sens == "forward") {
           this.translateX1 -= 21;
-          if (this.translateX1 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+          if (
+            this.translateX1 <
+            -21 * (this.nbgamesnew - this.nbgamesdisplayed)
+          ) {
             this.translateX1 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
           }
         }
@@ -194,7 +247,10 @@ export default {
           }
         } else if (sens == "forward") {
           this.translateX2 -= 21;
-          if (this.translateX2 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+          if (
+            this.translateX2 <
+            -21 * (this.nbgamesnew - this.nbgamesdisplayed)
+          ) {
             this.translateX2 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
           }
         }
@@ -206,8 +262,26 @@ export default {
           }
         } else if (sens == "forward") {
           this.translateX3 -= 21;
-          if (this.translateX3 < -21 * (this.nbgamesnew - this.nbgamesdisplayed)) {
+          if (
+            this.translateX3 <
+            -21 * (this.nbgamesnew - this.nbgamesdisplayed)
+          ) {
             this.translateX3 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
+          }
+        }
+      } else if (nbCaroussel == 4) {
+        if (sens == "backward") {
+          this.translateX4 += 21;
+          if (this.translateX4 > 0) {
+            this.translateX4 = 0;
+          }
+        } else if (sens == "forward") {
+          this.translateX4 -= 21;
+          if (
+            this.translateX4 <
+            -21 * (this.nbgamesnew - this.nbgamesdisplayed)
+          ) {
+            this.translateX4 = -21 * (this.nbgamesnew - this.nbgamesdisplayed);
           }
         }
       }
@@ -238,6 +312,8 @@ export default {
       category: this.category,
       sortBy: this.sortBy2,
     });
+    this.fetchTopics();
+    this.fetchComments();
   },
 };
 </script>
