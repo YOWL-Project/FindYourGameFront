@@ -1,13 +1,13 @@
 <template>
 <div class="container-fluid">
-        <form style="position: relative">
+        <div style="position: relative">
         <input
           type="text"
           class="form-control"
           name="search"
           id="search"
-          v-model="search"
-          @keyup.enter="searchGame()"
+          v-model.trim="search"
+          @keyup.enter="$emit('search', search)"
           placeholder="Wich game are you looking for ?"
         />
         <img
@@ -18,33 +18,50 @@
             transform: translateY(-50%);
             cursor: pointer;
           "
+          @click="searchGame()"
           src="../assets/search_black_24dp.svg"
           alt=""
           width="30px"
         />
-      </form>
+      </div>
     </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 export default {
-    name: "Search",
+  name: "Search",
 
-    data() {
-        return {
-            search: "",
-        }
+  data() {
+      return {
+          search: "",
+      }
 
-    },
+  },
+  props: {
+    games: [],
+  },
 
-    // SEARCH DES GAMES
-    methods: {
-    searchGame() {
-      alert('OK');
-    }
-    },
+  methods: {
+    ...mapActions({
+      fetchGames: "games/FETCH_GAMES",
+    }),
 
+  // SEARCH DES GAMES
+  // searchGame() {
+  //   //console.log(this.search)
+  //   let test = this.games.filter(game => game.title == this.search)
+  //   console.log(test[0])
+  //   },
+
+  computed: {
+  ...mapState("games", {
+    games: (state) => state.games,
+  }),
+  },
 }
+};
 </script>
 
 <style>

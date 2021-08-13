@@ -1,11 +1,11 @@
 <template>
   <div class="container-fluid">
     <div class="row" id="search">
-    <Search />
+    <Search :games="games" v-on:search="searchGame($event)" />
     </div>
     <!-- <div> -->
     <!-- Intégration du component GameSimple-->
-    <div class="row">
+    <div class="row" v-if="search == false">
       <GameSimple
         v-for="game in games.slice(offset, nbGamePerPage + offset)"
         :key="game.id"
@@ -14,10 +14,18 @@
     </div>
     <!-- Fin component GameSimple -->
 
+    <!-- Intérgation de search -->
+    <div class="row" v-if="search == true">
+      <GameSimple
+        :game="searchgame"
+      />
+    </div>
+
     <!-- pagination -->
     <div
       class="col-12 text-center"
       style="display: flex; justify-content: center"
+      v-if="search == false"
     >
       <p
         class="mx-2 page-item"
@@ -25,7 +33,8 @@
       >
         {{ gobackward }}
       </p>
-      <p
+      
+      <p 
         class="mx-2 page-item"
         @click="
           (currentPage -= 1),
@@ -37,6 +46,7 @@
       >
         Previous
       </p>
+      
       <div
         class="pagination mb-5"
         v-for="(page, index) in getNbPages(nbGamePerPage, countGames())"
@@ -103,7 +113,7 @@
       >
         >>
       </p>
-    </div>
+      </div>
     <!-- fin pagination -->
   </div>
 </template>
@@ -133,6 +143,8 @@ export default {
       platform: "all",
       category: "",
       sortBy: "",
+      search: false,
+      searchgame: {}
     };
   },
   computed: {
@@ -174,6 +186,18 @@ export default {
       } else {
         this.nbGamePerPage = 15;
       }
+    },
+    searchGame(search) {
+    //console.log(search)
+    let findGame = this.games.some(game => game.title == search)
+    if(findGame == true) {
+      this.search = true
+      this.searchgame = this.games.find(game => game.title == search)
+    }
+    else {
+      this.search = false
+    }
+    //console.log(test)
     },
   },
   mounted() {
