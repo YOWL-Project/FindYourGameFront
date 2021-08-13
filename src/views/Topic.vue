@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <h1 @dblclick="changeTitle = true" v-if="!changeTitle">{{ topic.title }}</h1>
+      <h1 @dblclick="changeTopic()" v-if="!changeTitle">{{ topic.title }}</h1>
       <input id="title" placeholder="Your changes here" v-show="changeTitle == true" v-model="title" />
       <span class="fav"><img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="35" height="35" /></span>
       <span class="fav"><img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="favori" width="35" height="35" /></span>
@@ -92,6 +92,12 @@ export default {
   }),
 
   methods: {
+    changeTopic() {
+      if (this.authentificated == true && (this.user.id == this.topic.user_id || this.user.isadmin == 1)) {
+        this.changeTitle = true;
+      }
+      
+    },
     //check if authenticate to change comment
     changeComment(comment) {
       if (this.authentificated == true && (this.user.id == comment.user_id || this.user.isadmin == 1)) {
