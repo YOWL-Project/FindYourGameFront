@@ -3,7 +3,8 @@
     <div class="col">
       <!-- Row #1 : Form de création de topics -->
       <div class="row d-flex flex-column" v-if="authentificated == true">
-        <h2>YOU WANT TO START THE DISCUSSION ?</h2><br />
+        <h2>YOU WANT TO START THE DISCUSSION ?</h2>
+        <br />
         <p>Post your own topic by writing your subject below</p>
         <input
           class="subject"
@@ -35,8 +36,15 @@
               align="left"
               v-bind:hastopic="(hastopic = true)"
             >
-              <p class="topic-title"><router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link></p>
-              <p v-if="getNbComments(topic.id) == 0">Don't hesitate to add a comment ! Click on the title of the topic</p>
+              <p class="topic-title">
+                <router-link :to="'/topic/' + topic.id">{{
+                  topic.title
+                }}</router-link>
+              </p>
+              <p v-if="getNbComments(topic.id) == 0">
+                Don't hesitate to add a comment ! Click on the title of the
+                topic
+              </p>
               <p class="topic-details">
                 {{ topic.username }} - {{ formatDate(topic.created_at) }} Last
                 update
@@ -74,8 +82,11 @@
         <div style="display: inline-flex; width: 100%" v-if="hastopic == true">
           <p>See all topics on this game</p>
           <span class="arrow-right"
-            ><a href=""
-              ><img src="../assets/arrow-right.svg" width="25" height="25" /></a
+            ><router-link :to="'/topics/'"
+              ><img
+                src="../assets/arrow-right.svg"
+                width="25"
+                height="25" /></router-link
           ></span>
         </div>
       </div>
@@ -105,7 +116,10 @@
                 v-if="comment.topic_id == topic.id"
               >
                 <div class="col-7" align="left" id="commentdetails">
-                  {{ comment.username }} on "<router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link>"
+                  {{ comment.username }} on "<router-link
+                    :to="'/topic/' + topic.id"
+                    >{{ topic.title }}</router-link
+                  >"
                 </div>
                 <div class="col-5" align="right">
                   {{ getLastUpdate(comment.updated_at) }}
@@ -123,8 +137,23 @@
                   {{ getNbVotesComments(comment.id).votes_minus }}
                   "useless" votes
                 </div>
-                <div class="col-4 d-flex" v-if=" authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
-                  <div class="col"><img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({ id: comment.id, token: user.token })" /></div>
+                <div
+                  class="col-4 d-flex"
+                  v-if="
+                    authentificated == true &&
+                    (user.id == comment.user_id || user.isadmin == 1)
+                  "
+                >
+                  <div class="col">
+                    <img
+                      src="../assets/delete.svg"
+                      width="25"
+                      height="25"
+                      @click="
+                        deleteComment({ id: comment.id, token: user.token })
+                      "
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -229,8 +258,6 @@ export default {
       }),
         (this.title = "");
     },
-
-
   },
 
   mounted() {

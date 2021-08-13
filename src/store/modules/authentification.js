@@ -8,7 +8,7 @@ export default {
     authentificated: false,
   },
   mutations: {
-    SET_USER: (state, user) => ((state.user = user.profile), (state.authentificated = user.authentificated), (console.log(state.authentificated))),
+    SET_USER: (state, user) => ((state.user = user.profile), (state.authentificated = user.authentificated)),
     SET_USERS: (state, users) => (state.users = users),
     UPDATE_USER: (state, newuser) => {
       let index = state.users.findIndex((user) => user.id === newuser.id);

@@ -57,7 +57,6 @@ export default {
       }
     },
     reloadPage(platform, category, sortBy) {
-      console.log(platform);
       window.location = `/games/${platform}/${category}/${sortBy}`
     },
     // ...mapActions({
