@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row" id="search">
+    <div class="row mb-5" id="search">
     <Search />
     </div>
     <!-- <div> -->

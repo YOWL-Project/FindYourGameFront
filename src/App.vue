@@ -10,6 +10,9 @@
       </div>
     </div>
     <router-view />
+    <div>
+      <Footer />
+    </div>
   </div>
 </template>
 
@@ -17,11 +20,13 @@
 // import { mapGetters } from "vuex";
 import Navbar from "@/components/Navbar.vue";
 import NavMobile from "@/components/NavMobile.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
   components: {
     Navbar,
     NavMobile,
+    Footer,
   },
   data() {
     return {
