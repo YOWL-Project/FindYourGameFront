@@ -7,10 +7,10 @@ import Game from "../views/Game.vue";
 import Games from "../views/Games.vue";
 import Topics from "../views/Topics.vue";
 import Topic from "../views/Topic.vue";
-import Admin from "../views/Admin.vue"
-import CRUDUsers from "@/components/CRUDUsers.vue"
-import Dashboard from "@/components/Dashboard.vue"
-import Logout from "../views/Logout.vue"
+import Admin from "../views/Admin.vue";
+import CRUDUsers from "@/components/CRUDUsers.vue";
+// import Dashboard from "@/components/Dashboard.vue";
+import Logout from "../views/Logout.vue";
 
 Vue.use(VueRouter);
 
@@ -65,15 +65,50 @@ const routes = [
     name: "CRUDUsers",
     component: CRUDUsers,
   },
-  {
-    path: "/admin/dashboard", // a protéger admin
-    name: "Dashboard",
-    component: Dashboard,
-  },
+  // {
+  //   path: "/admin/dashboard", // a protéger admin
+  //   name: "Dashboard",
+  //   component: Dashboard,
+  // },
   {
     path: "/logout",
     name: "Logout",
     component: Logout,
+  },
+  {
+    path: "/bar",
+    name: "Bar",
+    component: () => import("../views/DashBoard/Bar.vue"),
+  },
+  {
+    path: "/line",
+    name: "Line",
+    component: () => import("../views/DashBoard/Line.vue"),
+  },
+  {
+    path: "/pie",
+    name: "Pie",
+    component: () => import("../views/DashBoard/Pie.vue"),
+  },
+  {
+    path: "/visit",
+    name: "Visit",
+    component: () => import("../views/DashBoard/Visit.vue"),
+  },
+  {
+    path: "/sign",
+    name: "Sign",
+    component: () => import("../views/DashBoard/Sign.vue"),
+  },
+  {
+    path: "/rate",
+    name: "Rate",
+    component: () => import("../views/DashBoard/Rate.vue"),
+  },
+  {
+    path: "/admin/dashboard",
+    name: "DashBoard",
+    component: () => import("../views/DashBoard/DashBoard.vue"),
   },
 ];
 
