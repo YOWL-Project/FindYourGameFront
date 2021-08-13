@@ -60,7 +60,7 @@ export default {
                     }
                 })
                 .catch((error) => console.log(JSON.stringify(error.message)));
-            dispatch("FETCH_TOPICS", data.data)
+            dispatch("GET_TOPIC", data.data.id)
         },
     },
 }

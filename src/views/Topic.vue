@@ -2,25 +2,9 @@
   <div class="container">
     <div class="row">
       <h1 @dblclick="changeTitle = true" v-if="!changeTitle">{{ topic.title }}</h1>
-      <input id="title" placeholder="Your changes here" v-show="changeTitle == true" v-model="title"/>
-      <span class="fav"
-        ><img
-          @click="putFav"
-          v-if="!favTopic"
-          src="../assets/nonfavori.svg"
-          alt="non favori"
-          width="35"
-          height="35"
-      /></span>
-      <span class="fav"
-        ><img
-          @click="unFav"
-          v-if="favTopic"
-          src="../assets/favori.svg"
-          alt="favori"
-          width="35"
-          height="35"
-      /></span>
+      <input id="title" placeholder="Your changes here" v-show="changeTitle == true" v-model="title" />
+      <span class="fav"><img @click="putFav" v-if="!favTopic" src="../assets/nonfavori.svg" alt="non favori" width="35" height="35" /></span>
+      <span class="fav"><img @click="unFav" v-if="favTopic" src="../assets/favori.svg" alt="favori" width="35" height="35" /></span>
     </div>
     <div>
       <p class="instructions" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)">
@@ -29,33 +13,13 @@
     </div>
     <h2>Posted by : {{ topic.username }}</h2>
     <h3>posted on {{ formatDate(topic.created_at) }}</h3>
-    <div
-      class="row my-4"
-      v-if="
-        authentificated == true &&
-        (user.id == topic.user_id || user.isadmin == 1)
-      "
-    >
-      <span class="tags"
-        ><img src="../assets/edit.svg" width="25" height="25" @click="pushTopic(topic.id)"
-      /></span>
-      <span class="tags"
-        ><img
-          src="../assets/delete.svg"
-          width="25"
-          height="25"
-          @click="deleteThisTopic(topic.id)"
-      /></span>
+    <div class="row my-4" v-if="authentificated == true && (user.id == topic.user_id || user.isadmin == 1)">
+      <span class="tags"><img src="../assets/edit.svg" width="25" height="25" @click="pushTopic(topic.id)" /></span>
+      <span class="tags"><img src="../assets/delete.svg" width="25" height="25" @click="deleteThisTopic(topic.id)" /></span>
     </div>
 
     <div class="row" id="yourpost" v-if="authentificated == true">
-      <textarea
-        class="form-control"
-        id="comment"
-        rows="4"
-        placeholder="Your comment here"
-        v-model="content"
-      />
+      <textarea class="form-control" id="comment" rows="4" placeholder="Your comment here" v-model="content" />
     </div>
 
     <div class="row">
@@ -63,41 +27,20 @@
     </div>
 
     <!-- Début de la section commentaires -->
-    <div
-      class="container"
-      v-for="comment in comments"
-      :key="comment.id"
-      :comment="comment"
-    >
-      <div
-        class="row"
-        id="comments"
-        v-if="comment.topic_id == topic.id"
-        v-bind:hascomments="(hascomments = true)"
-      >
+    <div class="container" v-for="comment in comments" :key="comment.id" :comment="comment">
+      <div class="row" id="comments" v-if="comment.topic_id == topic.id" v-bind:hascomments="(hascomments = true)">
         <div class="col-7" align="left">{{ comment.username }}</div>
         <div class="col-5" align="right">
           {{ formatDate(comment.created_at) }}
         </div>
         <div class="col-12">
-          <p @dblclick="changeContent = true" v-if="!changeContent">
+          <p @dblclick="changeComment(comment)" v-if="!changeContent">
             {{ comment.content }}
           </p>
-          <p
-            class="instructions"
-            v-if="
-              authentificated == true &&
-              (user.id == comment.user_id || user.isadmin == 1)
-            "
-          >
+          <p class="instructions" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
             Double click to change your comment
           </p>
-          <textarea
-            id="comment"
-            placeholder="Your changes here"
-            v-show="changeContent == true"
-            v-model="content2"
-          />
+          <textarea id="comment" placeholder="Your changes here" v-show="changeContent == comment.id" v-model="content2" />
         </div>
         <div class="col-3" v-if="authentificated == true">
           <img src="../assets/positif.svg" width="25" height="25" />
@@ -109,34 +52,12 @@
           {{ getNbVotesComments(comment.id).votes_minus }}
           "useless" votes
         </div>
-        <div
-          class="col-3 d-flex"
-          v-if="
-            authentificated == true &&
-            (user.id == comment.user_id || user.isadmin == 1)
-          "
-        >
-          <img
-            src="../assets/edit.svg"
-            width="25"
-            height="25"
-            @click="pushComment(comment.id)"
-          />
+        <div class="col-3 d-flex" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+          <img src="../assets/edit.svg" width="25" height="25" @click="pushComment(comment.id)" />
           <p class="instructions">Click to commit your changes</p>
         </div>
-        <div
-          class="col-3 d-flex"
-          v-if="
-            authentificated == true &&
-            (user.id == comment.user_id || user.isadmin == 1)
-          "
-        >
-          <img
-            src="../assets/delete.svg"
-            width="25"
-            height="25"
-            @click="deleteComment({ id: comment.id, token: user.token })"
-          />
+        <div class="col-3 d-flex" v-if="authentificated == true && (user.id == comment.user_id || user.isadmin == 1)">
+          <img src="../assets/delete.svg" width="25" height="25" @click="deleteComment({ id: comment.id, token: user.token })" />
           <p class="instructions">Click to delete your comment</p>
         </div>
       </div>
@@ -146,10 +67,7 @@
     <div class="container">
       <div class="row" id="nocomments" v-if="hascomments == false">
         <div class="col">
-          <p class="nocomments-title">
-            This topic has not been commented yet... Add your comment to start
-            the discussion !
-          </p>
+          <p class="nocomments-title">This topic has not been commented yet... Add your comment to start the discussion !</p>
         </div>
       </div>
     </div>
@@ -174,6 +92,13 @@ export default {
   }),
 
   methods: {
+    //check if authenticate to change comment
+    changeComment(comment) {
+      if (this.authentificated == true && (this.user.id == comment.user_id || this.user.isadmin == 1)) {
+        this.changeContent = comment.id;
+      }
+    },
+
     // MISE DU TOPIC EN FAV
     putFav() {
       this.favTopic = true;
@@ -278,7 +203,6 @@ export default {
         }),
         (this.title = "");
     },
-
   },
 
   computed: {
