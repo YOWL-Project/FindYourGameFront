@@ -224,7 +224,6 @@ export default {
   },
   mounted() {
     this.fetchVotesGames();
-    console.log('ok')
     this.voted();
   },
 };

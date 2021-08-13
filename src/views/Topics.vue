@@ -16,7 +16,7 @@
           <div class="container">
             <div class="row" id="hottopics">
               <div class="col-10" align="left">
-                <p class="topic-title"><router-link :to="'topic/'+topic.id">{{ topic.title }}</router-link></p>
+                <p class="topic-title"><router-link :to="'/topic/'+topic.id">{{ topic.title }}</router-link></p>
                 <p class="topic-details">
                   {{ topic.username}} - 
                   {{ formatDate(topic.created_at) }} Last update

@@ -198,7 +198,7 @@ export default {
             (today.getMonth() + 1 - birthdate[1] == 0 &&
               today.getDate() - birthdate[2] >= 0)))
       ) {
-        console.log('ok');
+        submitform
       } else {
         this.errorsForm.push("You have to be at least 13 years old.");
         submitform = false;
