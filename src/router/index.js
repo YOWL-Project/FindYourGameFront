@@ -9,8 +9,8 @@ import Topics from "../views/Topics.vue";
 import Topic from "../views/Topic.vue";
 import Admin from "../views/Admin.vue";
 import CRUDUsers from "@/components/CRUDUsers.vue";
-// import Dashboard from "@/components/Dashboard.vue";
 import Logout from "../views/Logout.vue";
+import store from "@/store/index";
 
 Vue.use(VueRouter);
 
@@ -56,59 +56,126 @@ const routes = [
     component: Topic,
   },
   {
-    path: "/admin", // a protéger admin
+    path: "/admin",
     name: "Admin",
     component: Admin,
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/admin/users", // a protéger admin
+    path: "/admin/users",
     name: "CRUDUsers",
     component: CRUDUsers,
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
-  // {
-  //   path: "/admin/dashboard", // a protéger admin
-  //   name: "Dashboard",
-  //   component: Dashboard,
-  // },
   {
     path: "/logout",
     name: "Logout",
     component: Logout,
   },
   {
-    path: "/bar",
+    path: "/admin/dashboard/bar",
     name: "Bar",
     component: () => import("../views/DashBoard/Bar.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/line",
+    path: "/admin/dashboard/line",
     name: "Line",
     component: () => import("../views/DashBoard/Line.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/pie",
+    path: "/admin/dashboard/pie",
     name: "Pie",
     component: () => import("../views/DashBoard/Pie.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/visit",
+    path: "/admin/dashboard/visit",
     name: "Visit",
     component: () => import("../views/DashBoard/Visit.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/sign",
+    path: "/admin/dashboard/sign",
     name: "Sign",
     component: () => import("../views/DashBoard/Sign.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
-    path: "/rate",
+    path: "/admin/dashboard/rate",
     name: "Rate",
     component: () => import("../views/DashBoard/Rate.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/admin/dashboard",
     name: "DashBoard",
     component: () => import("../views/DashBoard/DashBoard.vue"),
+    beforeEnter(to, from, next) {
+      let authentification = store._modules.root._children.authentification.state;
+      if (authentification.authenticated !== true && authentification.user.isadmin !== 1) {
+        next("/login");
+      } else {
+        next();
+      }
+    },
   },
 ];
 
