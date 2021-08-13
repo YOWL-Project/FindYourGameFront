@@ -15,7 +15,7 @@
       </div>
 
       <!-- Row #2 : Bouton de post -->
-      <div class="row">
+      <div class="row" v-if="authentificated == true">
         <button class="postit" @click="postTopic()">POST IT !</button>
       </div>
 
